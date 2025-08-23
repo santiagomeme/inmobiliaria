@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agregar Propiedad</title>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
+
+  <link rel="stylesheet" href="registroPropi.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+</head>
+<body>
+
+
+
+<header class="site-header">
+  <div class="header-container">
+    <!-- Logo + Nombre -->
+    <div class="logo">
+      <a href="index.html">
+        <img src="img/logo.png" alt="Logo del sitio">
+      </a>
+      <h1>🏡 Mi Inmobiliaria</h1>
+    </div>
+
+    <!-- Botón admin -->
+    <a href="registro.html" class="admin-btn"><i class="fas fa-user"></i></a>
+  </div>
+</header>
+<main class="wrap">
+  <section class="registro">
+    <h2>Registrar Propiedad</h2>
+    <form id="registroForm">
+      <input type="text" id="titulo" placeholder="Título" required>
+      <textarea id="descripcion" placeholder="Descripción"></textarea>
+      <input type="text" id="ciudad" placeholder="Ciudad" required>
+
+      <!-- Dirección + botones -->
+      <div style="margin-bottom:10px;">
+        <input type="text" id="direccion" placeholder="Dirección" required style="width:70%;">
+        <button type="button" id="buscarDireccion">Buscar dirección</button>
+        <button type="button" id="abrirGoogleMaps">Ver en Google Maps</button>
+      </div>
+
+      <select id="tipo" required>
+        <option value="casa">Casa</option>
+        <option value="departamento">Departamento</option>
+        <option value="lote">Lote</option>
+      </select>
+      <input type="number" id="precio" placeholder="Precio" required>
+      <input type="text" id="imagen" placeholder="Ruta de la imagen ej: imagenes/casa1.jpg" required>
+
+      <!-- Lat/Lng -->
+      <input type="number" id="lat" placeholder="Latitud" step="any" required>
+      <input type="number" id="lng" placeholder="Longitud" step="any" required>
+
+      <!-- Contenedor del mapa -->
+      <div id="map" style="height:400px; margin:10px 0;"></div>
+
+      <button type="submit" class="btn">Guardar Propiedad</button>
+    </form>
+  </section>
+
+  <section class="admin-listado">
+    <h2>Listado de propiedades</h2>
+    <div id="adminPropiedadesList" class="grid"></div>
+  </section>
+</main>
+
+
+
+ <footer>
+      <a href="propiedades.html" class="btn">Ver Propiedades</a>
+      <a href="index.html" class="btn">Ver index</a>
+      <a href="mapa.html" class="btn">Ver mapas</a>
+      <a href="detalle.html" class="btn">registro de usuario</a>
+
+
+    <p>© 2025 Mi Inmobiliaria - Todos los derechos reservados</p>
+  </footer>
+  <!-- Tu configuración y lógica -->
+<script src="firebase-config.js"></script>
+<script src="auth.js"></script>
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css">
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<script src="registroPropiedad.js"></script>
+
+</body>
+</html>

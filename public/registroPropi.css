@@ -1,0 +1,115 @@
+body {
+  font-family: system-ui, Arial, sans-serif;
+  margin: 0;
+  background: #f5f5f5;
+  color: #111827;
+}
+
+header {
+  background: #111827;
+  color: #fff;
+  padding: 16px 0;
+}
+
+.wrap {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+h1, h2 {
+  margin-bottom: 12px;
+}
+
+.registro form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #fff;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,.1);
+}
+
+.registro input,
+.registro textarea,
+.registro select {
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #d1d5db;
+  font-size: 14px;
+}
+#map {
+  height: 500px;
+  width: 100%;         /* Para que ocupe solo el ancho del formulario */
+  max-width: 100%;     /* Evita que se desborde */
+  border-radius: 8px;  /* opcional: bordes redondeados como el form */
+  overflow: hidden;    /* para que no se vean cortes raros */
+}
+
+
+.btn {
+  display:inline-block;
+  padding:10px 15px;
+  border-radius: 8px;
+  background:#111827;
+  color:#fff;
+  text-decoration:none;
+  text-align:center;
+  cursor:pointer;
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background:#374151;
+}
+
+.admin-listado .grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(260px,1fr));
+  gap: 16px;
+}
+
+.prop-card {
+  background:#fff;
+  padding:12px;
+  border-radius:12px;
+  box-shadow:0 1px 3px rgba(0,0,0,.1);
+}
+
+.prop-card h3 {
+  margin:0 0 6px;
+}
+
+.prop-card p {
+  margin:2px 0;
+  font-size:14px;
+}
+
+.prop-card button {
+  margin-right:5px;
+  padding:6px 10px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  background:#111827;
+  color:#fff;
+  transition: background 0.3s;
+}
+
+.prop-card button:hover {
+  background:#374151;
+}
+
+footer {
+  background:#111827;
+  color:#fff;
+  padding:20px 16px;
+  text-align:center;
+  margin-top:20px;
+  width: 100%;
+}
+
+footer a.btn {
+  margin:5px;
+}

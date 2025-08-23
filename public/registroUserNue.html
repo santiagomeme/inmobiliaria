@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio - Inmobiliaria</title>
+    <link rel="stylesheet" href="estilos.css">
+
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
+
+</head>
+
+<header class="site-header">
+  <div class="header-container">
+    <!-- Logo + Nombre -->
+    <div class="logo">
+      <a href="index.html">
+        <img src="img/logo.png" alt="Logo del sitio">
+      </a>
+      <h1>🏡 Mi Inmobiliaria</h1>
+    </div>
+
+    <!-- Botón admin -->
+    <a href="registro.html" class="admin-btn"><i class="fas fa-user"></i></a>
+  </div>
+</header>
+<body><h2>Agregar Usuario</h2>
+<form id="addUserForm">
+  <input type="email" id="userEmail" placeholder="Correo del usuario" required>
+  <input type="password" id="userPassword" placeholder="Contraseña" required>
+  <select id="userRole">
+    <option value="editor">Editor</option>
+    <option value="viewer">Viewer</option>
+  </select>
+  <button type="submit">Agregar Usuario</button>
+</form>
+
+  <footer>
+    <p>© 2025 Mi Inmobiliaria - Todos los derechos reservados</p>
+  </footer>
+  <!-- Tu configuración y lógica -->
+<script src="firebase-config.js"></script>
+<script src="registroUserNue.js"></script>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contacto</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    .contact-container {
+      max-width: 600px;
+      margin: auto;
+      padding: 20px;
+      border-radius: 10px;
+      background: #f9f9f9;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .contact-container h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .contact-container form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+
+    .contact-container input,
+    .contact-container textarea {
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 16px;
+      width: 100%;
+    }
+
+    .contact-container button {
+      padding: 12px;
+      background: #ff6600;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+
+    .contact-container button:hover {
+      background: #e55d00;
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header">
+  <div class="header-container">
+    <!-- Logo + Nombre -->
+    <div class="logo">
+      <a href="index.html">
+        <img src="img/logo.png" alt="Logo del sitio">
+      </a>
+      <h1>🏡 Mi Inmobiliaria</h1>
+    </div>
+
+    <!-- Botón admin -->
+    <a href="registro.html" class="admin-btn"><i class="fas fa-user"></i></a>
+  </div>
+</header>
+
+  <div class="contact-container">
+    <h2>Contáctanos</h2>
+    <form id="formContacto" action="https://formspree.io/f/xrblnjzn" method="POST">
+      <input type="text" name="nombre" placeholder="Tu nombre" required>
+      <input type="email" name="email" placeholder="Tu correo" required>
+      <textarea name="mensaje" rows="5" placeholder="Escribe tu mensaje..." required></textarea>
+      <button type="submit">Enviar</button>
+    </form>
+  </div>
+
+</body>
+</html>

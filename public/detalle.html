@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Detalle de Propiedad</title>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+    <link rel="stylesheet" href="detalle.css">
+
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+
+</head>
+<body>
+
+<body><header class="site-header">
+  <div class="header-container">
+    <!-- Logo + Nombre -->
+    <div class="logo">
+      <a href="index.html">
+        <img src="img/logo.png" alt="Logo del sitio">
+      </a>
+      <h1>🏡 Mi Inmobiliaria</h1>
+    </div>
+
+    <!-- Botón admin -->
+    <a href="registro.html" class="admin-btn"><i class="fas fa-user"></i></a>
+  </div>
+</header>
+
+<main class="wrap">
+  <section class="detalle-propiedad">
+    <div id="detalleContainer" class="detalle-container"></div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <a href="propiedades.html" class="btn">Ver Propiedades</a>
+  <a href="index.html" class="btn">Inicio</a>
+  <a href="mapa.html" class="btn">Ver Mapas</a>
+  <p>© 2025 Mi Inmobiliaria - Todos los derechos reservados</p>
+</footer>
+
+  <script src="firebase-config.js"></script>
+  <!-- Google Maps (si quieres usarlo) -->
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=TU_API_KEY"></script>
+  <script src="detalle.js"></script>
+
+</body>
+</html>

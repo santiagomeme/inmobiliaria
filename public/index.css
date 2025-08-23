@@ -1,0 +1,346 @@
+/* Fuentes elegantes */
+body {
+  font-family: 'Lora', serif;
+  background-color: #f4f6f8;
+  color: #333;
+  line-height: 1.6;
+  margin:0;
+  padding:0;
+}
+
+/* Header */
+header {
+  background-color: #002c58;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 2rem;
+  position: sticky;
+  top:0;
+  z-index:1000;
+}
+
+header h1 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+  font-size: 1.8rem;
+}
+
+/* Botón administrador */
+.admin-btn {
+  background-color: none;
+  color: #fff;
+  font-size: 1.5rem;
+  padding: 0.5rem 0.7rem;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition:0.3s;
+}
+
+.admin-btn:hover {
+  color: #19d8af;
+}
+
+/* Slider */
+.slider {
+  position: relative;
+  width: 100%;
+  /* Altura proporcional según ancho de pantalla */
+  height: 50vw; /* 50% del ancho de pantalla */
+  max-height: 700px; /* para pantallas grandes */
+  overflow: hidden;
+}
+
+.slides img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* asegura que la imagen cubra todo el contenedor */
+  transition: opacity 1s ease-in-out;
+  opacity: 0;
+}
+
+/* Imagen activa */
+.slides img:first-child {
+  opacity: 1;
+}
+
+/* Responsive para móviles */
+@media (max-width: 768px) {
+  .slider {
+    height: 38vw; /* un poco más alto para móviles */
+  }
+
+  .slides img {
+    height: 100%;
+  }
+}
+
+/* Para pantallas intermedias */
+@media (min-width: 768px) and (max-width: 1000px) {
+  .slider {
+    height: 36vh; /* aumenta la altura del slider */
+  }
+
+  .slider img {
+    height: 100%;
+    width: 100%;
+    object-fit: cover; /* hace que la imagen llene el espacio */
+  }
+}
+
+
+
+/* Hero section */
+.hero {
+  text-align: center;
+  padding: 4rem 1rem;
+  background-color: #031e38;
+  color: #fff;
+}
+
+.hero h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.hero p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+/* Botón */
+.btn {
+  background-color: #dadada;
+  color: #0f1044;
+  padding: 0.5rem 1.5rem;
+  border-radius: 5px;
+  text-decoration: none;
+  transition: 0.3s;
+  font-size: 1.2rem;
+}
+
+.btn:hover {
+  background-color: #3cff00;
+  color: #fff;
+}
+
+/* Features */
+.features {
+  padding: 4rem 1rem;
+  text-align: center;
+}
+
+.features h2 {
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(250px,1fr));
+  gap: 2rem;
+  max-width:1000px;
+  margin:0 auto;
+}
+
+.feature {
+  background-color:#fff;
+  padding:2rem;
+  border-radius:10px;
+  box-shadow:0 4px 8px rgba(0,0,0,0.1);
+  transition:0.3s;
+}
+
+.feature:hover {
+  transform:translateY(-5px);
+  box-shadow:0 8px 16px rgba(0,0,0,0.2);
+}
+
+.feature h3 {
+  color:#002f5f;
+  margin-bottom:1rem;
+}
+
+/* Info empresa */
+.info-empresa {
+  background-color: #e0e6ed;
+  text-align: center;
+  padding: 2rem 1rem;
+  font-weight: bold;
+}
+
+.info-empresa h2 {
+  margin-bottom: 1rem;
+  color: #002f5f;
+}
+
+.info-empresa p {
+  margin-bottom: 0.5rem;
+}
+
+/* Footer */
+footer {
+  background-color:#222;
+  color:#fff;
+  text-align:center;
+  padding:2rem 1rem;
+}
+
+.footer-buttons {
+  margin-bottom:1rem;
+}
+
+
+
+/* Botón flotante WhatsApp */
+.whatsapp-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background:none;
+  color: #3cff00;
+  font-size: 2rem;
+  padding: 0.7rem 0.7rem;
+  border-radius: 50%;
+  z-index: 1000;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.whatsapp-btn:hover {
+  color: #00ffea;
+}
+
+/* Responsive */
+@media (max-width:768px) {
+  .hero h2 {
+    font-size:1.5rem;
+  }
+  .slides img {
+    height: 250px;
+  }
+  .btn {
+    padding:0.6rem 1.5rem;
+    font-size:0.95rem;
+  }
+  .admin-btn {
+    font-size: 1.3rem;
+  }
+}
+/* ===== HEADER ===== */
+.site-header {
+  background: #222; /* color del header */
+  color: #fff;
+  padding: 10px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+/* Contenedor general */
+.header-container {
+  display: flex;
+  flex-direction: column; /* 📱 Por defecto: en torre para móviles */
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* LOGO */
+.logo img {
+  max-height: 60px;
+}
+.admin-btn {
+  color: #fff;
+  font-size: 20px;
+  margin-left: 15px;
+}
+
+
+/* ===== 📌 Cambios para pantallas grandes ===== */
+@media (min-width: 768px) {
+  .header-container {
+    flex-direction: row; /* 🖥️ En PC: horizontal */
+    justify-content: space-between; /* separa logo y botones */
+    align-items: center;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo h1 {
+    margin: 0;
+    font-size: 22px;
+  }
+}
+
+
+/* MENÚ */
+.main-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap; /* ✅ Permite que los botones bajen si no caben */
+  justify-content: center; /* ✅ Centra los botones horizontalmente */
+  gap: 15px; /* Espacio entre botones */
+}
+
+.main-nav li {
+  flex: 1 1 auto; /* ✅ Los botones ocupan espacio adaptable */
+  max-width: 200px; /* ✅ Para que no se estiren demasiado en pantallas grandes */
+}
+
+.main-nav a {
+  display: block;
+  text-align: center;
+  padding: 12px 20px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #000;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.main-nav a:hover {
+  color: #46f312; /* color al pasar el mouse */
+}
+
+/* REDES SOCIALES */
+.social-icons a {
+  color: #a200ff;
+  margin-left: 15px;
+  font-size: 18px;
+  transition: color 0.3s;
+}
+
+.social-icons a:hover {
+  color: #25d366; /* verde WhatsApp */
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+ 
+
+  .social-icons {
+    margin-top: 10px;
+  }
+}

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+      <link rel="stylesheet" href="estilos.css">
+
+  <title>Registro / Login Admin</title>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
+  <script type="module" src="registro.js"></script>
+</head>
+
+<header class="site-header">
+  <div class="header-container">
+    <!-- Logo + Nombre -->
+    <div class="logo">
+      <a href="index.html">
+        <img src="img/logo.png" alt="Logo del sitio">
+      </a>
+      <h1>🏡 Mi Inmobiliaria</h1>
+    </div>
+
+    <!-- Botón admin -->
+    <a href="registro.html" class="admin-btn"><i class="fas fa-user"></i></a>
+  </div>
+</header>
+<body>
+  <h2>Registro de Admin</h2>
+  <form id="registerForm">
+    <input type="email" id="email" placeholder="Correo Admin" required>
+    <input type="password" id="password" placeholder="Contraseña" required>
+    <button type="submit">Registrar</button>
+  </form>
+
+  <h2>Login Admin</h2>
+  <form id="loginForm">
+    <input type="email" id="loginEmail" placeholder="Correo" required>
+    <input type="password" id="loginPassword" placeholder="Contraseña" required>
+    <button type="submit">Ingresar</button>
+  </form>
+
+  <button id="logoutBtn">Cerrar sesión</button>
+  <footer>
+      <a href="propiedades.html" class="btn">Ver Propiedades</a>
+      <a href="index.html" class="btn">Ver index</a>
+      <a href="mapa.html" class="btn">Ver mapas</a>
+      <a href="detalle.html" class="btn">registro de usuario</a>
+
+
+    <p>© 2025 Mi Inmobiliaria - Todos los derechos reservados</p>
+  </footer>
+
+<!-- Tu configuración y lógica -->
+<script src="firebase-config.js"></script>
+<script src="auth.js"></script>
+<script src="registro.js"></script>
+</body>
+</html>

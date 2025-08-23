@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Propiedades en venta</title>
+  <!-- Firebase App (core) --><!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
+  <link rel="stylesheet" href="registroPropi.css">
+  <!-- Leaflet para mapas -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+</head>
+<body>
+  <h1 style="text-align:center; padding: 20px;">Propiedades disponibles</h1>
+  <div id="propiedades" class="lista-propiedades"></div>
+
+  <h1>Lista de Propiedades</h1>
+<div id="map" style="height: 400px; width: 100%;"></div>
+
+     
+ <footer>
+      <a href="index.html" class="btn">Ver index</a>
+      <a href="mapa.html" class="btn">Ver mapas</a>
+    <p>© 2025 Mi Inmobiliaria - Todos los derechos reservados</p>
+  </footer>
+
+
+<!-- Tu configuración y lógica -->
+<script src="firebase-config.js"></script>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <script src="propiedades.js"></script>
+
+</body>
+</html>

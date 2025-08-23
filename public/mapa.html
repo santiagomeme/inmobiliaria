@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  
+  <title>Mapa de Propiedades</title>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <style>
+    #map { height: 100vh; }
+  </style>
+</head>
+<body>
+
+
+  <header class="site-header">
+  <div class="header-container">
+    <!-- Logo + Nombre -->
+    <div class="logo">
+      <a href="index.html">
+        <img src="img/logo.png" alt="Logo del sitio">
+      </a>
+      <h1>🏡 Mi Inmobiliaria</h1>
+    </div>
+
+    <!-- Botón admin -->
+    <a href="registro.html" class="admin-btn"><i class="fas fa-user"></i></a>
+  </div>
+</header>
+  <h2>Mapa de Propiedades</h2>
+  <div id="map"></div>
+
+
+<!-- Contenedor del mapa -->
+<div id="map" style="height: 500px;"></div>
+
+
+
+<footer>
+
+  <div class="social-icons ">
+    <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+  </div>
+  <p>© 2025 Mi Inmobiliaria - Todos los derechos reservados</p>
+</footer>
+
+
+<!-- Scripts de Leaflet -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+
+ <footer>
+      <a href="propiedades.html" class="btn">Ver Propiedades</a>
+      <a href="index.html" class="btn">Ver index</a>
+      <a href="mapa.html" class="btn">Ver mapas</a>
+
+
+    <p>© 2025 Mi Inmobiliaria - Todos los derechos reservados</p>
+  </footer>
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<!-- Tu configuración y lógica -->
+<script src="firebase-config.js"></script>
+<script src="mapa.js"></script>
+</html>

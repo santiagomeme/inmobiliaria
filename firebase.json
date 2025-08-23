@@ -1,0 +1,11 @@
+{
+  "hosting": {
+    "site": "inmobiliariacali",
+    "public": "public",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ]
+  }
+}
