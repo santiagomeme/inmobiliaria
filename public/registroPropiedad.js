@@ -23,8 +23,15 @@ const mapsBtn = document.getElementById("abrirGoogleMaps");
 
 const API_KEY = "pk.f7ed5677f23f2635f588ea90513a13d0"; // tu key de LocationIQ
 
+L.Icon.Default.mergeOptions({
+  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png"
+});
+
+
 // Crear mapa centrado en Bogotá
-const map = L.map("map").setView([4.6097, -74.0817], 12);
+const map = L.map("map").setView([3.4516, -76.5320], 13);
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
 }).addTo(map);
@@ -196,6 +203,7 @@ mapsBtn.addEventListener("click", () => {
         <h3>${prop.titulo}</h3>
         <p>${prop.descripcion}</p>
         <p><strong>Precio:</strong> $${prop.precio}</p>
+        <p><strong>Tipo:</strong> $${prop.tipo}</p>
         <p><strong>Ciudad:</strong> ${prop.ciudad}</p>
         <button onclick="editarPropiedad('${doc.id}')">Editar</button>
         <button onclick="eliminarPropiedad('${doc.id}')">Eliminar</button>
@@ -274,6 +282,14 @@ const iconApartamento = L.icon({
 });
 
 const iconLote = L.icon({
+  iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png',
+  shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+const iconFinca = L.icon({
   iconUrl: 'https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png',
   shadowUrl: 'https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png',
   iconSize: [25, 41],
@@ -282,15 +298,22 @@ const iconLote = L.icon({
   shadowSize: [41, 41]
 });
 
-
 function setMarker(lat, lon, tipo) {
   if (marker) map.removeLayer(marker);
 
   let icon;
   if (tipo === 'casa') icon = iconCasa;
-  else if (tipo === 'apartamento') icon = iconApartamento;
-  else if (tipo === 'lote' || tipo === 'finca') icon = iconLote;
+  if (tipo === 'Finca') icon = iconFinca;
+  else if (tipo === 'apartamento' || tipo === 'departamento') icon = iconApartamento; // 🔵 corregido
+  else if (tipo === 'lote') icon = iconLote;
   else icon = L.icon({iconUrl: 'default.png'}); // ícono por defecto
+
+
+  L.Icon.Default.mergeOptions({
+  iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+  iconRetinaUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png"
+});
 
   marker = L.marker([lat, lon], { draggable: true, icon: icon }).addTo(map);
   map.setView([lat, lon], 15);

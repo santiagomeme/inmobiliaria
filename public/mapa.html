@@ -28,10 +28,31 @@
       <h1>🏡 Mi Inmobiliaria</h1>
     </div>
 
-    <!-- Botón admin -->
+    <!--
+    
+    Botón admin -->
     <a href="registro.html" class="admin-btn"><i class="fas fa-user"></i></a>
   </div>
 </header>
+
+
+<div class="filtros">
+  <select id="tipo">
+    <option value="">-- Tipo --</option>
+    <option value="casa">Casa</option>
+    <option value="apartamento">Apartamento</option>
+    <option value="lote">Lote</option>
+    <option value="finca">Finca</option>
+  </select>
+
+  <input type="number" id="precioMin" placeholder="Precio mínimo">
+  <input type="number" id="precioMax" placeholder="Precio máximo">
+
+  <input type="text" id="ciudad" placeholder="Ciudad">
+
+  <button id="buscarBtn">Buscar</button>
+</div>
+
   <h2>Mapa de Propiedades</h2>
   <div id="map"></div>
 

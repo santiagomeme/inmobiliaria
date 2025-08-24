@@ -9,19 +9,55 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
 
-  <link rel="stylesheet" href="registroPropi.css">
+  <link rel="stylesheet" href="propiedades.css">
   <!-- Leaflet para mapas -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.extra-markers/1.2.1/css/leaflet.extra-markers.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.extra-markers/1.2.1/js/leaflet.extra-markers.min.js"></script>
 </head>
 <body>
-  <h1 style="text-align:center; padding: 20px;">Propiedades disponibles</h1>
-  <div id="propiedades" class="lista-propiedades"></div>
+
+<header class="site-header">
+  <div class="header-container">
+    <!-- Logo + Nombre -->
+    <div class="logo">
+      <a href="index.html">
+        <img src="imagenes/logo.png" alt="Logo del sitio">
+      </a>
+      <h1>🏡 Mi Inmobiliaria</h1>
+    </div>
+
+    <!-- Botón admin -->
+    <a href="registro.html" class="admin-btn"><i class="fas fa-user"></i></a>
+  </div>
+</header>
+
+
+<div class="filtros">
+  <select id="tipo">
+    <option value="">-- Tipo --</option>
+    <option value="casa">Casa</option>
+    <option value="apartamento">Apartamento</option>
+    <option value="lote">Lote</option>
+    <option value="finca">Finca</option>
+  </select>
+
+  <input type="number" id="precioMin" placeholder="Precio mínimo">
+  <input type="number" id="precioMax" placeholder="Precio máximo">
+
+  <input type="text" id="ciudad" placeholder="Ciudad">
+
+  <button id="buscarBtn">Buscar</button>
+<button id="resetBtn">Quitar filtros</button>
+
+</div>
 
   <h1>Lista de Propiedades</h1>
 <div id="map" style="height: 400px; width: 100%;"></div>
+
+  <h1 style="text-align:center; padding: 20px;">Propiedades disponibles</h1>
+  <div id="propiedades" class="lista-propiedades"></div>
 
      
  <footer>
@@ -35,6 +71,7 @@
 <script src="firebase-config.js"></script>
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
   <script src="propiedades.js"></script>
+  <script src="filtro.js"></script>
 
 </body>
 </html>

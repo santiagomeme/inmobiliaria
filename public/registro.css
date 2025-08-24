@@ -1,29 +1,11 @@
-.detalle-card {
-  background: #fff;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 1px 6px rgba(0,0,0,.1);
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
+/* ===== ESTILOS GENERALES ===== */
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  margin: 0;
+  background: #f5f6fa;
+  color: #333;
 }
 
-.detalle-imagen {
-  max-width: 100%;
-  border-radius: 12px;
-  object-fit: cover;
-}
-
-.detalle-info p {
-  margin: 4px 0;
-  font-size: 15px;
-}
-
-.detalle-mapa {
-  height: 400px;
-  border-radius: 12px;
-  margin-top: 12px;
-}
 
 
 /* Botón flotante WhatsApp */
@@ -114,38 +96,6 @@
 }
 
 
-/* MENÚ */
-.main-nav ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap; /* ✅ Permite que los botones bajen si no caben */
-  justify-content: center; /* ✅ Centra los botones horizontalmente */
-  gap: 15px; /* Espacio entre botones */
-}
-
-.main-nav li {
-  flex: 1 1 auto; /* ✅ Los botones ocupan espacio adaptable */
-  max-width: 200px; /* ✅ Para que no se estiren demasiado en pantallas grandes */
-}
-
-.main-nav a {
-  display: block;
-  text-align: center;
-  padding: 12px 20px;
-  background-color: #f8f8f8;
-  border-radius: 8px;
-  text-decoration: none;
-  color: #000;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.main-nav a:hover {
-  color: #46f312; /* color al pasar el mouse */
-}
-
 /* REDES SOCIALES */
 .social-icons a {
   color: #a200ff;
@@ -171,16 +121,102 @@
     margin-top: 10px;
   }
 }
-/* Footer */
-footer {
-  background-color:#222;
-  color:#fff;
-  text-align:center;
-  padding:2rem 1rem;
+
+/* ===== CONTENEDOR PRINCIPAL ===== */
+.auth-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
 }
 
-.footer-buttons {
-  margin-bottom:1rem;
+/* ===== TARJETA DE FORMULARIO ===== */
+.form-card {
+  background: #fff;
+  padding: 25px;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+}
+
+.form-card h2 {
+  margin-bottom: 20px;
+  font-size: 1.3rem;
+  color: #1d3557;
+  text-align: center;
+}
+
+/* ===== INPUTS ===== */
+.input-group {
+  display: flex;
+  align-items: center;
+  background: #f1f1f1;
+  margin-bottom: 15px;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.input-group i {
+  margin-right: 10px;
+  color: #1d3557;
+}
+
+.input-group input {
+  border: none;
+  outline: none;
+  background: transparent;
+  flex: 1;
+  font-size: 1rem;
+  padding: 5px;
+}
+
+/* ===== BOTONES ===== */
+.btn {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background: #1d3557;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.btn:hover {
+  background: #457b9d;
+}
+
+.logout {
+  background: #e63946;
+}
+.logout:hover {
+  background: #c91828;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: #222;
+  color: #ddd;
+  text-align: center;
+  padding: 20px;
+  margin-top: 40px;
+}
+
+footer .btn {
+  display: inline-block;
+  margin: 5px 10px;
+  padding: 10px 15px;
+  background: #0077cc;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+footer .btn:hover {
+  background: #005fa3;
 }
 /* Header */
 header {
