@@ -3,12 +3,13 @@
 <head>
   <meta charset="UTF-8">
   
-  <title>Mapa de Propiedades</title>
+  <title>Mapa de Propiedades admin</title>
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+  <link rel="stylesheet" href="propiedades.css">
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
   <style>
@@ -17,76 +18,122 @@
 </head>
 <body>
 
-
-  <header class="site-header">
+<header class="site-header">
   <div class="header-container">
     <!-- Logo + Nombre -->
     <div class="logo">
       <a href="index.html">
-        <img src="img/logo.png" alt="Logo del sitio">
+        <img src="imagenes/logo.png" alt="Logo del sitio">
       </a>
-      <h1>🏡 Mi Inmobiliaria</h1>
+      <h1> Inmobiliaria </h1>
     </div>
 
-    <!--
-    
-    Botón admin -->
+    <!-- Botón admin -->
     <a href="registro.html" class="admin-btn"><i class="fas fa-user"></i></a>
   </div>
 </header>
+  <!-- Menú principal -->
+    <nav class="main-nav">
+      <ul>
+        <li><a href="propiedades.html">propiedades</a></li>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="registro.html">Inicio</a></li>
+        <li><a href="registroPropiedad.html">Inicio</a></li>
 
+      </ul>
+    </nav>
+<!-- FILTROS -->
+<section class="filtros">
+  <h2>Filtros de búsqueda</h2>
+  <div class="filtros-grid">
+    <label for="tipo">Tipo de inmueble:</label>
+    <select id="tipo">
+      <option value="">-- Seleccionar --</option>
+      <option value="casa">Casa</option>
+      <option value="apartamento">Apartamento</option>
+      <option value="lote">Lote</option>
+      <option value="finca">Finca</option>
+    </select>
 
-<div class="filtros">
-  <select id="tipo">
-    <option value="">-- Tipo --</option>
-    <option value="casa">Casa</option>
-    <option value="apartamento">Apartamento</option>
-    <option value="lote">Lote</option>
-    <option value="finca">Finca</option>
-  </select>
+    <label for="estado">Estado:</label>
+    <select id="estado">
+      <option value="todos">Todos</option>
+      <option value="activa">Activa</option>
+      <option value="inactiva">Inactiva</option>
+    </select>
 
-  <input type="number" id="precioMin" placeholder="Precio mínimo">
-  <input type="number" id="precioMax" placeholder="Precio máximo">
+    <label for="filtroTipo">Operación:</label>
+    <select id="filtroTipo">
+      <option value="todos">Todos</option>
+      <option value="venta">Venta</option>
+      <option value="arriendo">Arriendo</option>
+    </select>
 
-  <input type="text" id="ciudad" placeholder="Ciudad">
+    <label for="precioMin">Precio mínimo:</label>
+    <input type="number" id="precioMin" placeholder="Ej: 100000000">
 
-  <button id="buscarBtn">Buscar</button>
-</div>
+    <label for="precioMax">Precio máximo:</label>
+    <input type="number" id="precioMax" placeholder="Ej: 500000000">
 
-  <h2>Mapa de Propiedades</h2>
+    <label for="ciudad">Ciudad:</label>
+    <input type="text" id="ciudad" placeholder="Ej: Bogotá">
+  </div>
+
+  <!-- Botones -->
+  <div class="filtros-btns">
+    <button id="buscarBtn" class="btn">🔍 Buscar</button>
+    <button id="resetBtn" class="btn btn-secundario">❌ Quitar filtros</button>
+  </div>
+</section>
+
+<!-- MAPA -->
+<section>
+  <h2 style="text-align:center; margin:20px 0;">Mapa de Propiedades</h2>
   <div id="map"></div>
+  <div class="leyenda">
+    <p><span style="color:green;">●</span> Activa</p>
+    <p><span style="color:red;">●</span> Inactiva</p>
+  </div>
+</section>
 
+<!-- PROPIEDADES -->
+<section>
+  <h2 style="text-align:center; padding: 20px;">Propiedades disponibles</h2>
+  <div id="propiedades" class="lista-propiedades"></div>
+</section>
 
-<!-- Contenedor del mapa -->
-<div id="map" style="height: 500px;"></div>
-
-
-
+<!-- FOOTER -->
 <footer>
-
-  <div class="social-icons ">
+    <!-- Sección info empresa -->
+  <section class="info-empresa">
+    <h2>Información de la empresa</h2>
+    <p>Dirección: Calle Ficticia #123, Ciudad Ejemplo</p>
+    <p>Correo: contacto@miinmobiliaria.com</p>
+    <p>Teléfono: +57 300 123 4567</p>
+  </section>
+  <div class="social-icons">
     <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
     <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
   </div>
+
   <p>© 2025 Mi Inmobiliaria - Todos los derechos reservados</p>
 </footer>
+
+
+
+
+
+
 
 
 <!-- Scripts de Leaflet -->
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-
- <footer>
-      <a href="propiedades.html" class="btn">Ver Propiedades</a>
-      <a href="index.html" class="btn">Ver index</a>
-      <a href="mapa.html" class="btn">Ver mapas</a>
-
-
-    <p>© 2025 Mi Inmobiliaria - Todos los derechos reservados</p>
-  </footer>
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <!-- Tu configuración y lógica -->
 <script src="firebase-config.js"></script>
 <script src="mapa.js"></script>
+<script src="mapaFiltro.js"></script>
+
 </html>

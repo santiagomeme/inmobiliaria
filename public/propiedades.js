@@ -66,6 +66,27 @@ function getIconByTipo(tipo) {
   return iconCasa;
 }
 
+
+const iconoActivo = L.icon({
+  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
+const iconoInactivo = L.icon({
+  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
+  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+  iconSize: [25, 41],
+  iconAnchor: [12, 41],
+  popupAnchor: [1, -34],
+  shadowSize: [41, 41]
+});
+
+
+
 // ==========================
 //  CARGAR PROPIEDADES DE FIRESTORE
 // ==========================
@@ -76,7 +97,12 @@ async function cargarPropiedades() {
 
     snapshot.forEach((doc) => {
   const data = { id: doc.id, ...doc.data() }; // guardar id también
-      propiedades.push(data); // 👈 guardar en el array
+        // 👇 Filtrar solo propiedades activas
+      if (!data.activa) {
+        return; // si no está activa, no la mostramos
+      } 
+  
+  propiedades.push(data); // 👈 guardar en el array
 
       // Crear tarjeta en la lista
       const card = document.createElement("div");
@@ -123,3 +149,16 @@ window.verDetalle = function (id) {
 
 // Ejecutar carga al abrir página
 cargarPropiedades();
+//====================================================
+// Hacer que el mapa no bloquee el scroll de la página
+//====================================================
+
+const mapElement = document.getElementById("map");
+
+mapElement.addEventListener("click", () => {
+  mapElement.classList.add("active");
+});
+
+mapElement.addEventListener("mouseleave", () => {
+  mapElement.classList.remove("active");
+});

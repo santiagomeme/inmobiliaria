@@ -10,7 +10,7 @@ body {
 
 /* Header */
 header {
-  background-color: #002c58;
+  background-color: #00172e;
   color: #fff;
   display: flex;
   justify-content: space-between;
@@ -187,7 +187,7 @@ header h1 {
 
 /* Footer */
 footer {
-  background-color:#222;
+  background-color:#00172e;
   color:#fff;
   text-align:center;
   padding:2rem 1rem;

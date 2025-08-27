@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inicio - Inmobiliaria</title>
-    <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="registro.css">
 
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -22,15 +22,38 @@
       <a href="index.html">
         <img src="imagenes/logo.png" alt="Logo del sitio">
       </a>
-      <h1>🏡 Mi Inmobiliaria</h1>
+      <h1> Inmobiliaria</h1>
+    </div>
+
+  </div>
+</header>
+<body>
+<header class="site-header">
+  <div class="header-container">
+    <!-- Logo + Nombre -->
+    <div class="logo">
+      <a href="index.html">
+        <img src="imagenes/logo.png" alt="Logo del sitio">
+      </a>
+      <h1> Mi Inmobiliaria</h1>
     </div>
 
     <!-- Botón admin -->
     <a href="registro.html" class="admin-btn"><i class="fas fa-user"></i></a>
   </div>
 </header>
-<body><h2>Agregar Usuario</h2>
-<form id="addUserForm">
+  <!-- Menú principal -->
+    <nav class="main-nav">
+      <ul>
+        <li><a href="propiedades.html">propiedades</a></li>
+        <li><a href="mapa.html">Menú</a></li>
+        <li><a href="index.html">Inicio</a></li>
+        <li><a href="registroPropiedad.html">Contacto</a></li>
+
+      </ul>
+    </nav>
+  <h2>Agregar Usuario</h2>
+<form id="addUserForm" style="display:none;">
   <input type="email" id="userEmail" placeholder="Correo del usuario" required>
   <input type="password" id="userPassword" placeholder="Contraseña" required>
   <select id="userRole">
@@ -40,9 +63,28 @@
   <button type="submit">Agregar Usuario</button>
 </form>
 
+<p id="noAccess" style="color:red; display:none;">
+  🚫 Solo el administrador puede registrar nuevos usuarios.
+</p>
+
   <footer>
-    <p>© 2025 Mi Inmobiliaria - Todos los derechos reservados</p>
-  </footer>
+      <!-- Sección info empresa -->
+  <section class="info-empresa">
+    <h2>Información de la empresa</h2>
+    <p>Dirección: Calle Ficticia #123, Ciudad Ejemplo</p>
+    <p>Correo: contacto@miinmobiliaria.com</p>
+    <p>Teléfono: +57 300 123 4567</p>
+  </section>
+    <div class="social-icons ">
+    <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+  </div>
+  <p>© 2025 Mi Inmobiliaria - Todos los derechos reservados</p>
+</footer>
+
+
+
+
   <!-- Tu configuración y lógica -->
 <script src="firebase-config.js"></script>
 <script src="registroUserNue.js"></script>

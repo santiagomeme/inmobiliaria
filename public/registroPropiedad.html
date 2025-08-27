@@ -28,7 +28,7 @@
       <a href="index.html">
         <img src="imagenes/logo.png" alt="Logo del sitio">
       </a>
-      <h1>🏡 Mi Inmobiliaria</h1>
+      <h1> Inmobiliaria</h1>
     </div>
 
     <!-- Botón admin -->
@@ -37,13 +37,27 @@
 </header>
 <main class="wrap">
   <section class="registro">
+
+
     <h2>Registrar Propiedad</h2>
+
     <form id="registroForm">
       <input type="text" id="titulo" placeholder="Título" required>
       <textarea id="descripcion" placeholder="Descripción"></textarea>
       <input type="text" id="ciudad" placeholder="Ciudad" required>
+      <label for="modalidad">Modalidad:</label>
+   <select id="modalidad" required>
+     <option value="">Seleccione</option>
+     <option value="venta">Venta</option>
+     <option value="alquiler">Alquiler</option>
+    </select>
 
-      <!-- Dirección + botones -->
+   <label for="habitaciones">Habitaciones:</label>
+   <input type="number" id="habitaciones" min="0" required>
+
+   <label for="banos">Baños:</label>
+   <input type="number" id="banos" min="0" required>
+    <!-- Dirección + botones -->
       <div style="margin-bottom:10px;">
         <input type="text" id="direccion" placeholder="Dirección" required style="width:70%;">
         <button type="button" id="buscarDireccion">Buscar dirección</button>
@@ -63,6 +77,9 @@
       <!-- Lat/Lng -->
       <input type="number" id="lat" placeholder="Latitud" step="any" required>
       <input type="number" id="lng" placeholder="Longitud" step="any" required>
+   <label>
+      <input type="checkbox" id="activa" checked>Propiedad activa
+    </label>
 
       <!-- Contenedor del mapa -->
       <div id="map" style="height:400px; margin:10px 0;"></div>
@@ -80,14 +97,29 @@
 
 
  <footer>
+    <!-- Sección info empresa -->
+  <section class="info-empresa">
+    <h2>Información de la empresa</h2>
+    <p>Dirección: Calle Ficticia #123, Ciudad Ejemplo</p>
+    <p>Correo: contacto@miinmobiliaria.com</p>
+    <p>Teléfono: +57 300 123 4567</p>
+  </section>
       <a href="propiedades.html" class="btn">Ver Propiedades</a>
-      <a href="index.html" class="btn">Ver index</a>
-      <a href="mapa.html" class="btn">Ver mapas</a>
-      <a href="detalle.html" class="btn">registro de usuario</a>
+      <a href="index.html" class="btn"><Ifr></Ifr>nicio</a>
+       <a href="mapa.html" class="btn"><Ifr></Ifr>nicio</a>
+       <a href="registroUserNue.html" class="btn"><Ifr></Ifr>Registra nuevo usuario</a>
+
+  <div class="social-icons ">
+    <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+  </div>
+  <p>© 2025 Mi Inmobiliaria - Todos los derechos reservados</p>
+</footer>
+
+<!-- Botón flotante WhatsApp -->
 
 
-    <p>© 2025 Mi Inmobiliaria - Todos los derechos reservados</p>
-  </footer>
+
   <!-- Tu configuración y lógica -->
 <script src="firebase-config.js"></script>
 <script src="auth.js"></script>

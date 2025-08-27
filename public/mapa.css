@@ -1,0 +1,267 @@
+/* ===== MAPA ===== */
+#map {
+  height: 400px;
+  width: 90%;
+  margin: 0 auto;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+/* Desactiva zoom scroll hasta click */
+.leaflet-container {
+  pointer-events: none; /* evita que robe el scroll */
+}
+#map.active {
+  pointer-events: auto; /* se activa solo al hacer click */
+}
+
+.leyenda {
+  text-align: center;
+  margin: 10px 0 30px;
+}
+
+/* ===== FILTROS ===== */
+.filtros {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  max-width: 1000px;
+  margin: 20px auto;
+}
+
+.filtros h2 {
+  text-align: center;
+  margin-bottom: 15px;
+  color: #1d3557;
+}
+
+.filtros-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(220px,1fr));
+  gap: 15px;
+}
+
+.filtros-grid label {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.filtros input,
+.filtros select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.filtros-btns {
+  text-align: center;
+  margin-top: 15px;
+}
+
+/* ===== BOTONES ===== */
+.btn {
+  padding: 10px 18px;
+  margin: 5px;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+  background: #1d3557;
+  color: #fff;
+}
+.btn:hover {
+  background: #457b9d;
+}
+.btn-secundario {
+  background: #999;
+}
+.btn-secundario:hover {
+  background: #666;
+}
+
+/* ===== PROPIEDADES (CARDS) ===== */
+.lista-propiedades {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto 50px;
+  padding: 0 20px;
+}
+
+.card-propiedad {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+  transition: transform 0.2s;
+}
+.card-propiedad:hover {
+  transform: translateY(-5px);
+}
+.card-propiedad img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+}
+.card-propiedad .info {
+  padding: 15px;
+}
+.card-propiedad h3 {
+  margin: 0 0 10px;
+  color: #1d3557;
+}
+.card-propiedad p {
+  margin: 5px 0;
+  font-size: 0.9rem;
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: #00172e;
+  color: #ddd;
+  text-align: center;
+  padding: 20px;
+}
+footer .btn {
+  display: inline-block;
+  margin: 10px;
+}
+
+/* ===== HEADER ===== */
+.site-header {
+  background: #222; /* color del header */
+  color: #fff;
+  padding: 10px 20px;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+/* Contenedor general */
+.header-container {
+  display: flex;
+  flex-direction: column; /* 📱 Por defecto: en torre para móviles */
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* LOGO */
+.logo img {
+  max-height: 60px;
+}
+.admin-btn {
+  color: #fff;
+  font-size: 20px;
+  margin-left: 15px;
+}
+
+
+/* ===== 📌 Cambios para pantallas grandes ===== */
+@media (min-width: 768px) {
+  .header-container {
+    flex-direction: row; /* 🖥️ En PC: horizontal */
+    justify-content: space-between; /* separa logo y botones */
+    align-items: center;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo h1 {
+    margin: 0;
+    font-size: 22px;
+  }
+}
+
+
+/* MENÚ */
+.main-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap; /* ✅ Permite que los botones bajen si no caben */
+  justify-content: center; /* ✅ Centra los botones horizontalmente */
+  gap: 15px; /* Espacio entre botones */
+}
+
+.main-nav li {
+  flex: 1 1 auto; /* ✅ Los botones ocupan espacio adaptable */
+  max-width: 200px; /* ✅ Para que no se estiren demasiado en pantallas grandes */
+}
+
+.main-nav a {
+  display: block;
+  text-align: center;
+  padding: 12px 20px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #000;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.main-nav a:hover {
+  color: #46f312; /* color al pasar el mouse */
+}
+
+/* REDES SOCIALES */
+.social-icons a {
+  color: #a200ff;
+  margin-left: 15px;
+  font-size: 18px;
+  transition: color 0.3s;
+  z-index: 9999;
+}
+
+.social-icons a:hover {
+  color: #25d366; /* verde WhatsApp */
+}
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  .header-container {
+    flex-direction: column;
+    text-align: center;
+  }
+
+ 
+
+  .social-icons {
+    margin-top: 10px;
+  }
+}
+
+
+
+/* ===== MAPA ===== */
+#map {
+  height: 400px;
+  width: 90%;
+  margin: 0 auto;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.2);
+}
+
+/* Desactiva zoom scroll hasta click */
+.leaflet-container {
+  pointer-events: none; /* evita que robe el scroll */
+}
+#map.active {
+  pointer-events: auto; /* se activa solo al hacer click */
+}
+
+.leyenda {
+  text-align: center;
+  margin: 10px 0 30px;
+}

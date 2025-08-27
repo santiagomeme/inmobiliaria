@@ -128,17 +128,21 @@ mapsBtn.addEventListener("click", () => {
   form.addEventListener("submit", async (e) => {
     e.preventDefault();
 
-    const titulo      = document.getElementById("titulo").value.trim();
-    const descripcion = document.getElementById("descripcion").value.trim();
-    const ciudad      = document.getElementById("ciudad").value.trim();
-    const direccion   = document.getElementById("direccion").value.trim();
-    const tipo        = document.getElementById("tipo").value.trim();
-    const precio      = parseFloat(document.getElementById("precio").value);
-    let imagenRuta    = document.getElementById("imagen").value.trim();
-    const lat         = parseFloat(latInput.value) || null;
-    const lng         = parseFloat(lngInput.value) || null;
+  const titulo       = document.getElementById("titulo").value.trim();
+  const descripcion  = document.getElementById("descripcion").value.trim();
+  const ciudad       = document.getElementById("ciudad").value.trim();
+  const direccion    = document.getElementById("direccion").value.trim();
+  const tipo         = document.getElementById("tipo").value.trim();       // casa, apto, lote...
+  const modalidad    = document.getElementById("modalidad").value.trim();  // venta o alquiler
+  const habitaciones = parseInt(document.getElementById("habitaciones").value) || 0;
+  const banos        = parseInt(document.getElementById("banos").value) || 0;
+  const precio       = parseFloat(document.getElementById("precio").value);
+  let imagenRuta     = document.getElementById("imagen").value.trim();
+  const lat          = parseFloat(latInput.value) || null;
+  const lng          = parseFloat(lngInput.value) || null;
+  const activa       = document.getElementById("activa").checked; // 👈 nuevo campo
 
-    if (!titulo || !ciudad || !direccion || !tipo || !precio || !imagenRuta || lat === null || lng === null) {
+  if (!titulo || !ciudad || !direccion || !tipo || !modalidad || !precio || !imagenRuta || lat === null || lng === null) {
       alert("Completa todos los campos correctamente.");
       return;
     }
@@ -147,18 +151,22 @@ mapsBtn.addEventListener("click", () => {
     imagenRuta = imagenRuta.replace(/^\/+/, "");
     const imagenURL = "/" + imagenRuta;
 
-    const datos = {
-      titulo,
-      descripcion,
-      ciudad,
-      direccion,
-      tipo,
-      precio,
-      imagen: imagenURL,
-      lat,
-      lng,
-      fecha: firebase.firestore.FieldValue.serverTimestamp()
-    };
+   const datos = {
+    titulo,
+    descripcion,
+    ciudad,
+    direccion,
+    tipo,
+    modalidad,
+    habitaciones,
+    banos,
+    precio,
+    imagen: imagenURL,
+    lat,
+    lng,
+    activa, // 👈 guardar estado
+    fecha: firebase.firestore.FieldValue.serverTimestamp()
+  };
 
     try {
       if (modoEdicion && propiedadId) {
@@ -232,15 +240,19 @@ mapsBtn.addEventListener("click", () => {
       const prop = docSnap.data();
 
       // Cargar valores al formulario
-      document.getElementById("titulo").value = prop.titulo;
-      document.getElementById("descripcion").value = prop.descripcion;
-      document.getElementById("ciudad").value = prop.ciudad;
-      document.getElementById("direccion").value = prop.direccion;
-      document.getElementById("tipo").value = prop.tipo;
-      document.getElementById("precio").value = prop.precio;
-      document.getElementById("imagen").value = prop.imagen.replace(/^\//, "");
-      document.getElementById("lat").value = prop.lat;
-      document.getElementById("lng").value = prop.lng;
+    document.getElementById("titulo").value       = prop.titulo || "";
+    document.getElementById("descripcion").value  = prop.descripcion || "";
+    document.getElementById("ciudad").value       = prop.ciudad || "";
+    document.getElementById("direccion").value    = prop.direccion || "";
+    document.getElementById("tipo").value         = prop.tipo || "";
+    document.getElementById("modalidad").value    = prop.modalidad || "";
+    document.getElementById("habitaciones").value = prop.habitaciones || 0;
+    document.getElementById("banos").value        = prop.banos || 0;
+    document.getElementById("precio").value       = prop.precio || "";
+    document.getElementById("imagen").value       = (prop.imagen || "").replace(/^\//, "");
+    document.getElementById("lat").value          = prop.lat || "";
+    document.getElementById("lng").value          = prop.lng || "";
+    document.getElementById("activa").checked     = prop.activa !== false; // 👈 por defecto true
 
       // Actualizar marcador en el mapa
       if (!marker) {

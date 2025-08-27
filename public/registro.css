@@ -1,129 +1,63 @@
-/* ===== ESTILOS GENERALES ===== */
+/* ===== RESET GENERAL ===== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
 body {
   font-family: "Segoe UI", Arial, sans-serif;
-  margin: 0;
   background: #f5f6fa;
   color: #333;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-
-
-/* Botón flotante WhatsApp */
-.whatsapp-btn {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background:none;
-  color: #3cff00;
-  font-size: 2rem;
-  padding: 0.7rem 0.7rem;
-  border-radius: 50%;
-  z-index: 1000;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
-  text-decoration: none;
-  transition: 0.3s;
-}
-
-.whatsapp-btn:hover {
-  color: #00ffea;
-}
-
-/* Responsive */
-@media (max-width:768px) {
-  .hero h2 {
-    font-size:1.5rem;
-  }
-  .slides img {
-    height: 250px;
-  }
-  .btn {
-    padding:0.6rem 1.5rem;
-    font-size:0.95rem;
-  }
-  .admin-btn {
-    font-size: 1.3rem;
-  }
-}
 /* ===== HEADER ===== */
 .site-header {
-  background: #222; /* color del header */
+  background: #00172e;
   color: #fff;
   padding: 10px 20px;
-  position: sticky;
-  top: 0;
-  z-index: 1000;
 }
-/* Contenedor general */
+
 .header-container {
   display: flex;
-  flex-direction: column; /* 📱 Por defecto: en torre para móviles */
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
   gap: 10px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
-/* LOGO */
 .logo img {
   max-height: 60px;
 }
+
 .admin-btn {
   color: #fff;
   font-size: 20px;
-  margin-left: 15px;
 }
 
-
-/* ===== 📌 Cambios para pantallas grandes ===== */
+/* En pantallas grandes */
 @media (min-width: 768px) {
   .header-container {
-    flex-direction: row; /* 🖥️ En PC: horizontal */
-    justify-content: space-between; /* separa logo y botones */
-    align-items: center;
+    flex-direction: row;
+    justify-content: space-between;
   }
-
   .logo {
     display: flex;
     align-items: center;
     gap: 10px;
   }
-
   .logo h1 {
-    margin: 0;
     font-size: 22px;
   }
 }
 
-
-/* REDES SOCIALES */
-.social-icons a {
-  color: #a200ff;
-  margin-left: 15px;
-  font-size: 18px;
-  transition: color 0.3s;
-}
-
-.social-icons a:hover {
-  color: #25d366; /* verde WhatsApp */
-}
-
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  .header-container {
-    flex-direction: column;
-    text-align: center;
-  }
-
- 
-
-  .social-icons {
-    margin-top: 10px;
-  }
-}
-
-/* ===== CONTENEDOR PRINCIPAL ===== */
+/* ===== MAIN ===== */
 .auth-container {
+  flex: 1; /* empuja el footer abajo */
   max-width: 600px;
   margin: 40px auto;
   padding: 20px;
@@ -132,7 +66,6 @@ body {
   gap: 25px;
 }
 
-/* ===== TARJETA DE FORMULARIO ===== */
 .form-card {
   background: #fff;
   padding: 25px;
@@ -147,7 +80,6 @@ body {
   text-align: center;
 }
 
-/* ===== INPUTS ===== */
 .input-group {
   display: flex;
   align-items: center;
@@ -174,7 +106,7 @@ body {
 /* ===== BOTONES ===== */
 .btn {
   display: block;
-  width: 100%;
+  width: 300px;
   padding: 12px;
   background: #1d3557;
   color: #fff;
@@ -183,6 +115,9 @@ body {
   font-size: 1rem;
   cursor: pointer;
   transition: background 0.3s;
+  margin: 0 auto;
+  text-align: center;
+  text-decoration: none;
 }
 
 .btn:hover {
@@ -190,7 +125,7 @@ body {
 }
 
 .logout {
-  background: #e63946;
+  background: #cf0011;
 }
 .logout:hover {
   background: #c91828;
@@ -202,7 +137,7 @@ footer {
   color: #ddd;
   text-align: center;
   padding: 20px;
-  margin-top: 40px;
+  margin-top: auto; /* hace que se quede abajo */
 }
 
 footer .btn {
@@ -212,27 +147,44 @@ footer .btn {
   background: #0077cc;
   color: #fff;
   border-radius: 6px;
-  text-decoration: none;
   transition: background 0.2s;
+  width: 300px;
 }
 footer .btn:hover {
   background: #005fa3;
 }
-/* Header */
-header {
-  background-color: #002c58;
-  color: #fff;
+
+
+
+
+/* MENÚ */
+.main-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem 2rem;
-  position: sticky;
-  top:0;
-  z-index:1000;
+  flex-wrap: wrap; /* ✅ Permite que los botones bajen si no caben */
+  justify-content: center; /* ✅ Centra los botones horizontalmente */
+  gap: 15px; /* Espacio entre botones */
 }
 
-header h1 {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 700;
-  font-size: 1.8rem;
+.main-nav li {
+  flex: 1 1 auto; /* ✅ Los botones ocupan espacio adaptable */
+  max-width: 200px; /* ✅ Para que no se estiren demasiado en pantallas grandes */
+}
+
+.main-nav a {
+  display: block;
+  text-align: center;
+  padding: 12px 20px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #000;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.main-nav a:hover {
+  color: #46f312; /* color al pasar el mouse */
 }
