@@ -2,7 +2,7 @@
    ESTILOS GENERALES
 =============================== */
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: 'Poppins', sans-serif;
   margin: 0;
   padding: 0;
   background: #f5f5f5;
@@ -10,64 +10,121 @@ body {
 }
 
 
+html, body {
+  max-width: 100%;
+  overflow-x: hidden; /* 🔒 evita scroll horizontal */
+}
 
 /* ============================
    LISTA DE PROPIEDADES
 =============================== */
-.lista-propiedades {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 20px;
-  padding: 20px;
-  max-width: 1300px;
-  margin: auto;
-}
-
 /* ============================
    TARJETAS
 =============================== */
+/* ============================
+   GRID DE TARJETAS
+=============================== */
+.propiedades-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* ✅ adaptable */
+  gap: 20px;
+  padding: 20px;
+}
+
+/* Contenedor de las tarjetas */
+.propiedades-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* 👈 varias por fila */
+  gap: 20px; /* espacio entre cards */
+  padding: 20px;
+}
+
+/* Cada tarjeta */
 .prop-card {
   background: #fff;
   border-radius: 12px;
-  padding: 20px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.50);
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 }
 
-.prop-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+.prop-card img {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
 }
+
 
 .prop-card h3 {
-  margin-top: 0;
-  color: #0077cc;
-  font-size: 1.3rem;
+  margin: 1px auto;
+  color: #003264;
+  font-size: 1.2rem;
+  font-weight: 600;   /* más grueso */
 }
-
 .prop-card p {
-  margin: 8px 0;
-  line-height: 1.4;
+  margin: 6px 9px;
+  line-height: 1.5;   /* más legible */
+  font-size: 0.95rem;
+  font-weight: 400;   /* normal, fácil de leer */
+  color: #2e2e2e;
 }
-
-/* Botón en cada tarjeta */
+.prop-card strong{
+ /* un poco más fuerte */
+  color: #003264;     /* resaltar en azul elegante */
+}
 .prop-card button {
-  margin-top: auto;
-  padding: 10px 15px;
-  background: #0077cc;
+  margin: 10px;
+  padding: 8px 12px;
+  background: #00172e;
   color: #fff;
   border: none;
   border-radius: 8px;
   cursor: pointer;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   transition: background 0.2s ease;
 }
 
 .prop-card button:hover {
   background: #005fa3;
+}
+
+.prop-card b {
+ /* un poco más fuerte */
+  color: #003264;     /* resaltar en azul elegante */
+}
+
+/* Badge del tipo de propiedad — pega esto en tu CSS externo */
+.prop-card .prop-tipo {
+  display: inline-block;      /* que el fondo abrace solo el texto */
+  align-self: flex-start;     /* evita que se estire en el contenedor flex */
+  flex: 0 0 auto;             /* no crecer ni encoger */
+  width: auto !important;     /* por si alguna regla fuerza width:100% */
+  max-width: none !important;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  box-sizing: border-box;
+    margin: 6px 13px;
+
+}
+
+
+/* ============================
+   POPUP DEL MAPA
+=============================== */
+.leaflet-popup-content img {
+  width: 100%;
+  max-width: 250px; /* ✅ no se pasa del cuadro */
+  height: auto;
+  border-radius: 8px;
+  object-fit: cover;
+  display: block;
+  margin: 0 auto 10px;
 }
 
 /* ============================
@@ -93,20 +150,8 @@ footer {
   margin-bottom: 0px;
 }
 
-footer .btn {
-  display: inline-block;
-  margin: 5px 10px;
-  padding: 10px 15px;
-  background: #0077cc;
-  color: #fff;
-  border-radius: 6px;
-  text-decoration: none;
-  transition: background 0.2s ease;
-}
 
-footer .btn:hover {
-  background: #005fa3;
-}
+
 
 
 
@@ -118,40 +163,72 @@ footer .btn:hover {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background:none;
-  color: #3cff00;
+  width: 60px;   /* ancho fijo */
+  height: 60px;  /* alto fijo */
+  background: none; /* color de fondo típico WhatsApp */
+  color: #25d366;   /* color del icono */
   font-size: 2rem;
-  padding: 0.7rem 0.7rem;
-  border-radius: 50%;
+  display: flex;           /* centra el icono */
+  align-items: center;     /* centra vertical */
+  justify-content: center; /* centra horizontal */
+  border-radius: 50%;      /* círculo perfecto */
   z-index: 1000;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 4px 4px rgba(0, 0, 0, 0.3);
   text-decoration: none;
-  transition: 0.3s;
+  transition: background 0.3s;
 }
 
 .whatsapp-btn:hover {
-  color: #00ffea;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.6);
+  color:#000000;
+}
+/* Cuando haces clic (presionado) */
+.whatsapp-btn:active {
+  background: #128c7e; /* verde oscuro (como al apretarlo) */
+  box-shadow: 0 2px 10px rgba(18, 140, 126, 0.8);
+  transform: scale(0.95); /* se encoge un poquito */
 }
 
 
-/* ===== HEADER ===== */
+/* 📱 Para móviles */
+@media (max-width: 768px) {
+  .whatsapp-btn {
+    width: 45px;   /* más pequeño */
+    height: 45px;
+    font-size: 1.5rem;
+    bottom: 15px;  /* más cerca del borde inferior */
+    right: 10px;   /* más pegado a la derecha */
+  }
+}
+
+/* 📱📱 Para móviles muy pequeños (ej: 400px o menos) */
+@media (max-width: 400px) {
+  .whatsapp-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.3rem;
+    bottom: 10px;
+    right: 8px;
+  }
+}
+/* ===== HEADER GENERAL ===== */
 .site-header {
-  background: #222; /* color del header */
+  background: #00172e; /* color del header */
   color: #fff;
   padding: 10px 20px;
-  position: sticky;
-  top: 0;
   z-index: 1000;
 }
-/* Contenedor general */
+
+/* Contenedor principal */
 .header-container {
   display: flex;
-  flex-direction: column; /* 📱 Por defecto: en torre para móviles */
+  flex-direction: column; /* 📱 Por defecto: apilado para móviles */
   justify-content: center;
   align-items: center;
   gap: 10px;
   max-width: 1200px;
   margin: 0 auto;
+position: relative;
 }
 
 /* LOGO */
@@ -159,14 +236,30 @@ footer .btn:hover {
   max-height: 60px;
 }
 
+.header h1,
+.logo h1 {
+  color: #fff;
+  margin: 0;
+  font-size: 20px;
+}
 
-
-/* ===== 📌 Cambios para pantallas grandes ===== */
-@media (min-width: 768px) {
-  .header-container {
-    flex-direction: row; /* 🖥️ En PC: horizontal */
-    justify-content: space-between; /* separa logo y botones */
+/* ===== 🖥️ Pantallas grandes (PC) ===== */
+@media (min-width: 501px) {
+  .site-header {
+    position: relative; /* fijo arriba */
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px; /* altura compacta */
+    display: flex;
     align-items: center;
+  }
+
+  .header-container {
+    flex-direction: row; /* horizontal */
+    justify-content: space-between; /* logo a la izquierda, nav a la derecha */
+    align-items: center;
+    height: 100%;
   }
 
   .logo {
@@ -176,8 +269,14 @@ footer .btn:hover {
   }
 
   .logo h1 {
-    margin: 0;
     font-size: 22px;
+  }
+}
+
+/* ===== 📱 Pantallas móviles (se mueve con scroll) ===== */
+@media (max-width: 500px) {
+  .site-header {
+    position: relative; /* se desplaza con el scroll */
   }
 }
 
@@ -185,7 +284,7 @@ footer .btn:hover {
 /* MENÚ */
 .main-nav ul {
   list-style: none;
-  margin: 0;
+  margin-top: 30px;
   padding: 0;
   display: flex;
   flex-wrap: wrap; /* ✅ Permite que los botones bajen si no caben */
@@ -196,6 +295,8 @@ footer .btn:hover {
 .main-nav li {
   flex: 1 1 auto; /* ✅ Los botones ocupan espacio adaptable */
   max-width: 200px; /* ✅ Para que no se estiren demasiado en pantallas grandes */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  border-radius: 15px;
 }
 
 .main-nav a {
@@ -211,7 +312,9 @@ footer .btn:hover {
 }
 
 .main-nav a:hover {
-  color: #46f312; /* color al pasar el mouse */
+color: #00172e;
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgb(0, 6, 39);
 }
 
 /* REDES SOCIALES */
@@ -239,27 +342,10 @@ footer .btn:hover {
     margin-top: 10px;
   }
 }
-/* Header */
-header {
-  background-color: #00172e;
-  color: #fff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem 2rem;
-  position: sticky;
-  top:0;
-  z-index:1000;
-    margin: 0 auto;
 
-}
  
 
-header h1 {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 700;
-  font-size: 1.8rem;
-}
+
 .filtros {
   display: flex;
   flex-wrap: wrap;
@@ -278,7 +364,7 @@ header h1 {
 .filtros select,
 .filtros input {
   padding: 10px 14px;
-  border: 1px solid #ddd;
+  border: 1px solid #a3a3a3;
   border-radius: 8px;
   font-size: 14px;
   outline: none;
@@ -290,13 +376,13 @@ header h1 {
 /* Efecto focus */
 .filtros select:focus,
 .filtros input:focus {
-  border-color: #0077ff;
+  border-color: #00172e;
   box-shadow: 0 0 6px rgba(0, 119, 255, 0.2);
 }
 
 /* Botón */
 .filtros button {
-  background: #0077ff;
+  background: #00172e;
   color: #fff;
   border: none;
   padding: 10px 18px;
@@ -343,4 +429,62 @@ header h1 {
 }
 #map.active {
   pointer-events: auto; /* se activa solo al hacer click */
+}
+
+
+
+/* Mueve el mapa hacia abajo para no quedar debajo del header */
+#map {
+  height: 100vh;
+  margin-top: 80px;  /* ajusta según el alto del header */
+}
+
+/* Ajusta controles y watermark de Leaflet */
+.leaflet-control-container,
+.leaflet-control,
+.leaflet-bottom,
+.leaflet-right,
+.leaflet-left,
+.leaflet-top {
+  z-index: 500 !important; /* más bajo que el header */
+}
+#map-legend {
+  position: relative;
+  bottom: 10px; /* 👈 lo bajamos para que no tape el header */
+  left: 10px;
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 13px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 1000;
+  max-width: 95%;
+}
+
+#map-legend h4 {
+  margin: 5px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+#map-legend ul {
+  display: grid; /* 👈 ahora son filas y columnas */
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); 
+  gap: 6px 15px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#map-legend li {
+  display: flex;
+  align-items: center;
+}
+
+#map-legend img {
+  width: 18px;
+  height: 28px;
+  margin-right: 6px;
 }

@@ -2,6 +2,8 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Propiedades en venta</title>
   <!-- Firebase App (core) --><!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -12,10 +14,14 @@
   <link rel="stylesheet" href="propiedades.css">
   <!-- Leaflet para mapas -->
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+<link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.extra-markers/1.2.1/css/leaflet.extra-markers.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.extra-markers/1.2.1/js/leaflet.extra-markers.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-papb7EIB+J4EcUy...etc" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
+<!-- Font Awesome 6.5.0 desde cdnjs -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
 
 </head>
@@ -28,11 +34,8 @@
       <a href="index.html">
         <img src="imagenes/logo.png" alt="Logo del sitio">
       </a>
-      <h1> Inmobiliaria</h1>
+      <h1 style="color:#ffffff;">Inmobiliaria</h1>
     </div>
-
-    <!-- Botón admin -->
-    <a href="registro.html" class="admin-btn"><i class="fas fa-user"></i></a>
   </div>
 </header>
   <!-- Menú principal -->
@@ -45,19 +48,29 @@
 <div class="filtros">
   <!-- Tipo de inmueble -->
   <select id="tipo">
-    <option value="">-- Tipo --</option>
+       <option value="">-- Tipo --</option>
     <option value="casa">Casa</option>
+    <option value="finca">Finca</option>
     <option value="apartamento">Apartamento</option>
     <option value="lote">Lote</option>
-    <option value="finca">Finca</option>
-  </select>
+    <option value="apartaestudio">Apartaestudio</option>
+    <option value="bodega">Bodega</option>
+    <option value="campestre">Campestre</option>
+    <option value="condominio">Condominio</option>
+    <option value="duplex">Dúplex</option>
+    <option value="edificio">Edificio</option>
+    <option value="local">Local</option>
+    <option value="hotel">Hotel</option>
+    <option value="oficina">Oficina</option>
+    <option value="penthouse">Penthouse</option>  </select>
 
   <!-- Venta o Arriendo -->
-  <select id="filtroTipo">
-    <option value="">-- Venta o Arriendo --</option>
-    <option value="venta">Venta</option>
-    <option value="arriendo">Arriendo</option>
-  </select>
+<!-- Modalidad -->
+<select id="filtroTipo">
+  <option value="todos">Todos</option>
+  <option value="venta">Venta</option>
+  <option value="arriendo">Arriendo</option>
+</select>
 
   <!-- Rango de precio -->
   <input type="number" id="precioMin" placeholder="Precio mínimo">
@@ -65,24 +78,49 @@
 
   <!-- Ciudad -->
   <input type="text" id="ciudad" placeholder="Ciudad">
+<!-- Habitaciones -->
+<input type="number" id="habitaciones" placeholder="Mínimo habitaciones">
 
-  <!-- Número de cuartos -->
-  <input type="number" id="cuartos" placeholder="N° de cuartos" min="1">
+<!-- Baños -->
+<input type="number" id="banos" placeholder="Mínimo baños">
 
-  <!-- Número de baños -->
-  <input type="number" id="banos" placeholder="N° de baños" min="1">
+  <input type="number" id="garaje" placeholder="Mínimo garajes">
+<!-- Destacada -->
+<label>
+  <input type="checkbox" id="destacada">
+  Solo destacadas
+</label>
 
-  <!-- Botones -->
+<!-- Botones -->
   <button id="buscarBtn">Buscar</button>
   <button id="resetBtn">Quitar filtros</button>
 </div>
 
 
+<div id="map-legend">
+  <h4>📍 Tipos de Propiedad</h4>
+   <ul>
+    <li><i class="fas fa-home" style="color: goldenrod;"></i> Casa</li>
+    <li><i class="fas fa-building" style="color: dodgerblue;"></i> Apartamento</li>
+    <li><i class="fas fa-border-all" style="color: darkorange;"></i> Lote</li>
+    <li><i class="fas fa-tractor" style="color: green;"></i> Finca</li>
+    <li><i class="fas fa-door-open" style="color: hotpink;"></i> Apartaestudio</li>
+    <li><i class="fas fa-warehouse" style="color: gray;"></i> Bodega</li>
+    <li><i class="fas fa-tree" style="color: darkgreen;"></i> Campestre</li>
+    <li><i class="fas fa-city" style="color: lightseagreen;"></i> Condominio</li>
+    <li><i class="fas fa-house-user" style="color: saddlebrown;"></i> Dúplex</li>
+    <li><i class="fas fa-hotel" style="color: black;"></i> Edificio</li>
+    <li><i class="fas fa-store" style="color: crimson;"></i> Local</li>
+    <li><i class="fas fa-concierge-bell" style="color: darkred;"></i> Hotel</li>
+    <li><i class="fas fa-briefcase" style="color: violet;"></i> Oficina</li>
+    <li><i class="fas fa-crown" style="color: gold;"></i> Penthouse</li>
+  </ul>
+</div>
   <h1>Lista de Propiedades</h1>
 <div id="map" style="height: 400px; width: 100%;"></div>
 
   <h1 style="text-align:center; padding: 20px;">Propiedades disponibles</h1>
-  <div id="propiedades" class="lista-propiedades"></div>
+<div id="propiedades" class="propiedades-grid lista-propiedades"></div>
 
      
  <footer>
@@ -98,15 +136,12 @@
     <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
   </div>
 
-<!-- Botón flotante WhatsApp -->
-<a href="https://wa.me/573001234567" class="whatsapp-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
-
 
 
   
-  <a href="index.html" class="btn">Ver index</a>
     <p>© 2025 Mi Inmobiliaria - Todos los derechos reservados</p>
   </footer>
+<a href="https://wa.me/573001234567" class="whatsapp-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
 
 
 <!-- Tu configuración y lógica -->

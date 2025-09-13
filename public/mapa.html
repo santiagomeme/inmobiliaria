@@ -10,6 +10,8 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
   <link rel="stylesheet" href="propiedades.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-papb7EIB+J4EcUy...etc" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
   <style>
@@ -25,12 +27,9 @@
       <a href="index.html">
         <img src="imagenes/logo.png" alt="Logo del sitio">
       </a>
-      <h1> Inmobiliaria </h1>
+      <h1 style="color:#ffffff;"> Inmobiliaria </h1>
     </div>
-
-    <!-- Botón admin -->
-    <a href="registro.html" class="admin-btn"><i class="fas fa-user"></i></a>
-  </div>
+</div>
 </header>
   <!-- Menú principal -->
     <nav class="main-nav">
@@ -44,7 +43,7 @@
     </nav>
 <!-- FILTROS -->
 <section class="filtros">
-  <h2>Filtros de búsqueda</h2>
+  <h2 style="color:#00172e;">Filtros de búsqueda</h2>
   <div class="filtros-grid">
     <label for="tipo">Tipo de inmueble:</label>
     <select id="tipo">
@@ -68,7 +67,11 @@
       <option value="venta">Venta</option>
       <option value="arriendo">Arriendo</option>
     </select>
+<!-- Habitaciones -->
+<input type="number" id="habitaciones" placeholder="Mínimo habitaciones">
 
+<!-- Baños -->
+<input type="number" id="banos" placeholder="Mínimo baños">
     <label for="precioMin">Precio mínimo:</label>
     <input type="number" id="precioMin" placeholder="Ej: 100000000">
 
@@ -88,18 +91,15 @@
 
 <!-- MAPA -->
 <section>
-  <h2 style="text-align:center; margin:20px 0;">Mapa de Propiedades</h2>
+  <h2 style="text-align:center; margin:20px 0;color:#00172e;">Mapa de Propiedades</h2>
   <div id="map"></div>
-  <div class="leyenda">
-    <p><span style="color:green;">●</span> Activa</p>
-    <p><span style="color:red;">●</span> Inactiva</p>
-  </div>
+
 </section>
 
 <!-- PROPIEDADES -->
 <section>
-  <h2 style="text-align:center; padding: 20px;">Propiedades disponibles</h2>
-  <div id="propiedades" class="lista-propiedades"></div>
+  <h2 style="text-align:center; padding: 20px;color:#00172e;"">Propiedades disponibles</h2>
+  <div id="propiedades" class="propiedades-grid"class="lista-propiedades"></div>
 </section>
 
 <!-- FOOTER -->

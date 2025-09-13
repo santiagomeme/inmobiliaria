@@ -2,57 +2,13 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
+  
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Contacto</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 20px;
-    }
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-papb7EIB+J4EcUy...etc" crossorigin="anonymous" referrerpolicy="no-referrer" />
+      <link rel="stylesheet" href="registro.css">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
-    .contact-container {
-      max-width: 600px;
-      margin: auto;
-      padding: 20px;
-      border-radius: 10px;
-      background: #f9f9f9;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-
-    .contact-container h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-
-    .contact-container form {
-      display: flex;
-      flex-direction: column;
-      gap: 15px;
-    }
-
-    .contact-container input,
-    .contact-container textarea {
-      padding: 10px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-      font-size: 16px;
-      width: 100%;
-    }
-
-    .contact-container button {
-      padding: 12px;
-      background: #ff6600;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    .contact-container button:hover {
-      background: #e55d00;
-    }
-  </style>
 </head>
 <body>
   <header class="site-header">
@@ -64,17 +20,13 @@
       </a>
       <h1>Inmobiliaria</h1>
     </div>
-
-    <!-- Botón admin -->
-    <a href="registro.html" class="admin-btn"><i class="fas fa-user"></i></a>
   </div>
 </header>
   <!-- Menú principal -->
     <nav class="main-nav">
       <ul>
         <li><a href="propiedades.html">propiedades</a></li>
-        <li><a href="mapa.html">Menú</a></li>
-        <li><a href="contacto.html">Contacto</a></li>
+        <li><a href="index.html">Inicio</a></li>
       </ul>
     </nav>
   <div class="contact-container">
@@ -83,9 +35,32 @@
       <input type="text" name="nombre" placeholder="Tu nombre" required>
       <input type="email" name="email" placeholder="Tu correo" required>
       <textarea name="mensaje" rows="5" placeholder="Escribe tu mensaje..." required></textarea>
-      <button type="submit">Enviar</button>
+      <button type="submit"class="btn">Enviar</button>
     </form>
   </div>
+
+
+  
+<!-- FOOTER -->
+<footer>
+  <!-- Sección info empresa -->
+  <section class="info-empresa">
+    <h2>Información de la empresa</h2>
+    <p>Dirección: Calle Ficticia #123, Ciudad Ejemplo</p>
+    <p>Correo: contacto@miinmobiliaria.com</p>
+    <p>Teléfono: +57 300 123 4567</p>
+  </section>
+  <div class="social-icons ">
+    <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+  </div>
+  <p>© 2025 Mi Inmobiliaria - Todos los derechos reservados</p>
+</footer>
+
+<!-- Botón flotante WhatsApp -->
+<a href="https://wa.me/573001234567" class="whatsapp-btn" target="_blank"><i class="fab fa-whatsapp"></i></a>
+
+
 
 </body>
 </html>

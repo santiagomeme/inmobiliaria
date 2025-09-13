@@ -6,6 +6,10 @@
   border-radius: 12px;
   box-shadow: 0 3px 8px rgba(0,0,0,0.2);
 }
+html, body {
+  max-width: 100%;
+  overflow-x: hidden; /* 🔒 evita scroll horizontal */
+}
 
 /* Desactiva zoom scroll hasta click */
 .leaflet-container {
@@ -186,13 +190,16 @@ footer .btn {
 /* MENÚ */
 .main-nav ul {
   list-style: none;
-  margin: 0;
-  padding: 0;
+  margin: 15px 0;
+  padding: 0 10px; /* pequeño padding, no demasiado */
   display: flex;
-  flex-wrap: wrap; /* ✅ Permite que los botones bajen si no caben */
-  justify-content: center; /* ✅ Centra los botones horizontalmente */
-  gap: 15px; /* Espacio entre botones */
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
+  box-sizing: border-box;
 }
+
 
 .main-nav li {
   flex: 1 1 auto; /* ✅ Los botones ocupan espacio adaptable */

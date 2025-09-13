@@ -6,28 +6,56 @@
 }
 
 body {
-  font-family: "Segoe UI", Arial, sans-serif;
+  font-family: 'Poppins', sans-serif;
+  color: #333;
   background: #f5f6fa;
   color: #333;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
 }
+html, body {
+  max-width: 100%;
+  overflow-x: hidden; /* 🔒 evita scroll horizontal */
+}
+.auth-container,
+.contact-container {
+  width: 100%;
+  max-width: 600px;   /* 📌 nunca pasa de 600px en pantallas grandes */
+  margin: 20px auto;  /* 📌 centrado */
+  padding: 15px;
+  box-sizing: border-box;
+}
+
+.form-card,
+.contact-container form {
+  width: 100%;
+  max-width: 100%;  /* 📌 nunca sobrepasa el padre */
+  margin: 0 auto;
+  box-sizing: border-box;
+}
 
 /* ===== HEADER ===== */
 .site-header {
   background: #00172e;
   color: #fff;
-  padding: 10px 20px;
+  padding: 10px 10px;
+  width: 100%;
+
 }
+
 
 .header-container {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  justify-content: center; /* centrado por defecto */
   gap: 10px;
   max-width: 1200px;
   margin: 0 auto;
+  text-align: center; /* centra textos en columna */
+  width: 100%;
+
 }
 
 .logo img {
@@ -39,8 +67,9 @@ body {
   font-size: 20px;
 }
 
+
 /* En pantallas grandes */
-@media (min-width: 768px) {
+@media (min-width: 601px) {
   .header-container {
     flex-direction: row;
     justify-content: space-between;
@@ -52,11 +81,15 @@ body {
   }
   .logo h1 {
     font-size: 22px;
+    margin: 0;
   }
 }
 
-/* ===== MAIN ===== */
-.auth-container {
+
+
+/* ===== CONTENEDORES (registro y contacto) ===== */
+.auth-container,
+.contact-container {
   flex: 1; /* empuja el footer abajo */
   max-width: 600px;
   margin: 40px auto;
@@ -66,27 +99,39 @@ body {
   gap: 25px;
 }
 
-.form-card {
+/* Tarjeta de formulario */
+.form-card,
+.contact-container form {
   background: #fff;
   padding: 25px;
   border-radius: 12px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  box-shadow: 0 3px 8px rgba(0,0,0,0.40);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
-.form-card h2 {
+.form-card h2,
+.contact-container h2 {
   margin-bottom: 20px;
   font-size: 1.3rem;
-  color: #1d3557;
+  color: #00172e;
   text-align: center;
 }
 
-.input-group {
+/* ===== INPUTS ===== */
+.input-group,
+.contact-container input,
+.contact-container textarea {
   display: flex;
   align-items: center;
-  background: #f1f1f1;
-  margin-bottom: 15px;
+  background: #dadada;
   padding: 10px;
   border-radius: 8px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  width: 100%;
 }
 
 .input-group i {
@@ -103,10 +148,17 @@ body {
   padding: 5px;
 }
 
+.contact-container textarea {
+  resize: none;
+  min-height: 100px;
+}
+
+
 /* ===== BOTONES ===== */
 .btn {
   display: block;
-  width: 300px;
+  width: 100%; /* ✅ ocupa el ancho del contenedor */
+  max-width: 300px; /* no más grande en pantallas grandes */
   padding: 12px;
   background: #1d3557;
   color: #fff;
@@ -120,57 +172,52 @@ body {
   text-decoration: none;
 }
 
+
 .btn:hover {
   background: #457b9d;
 }
 
 .logout {
-  background: #cf0011;
+  background: #ff0015;
 }
 .logout:hover {
   background: #c91828;
 }
 
-/* ===== FOOTER ===== */
+/* ============================
+   FOOTER
+=============================== */
 footer {
-  background: #222;
+  background: #00172e;
   color: #ddd;
   text-align: center;
   padding: 20px;
-  margin-top: auto; /* hace que se quede abajo */
+  margin-top: 40px;
+  margin-bottom: 0px;
+  width: 100%;
 }
-
-footer .btn {
-  display: inline-block;
-  margin: 5px 10px;
-  padding: 10px 15px;
-  background: #0077cc;
-  color: #fff;
-  border-radius: 6px;
-  transition: background 0.2s;
-  width: 300px;
-}
-footer .btn:hover {
-  background: #005fa3;
-}
-
 
 
 
 /* MENÚ */
 .main-nav ul {
   list-style: none;
-  margin: 0;
-  padding: 0;
+  margin: 15px 0;
+  padding: 0 10px; /* pequeño padding, no demasiado */
   display: flex;
-  flex-wrap: wrap; /* ✅ Permite que los botones bajen si no caben */
-  justify-content: center; /* ✅ Centra los botones horizontalmente */
-  gap: 15px; /* Espacio entre botones */
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
+  box-sizing: border-box;
 }
+
 
 .main-nav li {
   flex: 1 1 auto; /* ✅ Los botones ocupan espacio adaptable */
   max-width: 200px; /* ✅ Para que no se estiren demasiado en pantallas grandes */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  border-radius: 15px;
 }
 
 .main-nav a {
@@ -186,5 +233,160 @@ footer .btn:hover {
 }
 
 .main-nav a:hover {
-  color: #46f312; /* color al pasar el mouse */
+color: #00172e;
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgb(0, 6, 39);
+}
+
+/* REDES SOCIALES */
+.social-icons a {
+  color: #a200ff;
+  margin-left: 15px;
+  font-size: 18px;
+  transition: color 0.3s;
+}
+
+.social-icons a:hover {
+  color: #25d366; /* verde WhatsApp */
+}
+
+
+
+/* Botón flotante WhatsApp */
+.whatsapp-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 60px;   /* ancho fijo */
+  height: 60px;  /* alto fijo */
+  background: none; /* color de fondo típico WhatsApp */
+  color: #25d366;   /* color del icono */
+  font-size: 2rem;
+  display: flex;           /* centra el icono */
+  align-items: center;     /* centra vertical */
+  justify-content: center; /* centra horizontal */
+  border-radius: 50%;      /* círculo perfecto */
+  z-index: 1000;
+  box-shadow: 4px 4px rgba(0, 0, 0, 0.3);
+  text-decoration: none;
+  transition: background 0.3s;
+}
+
+.whatsapp-btn:hover {
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.6);
+  color:#000000;
+}
+/* Cuando haces clic (presionado) */
+.whatsapp-btn:active {
+  background: #128c7e; /* verde oscuro (como al apretarlo) */
+  box-shadow: 0 2px 10px rgba(18, 140, 126, 0.8);
+  transform: scale(0.95); /* se encoge un poquito */
+}
+
+/* 📱 Para móviles */
+@media (max-width: 768px) {
+  .whatsapp-btn {
+    width: 45px;   /* más pequeño */
+    height: 45px;
+    font-size: 1.5rem;
+    bottom: 15px;  /* más cerca del borde inferior */
+    right: 10px;   /* más pegado a la derecha */
+  }
+}
+
+/* 📱📱 Para móviles muy pequeños (ej: 400px o menos) */
+@media (max-width: 400px) {
+  .whatsapp-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.3rem;
+    bottom: 10px;
+    right: 8px;
+  }
+}
+
+
+
+
+/* ======================================================
+   FORMULARIO DE USUARIOS en la pagina de registroUserNue
+========================== ==============================*/
+#addUserForm {
+  max-width: 400px;        /* ancho elegante */
+  margin: 20px auto;       /* centrado */
+  padding: 20px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 15px;               /* espacio entre campos */
+  font-family: 'Poppins', sans-serif;
+}
+
+/* Inputs y selects */
+#addUserForm input,
+#addUserForm select {
+  padding: 12px 15px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+#addUserForm input:focus,
+#addUserForm select:focus {
+  border-color: #003264;
+  box-shadow: 0 0 5px rgba(0, 50, 100, 0.4);
+}
+
+/* Botón */
+#addUserForm button {
+  padding: 12px;
+  background: #003264;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.2s ease, transform 0.2s ease;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.2);
+}
+
+#addUserForm button:hover {
+  background: #005fa3;
+  transform: translateY(-2px);
+}
+
+/* Mensaje de acceso denegado */
+#noAccess {
+  max-width: 400px;
+  margin: 15px auto;
+  padding: 10px;
+  background: #ffe5e5;
+  color: #b30000;
+  border: 1px solid #ffb3b3;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  text-align: center;
+  font-weight: 500;
+}
+
+/* ==========================
+   RESPONSIVE
+========================== */
+@media (max-width: 480px) {
+  #addUserForm {
+    padding: 15px;
+    gap: 12px;
+  }
+
+  #addUserForm input,
+  #addUserForm select,
+  #addUserForm button {
+    font-size: 0.9rem;
+    padding: 10px;
+  }
 }

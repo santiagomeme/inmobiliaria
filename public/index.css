@@ -1,30 +1,16 @@
 /* Fuentes elegantes */
 body {
-  font-family: 'Lora', serif;
-  background-color: #f4f6f8;
+  font-family: 'Poppins', sans-serif;
   color: #333;
+  background-color: #f4f6f8;
   line-height: 1.6;
   margin:0;
   padding:0;
 }
 
-/* Header */
-header {
-  background-color: #00172e;
-  color: #fff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1.5rem 2rem;
-  position: sticky;
-  top:0;
-  z-index:1000;
-}
-
-header h1 {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 700;
-  font-size: 1.8rem;
+html, body {
+  max-width: 100%;
+  overflow-x: hidden; /* 🔒 evita scroll horizontal */
 }
 
 /* Botón administrador */
@@ -35,7 +21,7 @@ header h1 {
   padding: 0.5rem 0.7rem;
   border-radius: 50%;
   display: flex;
-  align-items: center;
+  align-items: cerinter;
   justify-content: center;
   text-decoration: none;
   transition:0.3s;
@@ -45,14 +31,17 @@ header h1 {
   color: #19d8af;
 }
 
-/* Slider */
+/* === Slider base (PC grandes) === */
+/* === Slider (igual en todas las pantallas) === */
 .slider {
   position: relative;
   width: 100%;
-  /* Altura proporcional según ancho de pantalla */
-  height: 50vw; /* 50% del ancho de pantalla */
-  max-height: 700px; /* para pantallas grandes */
+  max-width: 1200px;    /* ancho máximo en PC */
+  margin: 0 auto;
+  aspect-ratio: 16 / 9; /* 🔹 proporción fija (como YouTube) */
   overflow: hidden;
+  border-radius: 10px;
+  background: #000;     /* evita que se vea fondo blanco si carga lento */
 }
 
 .slides img {
@@ -61,40 +50,14 @@ header h1 {
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* asegura que la imagen cubra todo el contenedor */
+  object-fit: cover; /* rellena el espacio */
   transition: opacity 1s ease-in-out;
   opacity: 0;
 }
 
-/* Imagen activa */
 .slides img:first-child {
   opacity: 1;
 }
-
-/* Responsive para móviles */
-@media (max-width: 768px) {
-  .slider {
-    height: 38vw; /* un poco más alto para móviles */
-  }
-
-  .slides img {
-    height: 100%;
-  }
-}
-
-/* Para pantallas intermedias */
-@media (min-width: 768px) and (max-width: 1000px) {
-  .slider {
-    height: 36vh; /* aumenta la altura del slider */
-  }
-
-  .slider img {
-    height: 100%;
-    width: 100%;
-    object-fit: cover; /* hace que la imagen llene el espacio */
-  }
-}
-
 
 
 /* Hero section */
@@ -127,7 +90,7 @@ header h1 {
 }
 
 .btn:hover {
-  background-color: #3cff00;
+  background-color: #005fcc;
   color: #fff;
 }
 
@@ -164,22 +127,19 @@ header h1 {
 }
 
 .feature h3 {
-  color:#002f5f;
+  color:#00172e;
   margin-bottom:1rem;
 }
 
 /* Info empresa */
 .info-empresa {
-  background-color: #e0e6ed;
+  background-color: transparent;
   text-align: center;
   padding: 2rem 1rem;
   font-weight: bold;
 }
 
-.info-empresa h2 {
-  margin-bottom: 1rem;
-  color: #002f5f;
-}
+
 
 .info-empresa p {
   margin-bottom: 0.5rem;
@@ -204,19 +164,53 @@ footer {
   position: fixed;
   bottom: 20px;
   right: 20px;
-  background:none;
-  color: #3cff00;
+  width: 60px;   /* ancho fijo */
+  height: 60px;  /* alto fijo */
+  background: none; /* color de fondo típico WhatsApp */
+  color: #25d366;   /* color del icono */
   font-size: 2rem;
-  padding: 0.7rem 0.7rem;
-  border-radius: 50%;
+  display: flex;           /* centra el icono */
+  align-items: center;     /* centra vertical */
+  justify-content: center; /* centra horizontal */
+  border-radius: 50%;      /* círculo perfecto */
   z-index: 1000;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  box-shadow: 4px 4px rgba(0, 0, 0, 0.3);
   text-decoration: none;
-  transition: 0.3s;
+  transition: background 0.3s;
 }
 
 .whatsapp-btn:hover {
-  color: #00ffea;
+  box-shadow: 0 4px 15px rgba(37, 211, 102, 0.6);
+  color:#000000;
+}
+/* Cuando haces clic (presionado) */
+.whatsapp-btn:active {
+  background: #128c7e; /* verde oscuro (como al apretarlo) */
+  box-shadow: 0 2px 10px rgba(18, 140, 126, 0.8);
+  transform: scale(0.95); /* se encoge un poquito */
+}
+
+
+/* 📱 Para móviles */
+@media (max-width: 768px) {
+  .whatsapp-btn {
+    width: 45px;   /* más pequeño */
+    height: 45px;
+    font-size: 1.5rem;
+    bottom: 15px;  /* más cerca del borde inferior */
+    right: 10px;   /* más pegado a la derecha */
+  }
+}
+
+/* 📱📱 Para móviles muy pequeños (ej: 400px o menos) */
+@media (max-width: 400px) {
+  .whatsapp-btn {
+    width: 40px;
+    height: 40px;
+    font-size: 1.3rem;
+    bottom: 10px;
+    right: 8px;
+  }
 }
 
 /* Responsive */
@@ -224,9 +218,7 @@ footer {
   .hero h2 {
     font-size:1.5rem;
   }
-  .slides img {
-    height: 250px;
-  }
+
   .btn {
     padding:0.6rem 1.5rem;
     font-size:0.95rem;
@@ -234,20 +226,18 @@ footer {
   .admin-btn {
     font-size: 1.3rem;
   }
-}
-/* ===== HEADER ===== */
+}/* ===== HEADER GENERAL ===== */
 .site-header {
-  background: #222; /* color del header */
+  background: #00172e; /* color del header */
   color: #fff;
   padding: 10px 20px;
-  position: sticky;
-  top: 0;
   z-index: 1000;
 }
-/* Contenedor general */
+
+/* Contenedor principal */
 .header-container {
   display: flex;
-  flex-direction: column; /* 📱 Por defecto: en torre para móviles */
+  flex-direction: column; /* 📱 Por defecto: apilado para móviles */
   justify-content: center;
   align-items: center;
   gap: 10px;
@@ -259,19 +249,31 @@ footer {
 .logo img {
   max-height: 60px;
 }
-.admin-btn {
+
+.header h1,
+.logo h1 {
   color: #fff;
+  margin: 0;
   font-size: 20px;
-  margin-left: 15px;
 }
 
-
-/* ===== 📌 Cambios para pantallas grandes ===== */
-@media (min-width: 768px) {
-  .header-container {
-    flex-direction: row; /* 🖥️ En PC: horizontal */
-    justify-content: space-between; /* separa logo y botones */
+/* ===== 🖥️ Pantallas grandes (PC) ===== */
+@media (min-width: 501px) {
+  .site-header {
+    position: relative; /* fijo arriba */
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px; /* altura compacta */
+    display: flex;
     align-items: center;
+  }
+
+  .header-container {
+    flex-direction: row; /* horizontal */
+    justify-content: space-between; /* logo a la izquierda, nav a la derecha */
+    align-items: center;
+    height: 100%;
   }
 
   .logo {
@@ -281,42 +283,83 @@ footer {
   }
 
   .logo h1 {
-    margin: 0;
     font-size: 22px;
   }
 }
 
+/* ===== 📱 Pantallas móviles (se mueve con scroll) ===== */
+@media (max-width: 500px) {
+  .site-header {
+    position: relative; /* se desplaza con el scroll */
+  }
+}
 
-/* MENÚ */
-.main-nav ul {
-  list-style: none;
+/* ===== HEADER GENERAL ===== */
+.site-header {
+  background: #00172e; /* color del header */
+  color: #fff;
+  padding: 10px 20px;
+  z-index: 1000;
+}
+
+/* Contenedor principal */
+.header-container {
+  display: relative;
+  flex-direction: column; /* 📱 Por defecto: apilado para móviles */
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* LOGO */
+.logo img {
+  max-height: 60px;
+}
+
+.header h1,
+.logo h1 {
+  color: #fff;
   margin: 0;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap; /* ✅ Permite que los botones bajen si no caben */
-  justify-content: center; /* ✅ Centra los botones horizontalmente */
-  gap: 15px; /* Espacio entre botones */
+  font-size: 20px;
 }
 
-.main-nav li {
-  flex: 1 1 auto; /* ✅ Los botones ocupan espacio adaptable */
-  max-width: 200px; /* ✅ Para que no se estiren demasiado en pantallas grandes */
+/* ===== 🖥️ Pantallas grandes (PC) ===== */
+@media (min-width: 501px) {
+  .site-header {
+    position: relative; /* fijo arriba */
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100px; /* altura compacta */
+    display: flex;
+    align-items: center;
+  }
+
+  .header-container {
+    flex-direction: row; /* horizontal */
+    justify-content: space-between; /* logo a la izquierda, nav a la derecha */
+    align-items: center;
+    height: 100%;
+  }
+
+  .logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .logo h1 {
+    font-size: 22px;
+  }
 }
 
-.main-nav a {
-  display: block;
-  text-align: center;
-  padding: 12px 20px;
-  background-color: #f8f8f8;
-  border-radius: 8px;
-  text-decoration: none;
-  color: #000;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-.main-nav a:hover {
-  color: #46f312; /* color al pasar el mouse */
+/* ===== 📱 Pantallas móviles (se mueve con scroll) ===== */
+@media (max-width: 500px) {
+  .site-header {
+    position: relative; /* se desplaza con el scroll */
+  }
 }
 
 /* REDES SOCIALES */
@@ -343,4 +386,126 @@ footer {
   .social-icons {
     margin-top: 10px;
   }
+}
+
+/* MENÚ */
+.main-nav ul {
+  list-style: none;
+  margin: 15px 0;
+  padding: 0 10px; /* pequeño padding, no demasiado */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+
+.main-nav li {
+  flex: 1 1 auto; /* ✅ Los botones ocupan espacio adaptable */
+  max-width: 200px; /* ✅ Para que no se estiren demasiado en pantallas grandes */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+  border-radius: 15px;
+}
+
+.main-nav a {
+  display: block;
+  text-align: center;
+  padding: 12px 20px;
+  background-color: #f8f8f8;
+  border-radius: 8px;
+  text-decoration: none;
+  color: #000;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.main-nav a:hover {
+color: #00172e;
+  transform: translateY(-5px);
+  box-shadow: 0 4px 15px rgb(0, 6, 39);
+}
+/* Contenedor de las tarjetas destacadas */
+#destacadas {
+  padding: 2rem;
+  background: #f8f9fa; /* fondo suave */
+  text-align: center;
+}
+
+#destacadas h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+/* Contenedor de las tarjetas destacadas */
+.tarjetas {
+  display: flex;              /* usamos flex para que fluyan como cards */
+  flex-wrap: wrap;            /* saltan a otra fila si no caben */
+  gap: 1.5rem;                /* separación entre cards */
+  justify-content: center;    /* centradas en el contenedor */
+}
+
+/* Cada tarjeta con ancho fijo estilo card */
+.tarjeta {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  text-align: left;
+  width: 280px;        /* 👈 ancho fijo tipo card */
+  flex: 0 0 auto;      /* evita que se estire */
+}
+
+.tarjeta:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+}
+
+.tarjeta img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-bottom: 3px solid #002c58;
+}
+
+.tarjeta h3 {
+  font-size: 1.2rem;
+  margin: 1rem;
+  color: #222;
+}
+
+.tarjeta p {
+  margin: 0 1rem 0.5rem;
+  font-size: 0.95rem;
+  color: #555;
+  line-height: 1.4;
+}
+
+/* Precio resaltado */
+.tarjeta p:last-child {
+  font-weight: bold;
+  color: #007bff;
+  font-size: 1.1rem;
+}
+
+
+.btn-detalle {
+  display: block;       /* Lo hace tipo bloque */
+  margin: 10px auto;    /* Auto en los lados = centrado */
+  padding: 0.6rem 1rem;
+  background: #00172e;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 500;
+  text-align: center;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+  width: 200px ;
+}
+
+.btn-detalle:hover {
+  background: #0056b3;
 }

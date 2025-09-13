@@ -20,72 +20,90 @@ var markersLayer = L.layerGroup().addTo(map);
 // ==========================
 //  ICONOS POR TIPO DE PROPIEDAD
 // ==========================
-const iconCasa = L.icon({
-  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-yellow.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
-
-const iconApartamento = L.icon({
-  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-blue.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
-
-const iconLote = L.icon({
-  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-orange.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
-const iconFinca = L.icon({
-  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
-
-// Función que devuelve el ícono según el tipo
-function getIconByTipo(tipo) {
-  if (!tipo) return iconCasa;
-  const t = tipo.toLowerCase();
-  if (t === "casa") return iconCasa;
-  if (t === "apartamento" || t === "departamento") return iconApartamento;
-  if (t === "lote") return iconLote;
-  if (t === "finca") return iconFinca;
-  return iconCasa;
+// Casa// ==========================
+// FUNCION GENERADORA DE ICONOS
+// ==========================
+function crearIcono(color, iconoFA) {
+  return L.divIcon({
+    className: "custom-div-icon",
+    html: `
+      <div style="
+        background:${color};
+        border-radius:50%;
+        width:34px;
+        height:34px;
+        display:flex;
+        align-items:center;
+        justify-content:center;
+        box-shadow:0 0 4px rgba(0,0,0,0.4);
+      ">
+        <i class="${iconoFA}" style="color:white; font-size:18px;"></i>
+      </div>
+    `,
+    iconSize: [34, 34],
+    iconAnchor: [17, 34],
+    popupAnchor: [0, -30]
+  });
 }
 
+// ==========================
+// ICONOS POR TIPO
+// ==========================
+const iconCasa        = crearIcono("goldenrod", "fas fa-home");
+const iconApartamento = crearIcono("dodgerblue", "fas fa-building");
+const iconLote        = crearIcono("darkorange", "fas fa-border-all");
+const iconFinca       = crearIcono("green", "fas fa-tractor");
+const iconApartaestudio = crearIcono("hotpink", "fas fa-door-open");
+const iconBodega      = crearIcono("grey", "fas fa-warehouse");
+const iconCampestre   = crearIcono("darkgreen", "fas fa-tree");
+const iconCondominio  = crearIcono("steelblue", "fas fa-city");
+const iconDuplex      = crearIcono("saddlebrown", "fas fa-building");
+const iconEdificio    = crearIcono("black", "fas fa-building-circle-check");
+const iconLocal       = crearIcono("red", "fas fa-store");
+const iconHotel       = crearIcono("darkred", "fas fa-hotel");
+const iconOficina     = crearIcono("purple", "fas fa-briefcase");
+const iconPenthouse   = crearIcono("goldenrod", "fas fa-crown");
 
-const iconoActivo = L.icon({
-  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-green.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
+// ==========================
+// ÍCONO + COLOR POR TIPO DE PROPIEDAD (MAPA CENTRALIZADO)
+// ==========================
+// ==========================
+// ÍCONO + COLOR POR TIPO DE PROPIEDAD (MAPA CENTRALIZADO)
+// ==========================
+const estilosPorTipo = {
+  "casa":        { icono: iconCasa,        color: "goldenrod" },
+  "apartamento": { icono: iconApartamento, color: "dodgerblue" },
+  "lote":        { icono: iconLote,        color: "darkorange" },
+  "finca":       { icono: iconFinca,       color: "green" },
+  "apartaestudio": { icono: iconApartaestudio, color: "hotpink" },
+  "bodega":      { icono: iconBodega,      color: "grey" },
+  "campestre":   { icono: iconCampestre,   color: "darkgreen" },
+  "condominio":  { icono: iconCondominio,  color: "steelblue" },
+  "duplex":      { icono: iconDuplex,      color: "saddlebrown" }, // 🔥 sin tilde
+  "edificio":    { icono: iconEdificio,    color: "black" },
+  "local":       { icono: iconLocal,       color: "red" },
+  "hotel":       { icono: iconHotel,       color: "darkred" },
+  "oficina":     { icono: iconOficina,     color: "purple" },
+  "penthouse":   { icono: iconPenthouse,   color: "goldenrod" }
+};
 
-const iconoInactivo = L.icon({
-  iconUrl: "https://raw.githubusercontent.com/pointhi/leaflet-color-markers/master/img/marker-icon-red.png",
-  shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-  iconSize: [25, 41],
-  iconAnchor: [12, 41],
-  popupAnchor: [1, -34],
-  shadowSize: [41, 41]
-});
 
+// Función única para obtener icono y color
+function getEstiloByTipo(tipo) {
+  if (!tipo) return { icono: iconCasa, color: "#999" };
+  const clave = tipo.toLowerCase().trim();
+  return estilosPorTipo[clave] || { icono: iconCasa, color: "#999" };
+}
 
+//funcion para no ser sendible a tildes en la casa
+function getEstiloByTipo(tipo) {
+  if (!tipo) return { icono: iconCasa, color: "#999" };
+  const clave = tipo
+    .toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g, "") // quita tildes
+    .trim();
+  return estilosPorTipo[clave] || { icono: iconCasa, color: "#999" };
+}
 
 // ==========================
 //  CARGAR PROPIEDADES DE FIRESTORE
@@ -96,49 +114,90 @@ async function cargarPropiedades() {
     propiedades = []; // Reiniciar array antes de volver a llenarlo
 
     snapshot.forEach((doc) => {
-  const data = { id: doc.id, ...doc.data() }; // guardar id también
-        // 👇 Filtrar solo propiedades activas
-      if (!data.activa) {
-        return; // si no está activa, no la mostramos
-      } 
-  
-  propiedades.push(data); // 👈 guardar en el array
+      const data = { id: doc.id, ...doc.data() };
+      if (!data.activa) return; // solo activas
 
-      // Crear tarjeta en la lista
+      propiedades.push(data);
+
       const card = document.createElement("div");
       card.classList.add("prop-card");
-      card.innerHTML = `
-       <img src="${data.imagen || "https://via.placeholder.com/160x110"}"
-          alt="img"style="width:160px;height:110px;object-fit:cover;border-radius:8px;margin:0 auto;bottom:10px">
-        <h3>${data.titulo}</h3>
-        <p>${data.descripcion || "Sin descripción"}</p>
-        <p><strong>Ciudad:</strong> ${data.ciudad || "N/A"}</p>
-        <p><strong>Precio:</strong> $${data.precio || "0"}</p>
-        <p style="margin:2px 0;font-size:12px;"><b>Tipo:</b> ${data.tipo || "N/A"}</p>
-        <button onclick="verDetalle('${doc.id}')">Ver detalles</button>
-      `;
-      lista.appendChild(card);
 
-      // Crear marcador en el mapa con icono por tipo
-      if (data.lat && data.lng) {
-        const marker = L.marker([data.lat, data.lng], { icon: getIconByTipo(data.tipo) }).addTo(map);
+      // obtenemos estilo (icono + color)// obtenemos estilo (icono + color)
+const { icono, color } = getEstiloByTipo(data.tipo);
 
-        // Popup personalizado (imagen, título, precio, tipo)
-        marker.bindPopup(`
-          <div style="text-align:center; width:150px;">
-            <img src="${data.imagen || "https://via.placeholder.com/100"}" alt="img" style="width:100px;height:80px;object-fit:cover;border-radius:6px;margin-bottom:5px;">
-            <h4 style="margin:4px 0;font-size:14px;">${data.titulo}</h4>
-            <p style="margin:2px 0;font-size:13px;"><b>Precio:</b> $${data.precio || "N/A"}</p>
-            <p style="margin:2px 0;font-size:12px;"><b>Tipo:</b> ${data.tipo || "N/A"}</p>
-            <button style="margin-top:5px;" onclick="verDetalle('${doc.id}')">Ver detalles</button>
-          </div>
-        `);
-      }
+card.innerHTML = `
+  <img src="${
+    (data.imagenes && data.imagenes.length > 0) 
+      ? data.imagenes[0] 
+      : (data.imagen || 'imagenes/default.png')
+  }" alt="Imagen de la propiedad">
+  <h3>${data.titulo}</h3>
+    <span class="prop-tipo" style="background:${color};">
+    ${data.tipo || ""}
+  </span>
+  <p>${data.ciudad || ""}</p>
+  <p class="prop-precio">$${data.precio || "0"}</p>
+  <p><strong>habitaciones:</strong> ${data.habitaciones}</p>
+  <p><strong>Baños:</strong> ${data.banos}</p>
+  <p><i class="fas fa-car"></i> Garajes: ${data.garage || 0}</p>   <!-- 👈 NUEVO -->
+  <button onclick="verDetalle('${doc.id}')">Ver detalles</button>
+`;
+
+lista.appendChild(card);
+
+// Crear marcador en el mapa
+if (data.lat && data.lng) {
+  const marker = L.marker([data.lat, data.lng], { icon: icono }).addTo(markersLayer);
+
+  // Popup
+  marker.bindPopup(`
+    <div style="text-align:center; width:160px; font-family:sans-serif;">
+      <img src="${
+        (data.imagenes && data.imagenes.length > 0) 
+          ? data.imagenes[0] 
+          : (data.imagen || "imagenes/default.png")
+      }" style="width:100%;border-radius:6px;margin-bottom:4px;">
+      <h4 style="margin:4px 0;font-size:14px;font-weight:600;color:#333;">${data.titulo}</h4>
+      <p style="margin:2px 0;font-size:13px;color:#2E8B57;font-weight:bold;">
+        $${data.precio || ""}
+      </p>
+      <span style="
+        display:inline-block;
+        margin-top:3px;
+        padding:2px 6px;
+        border-radius:6px;
+        font-size:12px;
+        background:${color};
+        color:#fff;
+        font-weight:bold;
+        white-space:nowrap;">
+        ${data.tipo || ""}
+      </span>
+      <br>
+      <button style="
+        margin-top:6px;
+        padding:4px 8px;
+        border:none;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+        border-radius:6px;
+        background:#fff; /* ✅ gris */
+        color:#000000;
+        font-size:12px;
+        font-weight:bold;
+        transition: background 0.2s ease;
+        cursor:pointer;">
+        Ver detalles
+      </button>
+    </div>
+  `);
+}
+
     });
   } catch (error) {
     console.error("Error al cargar propiedades:", error);
   }
 }
+
 
 // ==========================
 //  NAVEGAR A DETALLE
