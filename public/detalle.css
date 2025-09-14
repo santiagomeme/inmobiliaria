@@ -108,15 +108,7 @@ position: relative;
 /* ============================
    MENÚ PRINCIPAL
 =============================== */
-.main-nav ul {
-  list-style: none;
-  margin-top: 15px;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-}
+
 
 .main-nav li {
   flex: 1 1 auto;
@@ -125,10 +117,22 @@ position: relative;
   border-radius: 15px;
 }
 
+.main-nav ul {
+  list-style: none;
+  margin-top: 15px;
+  margin-bottom: -70px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+
 .main-nav a {
   display: block;
   text-align: center;
-  padding: 12px 20px;
+  padding: 5px 10px;
   background: #f8f8f8;
   border-radius: 8px;
   text-decoration: none;

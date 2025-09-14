@@ -264,18 +264,7 @@ footer a.btn {
 
 
 
-/* MENÚ */
-.main-nav ul {
-  list-style: none;
-  margin: 15px 0;
-  padding: 0 10px; /* pequeño padding, no demasiado */
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 15px;
-  width: 100%;
-  box-sizing: border-box;
-}
+
 
 
 .main-nav li {
@@ -285,11 +274,23 @@ footer a.btn {
   border-radius: 15px;
 }
 
+.main-nav ul {
+  list-style: none;
+  margin-top: 15px;
+  margin-bottom: -70px;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 15px;
+}
+
+
 .main-nav a {
   display: block;
   text-align: center;
-  padding: 12px 20px;
-  background-color: #f8f8f8;
+  padding: 5px 10px;
+  background: #f8f8f8;
   border-radius: 8px;
   text-decoration: none;
   color: #000;
