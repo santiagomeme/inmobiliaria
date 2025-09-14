@@ -125,25 +125,135 @@ body {
   padding: 20px;
 }
 
+/* ========================
+   Tarjeta de Detalles
+======================== *//* ========================
+   Tarjeta de Detalles
+======================== */
 .detalle-propiedad {
   background: #fff;
   border-radius: 12px;
-  padding: 25px;
-  box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.50);
+  padding: 20px;
+  margin: 15px auto;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
 }
 
+/* Imagen destacada */
+.detalle-propiedad img {
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* Contenedor de badges (tipo, estado, modalidad) */
+.detalle-badges {
+  display: flex;
+  gap: 8px;
+  margin: 8px 12px 15px;
+  flex-wrap: wrap;
+}
+
+/* Badge general */
+.prop-badge{
+  background: #666!important;          /* gris neutro por defecto */
+  padding: 2px 8px!important;
+  margin-left: 5px!important;
+  border-radius: 6px!important;
+  font-size: 12px!important;
+  font-weight: 700!important;
+  color: #fff!important;
+  white-space: nowrap!important;
+  box-sizing: border-box!important;
+}
+
+/* Badge de tipo (con color dinámico desde JS) */
+
+.prop-tipo {
+  background: #003264!important; /* se sobrescribe dinámicamente con JS */
+  padding: 2px 8px!important;
+  border-radius: 6px!important;
+  font-size: 12px!important;
+  font-weight: 700!important;
+  color: #fff!important;
+  white-space: nowrap!important;
+  box-sizing: border-box!important;
+}
+
+.prop-valor,
+.detalle-propiedad span,
+.detalle-propiedad p {
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #1a1a1a;   /* gris oscuro elegante */
+  line-height: 1.5;
+  margin: 6px 0;
+}
+/* Título */
 .detalle-propiedad h2 {
-  font-size: 1.5rem;
-  color: #00172e;
-  margin-bottom: 15px;
+  margin: 10px auto;
+  color: #003264;
+  font-size: 1.6rem;
+  font-weight: 700;
   text-align: center;
 }
 
-.detalle-container p {
-  margin: 8px 0;
-  font-size: 1rem;
-  color: #444;
+/* Precio */
+ .prop-precio {
+  font-size: 1.3rem;       /* más grande */
+  font-weight: 700;        /* más grueso */
+  color: #003264;          /* azul elegante */
+  margin: 8px 12px;
+  text-align: right;       /* alineado a la derecha */
 }
+
+/* Info general */
+.detalle-card-info {
+  margin-top: 10px;
+}
+
+
+/* Etiquetas */
+.detalle-card strong {
+  font-weight: 600;
+  color: #003264;
+  margin-right: 4px;
+}
+
+/* Valores numéricos */
+.prop-valor {
+  font-weight: 700;     /* más grueso */
+  font-size: 1.05rem;   /* un poquito más grande */
+  color: #1a1a1a;       /* gris oscuro elegante */
+}
+
+
+
+
+
+/* Botón */
+.detalle-propiedad button {
+  margin: 20px auto 5px;
+  padding: 10px 16px;
+  background: #00172e;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background 0.2s ease;
+}
+
+.detalle-propiedad button:hover {
+  background: #005fa3;
+}
+
 
 /* ============================
    MAPA
@@ -262,34 +372,6 @@ footer p {
   }
 }
 
-.detalle-card {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 15px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  text-align: center;
-}
-
-.detalle-imagen {
-  width: 100%;
-  max-height: 400px;
-  object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 15px;
-}
-
-.detalle-info {
-  text-align: left;
-  margin-bottom: 15px;
-}
-
-.detalle-mapa {
-  height: 300px;
-  border-radius: 10px;
-  margin: 15px 0;
-}
 
 .btn-volver {
   display: inline-block;

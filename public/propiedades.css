@@ -96,12 +96,45 @@ html, body {
 }
 
 /* Badge del tipo de propiedad — pega esto en tu CSS externo */
+
+/* Banner de "NUEVA" */
+.badge-nueva {
+  position: absolute;
+  top: 10px;
+  left: -20px;
+  background: #ff3838;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: bold;
+  padding: 4px 20px;
+  transform: rotate(-10deg);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  border-radius: 4px;
+}
+
+/* Contenedor de badges (tipo, modalidad, estado) */
+.prop-badges {
+  display: flex;
+  gap: 8px;
+  margin: 6px 13px;
+  flex-wrap: wrap; /* para que no se desborden en móviles */
+}
+
+/* Badge general */
+.prop-badge {
+  background: #666;
+  color: #fff;
+  padding: 2px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Badge del tipo de propiedad (ya tenías este estilo) */
 .prop-card .prop-tipo {
-  display: inline-block;      /* que el fondo abrace solo el texto */
-  align-self: flex-start;     /* evita que se estire en el contenedor flex */
-  flex: 0 0 auto;             /* no crecer ni encoger */
-  width: auto !important;     /* por si alguna regla fuerza width:100% */
-  max-width: none !important;
+  background: #003264; /* se sobrescribe dinámicamente con JS */
   padding: 2px 8px;
   border-radius: 6px;
   font-size: 12px;
@@ -109,9 +142,29 @@ html, body {
   color: #fff;
   white-space: nowrap;
   box-sizing: border-box;
-    margin: 6px 13px;
-
 }
+/* Precio bien resaltado */
+.prop-card .prop-precio {
+  font-size: 1.3rem;       /* más grande */
+  font-weight: 700;        /* más grueso */
+  color: #003264;          /* azul elegante */
+  margin: 8px 12px;
+  text-align: right;       /* alineado a la derecha */
+}
+
+/* Valores numéricos (baños, habitaciones, garajes, área) */
+.prop-card .prop-valor {
+  font-weight: 600;        /* semibold */
+  color: #1a1a1a;          /* gris oscuro elegante */
+  font-size: 1rem;
+}
+
+/* Etiquetas (ejemplo: "Baños:", "Habitaciones:") */
+.prop-card strong {
+  font-weight: 600;
+  color: #003264;          /* azul para diferenciar */
+}
+
 
 
 /* ============================

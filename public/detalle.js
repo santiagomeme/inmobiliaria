@@ -11,12 +11,39 @@ const detalleContainer = document.getElementById("detalleContainer");
 
 // Mostrar loader inicial
 detalleContainer.innerHTML = `<p class="loading">Cargando detalles...</p>`;
+// Definir estilosPorTipo aquí también (o importarlo si usas módulos)
+// =============================
+// detalle.js completo con slider + mapa
+// =============================
 
-// Cargar detalle desde Firestore
+// Definir estilosPorTipo aquí también (o importarlo si usas módulos)
+const estilosPorTipo = {
+  "casa":        { color: "goldenrod" },
+  "apartamento": { color: "dodgerblue" },
+  "lote":        { color: "darkorange" },
+  "finca":       { color: "green" },
+  "apartaestudio": { color: "hotpink" },
+  "bodega":      { color: "grey" },
+  "campestre":   { color: "darkgreen" },
+  "condominio":  { color: "steelblue" },
+  "duplex":      { color: "saddlebrown" },
+  "edificio":    { color: "black" },
+  "local":       { color: "red" },
+  "hotel":       { color: "darkred" },
+  "oficina":     { color: "purple" },
+  "penthouse":   { color: "goldenrod" }
+};
+
+// ...
+
 firebase.firestore().collection("propiedades").doc(propiedadId).get()
   .then((doc) => {
     if (doc.exists) {
       const propiedad = doc.data();
+
+      // Obtener color dinámico según el tipo
+      const tipoKey = propiedad.tipo?.toLowerCase();
+      const color = estilosPorTipo[tipoKey]?.color || "#003264";
 
       // Galería de imágenes (slider)
       const imagenesHTML = (propiedad.imagenes || [])
@@ -27,10 +54,13 @@ firebase.firestore().collection("propiedades").doc(propiedadId).get()
         `)
         .join("");
 
-      // Renderizar detalle
       detalleContainer.innerHTML = `
         <div class="detalle-card">
-          <h2>${propiedad.titulo}</h2>
+
+          <!-- Banner NUEVA -->
+          ${propiedad.propiedadNueva ? `<span class="badge-nueva">NUEVA</span>` : ""}
+
+          <!-- Galería -->
           <div class="detalle-galeria slider">
             ${imagenesHTML}
             ${propiedad.imagenes && propiedad.imagenes.length > 1 ? `
@@ -38,19 +68,48 @@ firebase.firestore().collection("propiedades").doc(propiedadId).get()
               <button class="next">➡</button>
             ` : ""}
           </div>
-          <div class="detalle-info">
-            <p><strong>Precio:</strong> $${propiedad.precio || "N/A"}</p>
-            <p><strong>Ciudad:</strong> ${propiedad.ciudad || "N/A"}</p>
-            <p><strong>Dirección:</strong> ${propiedad.direccion || "No especificada"}</p>
-            <p><strong>Tipo:</strong> ${propiedad.tipo || "N/A"}</p>
-            <p><strong>Descripción:</strong> ${propiedad.descripcion || "Sin descripción"}</p>
-            <p><strong>Habitaciones:</strong> ${propiedad.habitaciones || "-"}</p>
-            <p><strong>Baños:</strong> ${propiedad.banos || "-"}</p>
+
+          <h2>${propiedad.titulo}</h2>
+
+          <!-- Badges -->
+          <div class="prop-badges">
+            <span class="prop-tipo" style="background:${color}">
+              ${propiedad.tipo || ""}
+            </span>
+            <span class="prop-badge">${propiedad.modalidad || "N/A"}</span>
+            <span class="prop-badge">${propiedad.estado || "N/A"}</span>
           </div>
+
+          <!-- Precio -->
+          <p class="prop-precio">$${propiedad.precio?.toLocaleString() || "N/A"}</p>
+
+          <!-- Datos clave -->
+          <div class="detalle-datos">
+            <p><strong>Área:</strong> <span class="prop-valor">${propiedad.metros || "-"} m²</span></p>
+            <p><strong>Habitaciones:</strong> <span class="prop-valor">${propiedad.habitaciones || "-"}</span></p>
+            <p><strong>Baños:</strong> <span class="prop-valor">${propiedad.banos || "-"}</span></p>
+            <p><strong>Garajes:</strong> <span class="prop-valor">${propiedad.garajes || "-"}</span></p>
+            <p><strong>Estrato:</strong> <span class="prop-valor">${propiedad.estrato || "-"}</span></p>
+          </div>
+
+          <!-- Ubicación -->
+          <p><strong>Ciudad:</strong> ${propiedad.ciudad || "N/A"}</p>
+          <p><strong>Dirección:</strong> ${propiedad.direccion || "No especificada"}</p>
+
+          <!-- Descripción -->
+          <p class="descripcion"><strong>Descripción:</strong><br> ${propiedad.descripcion || "Sin descripción"}</p>
+
+          <!-- Mapa -->
           <div id="map" class="detalle-mapa"></div>
+
+          <!-- Botón -->
           <button id="btnVolver">⬅ Volver</button>
         </div>
       `;
+
+      // Resto del slider + mapa + volver (tu mismo código)...
+
+
 
       // --- Slider funcional ---
       if (propiedad.imagenes && propiedad.imagenes.length > 1) {

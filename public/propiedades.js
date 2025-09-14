@@ -88,12 +88,6 @@ const estilosPorTipo = {
 };
 
 
-// Función única para obtener icono y color
-function getEstiloByTipo(tipo) {
-  if (!tipo) return { icono: iconCasa, color: "#999" };
-  const clave = tipo.toLowerCase().trim();
-  return estilosPorTipo[clave] || { icono: iconCasa, color: "#999" };
-}
 
 //funcion para no ser sendible a tildes en la casa
 function getEstiloByTipo(tipo) {
@@ -126,20 +120,31 @@ async function cargarPropiedades() {
 const { icono, color } = getEstiloByTipo(data.tipo);
 
 card.innerHTML = `
+  ${data.propiedadNueva ? `<div class="badge-nueva">NUEVA</div>` : ""}
+
   <img src="${
     (data.imagenes && data.imagenes.length > 0) 
       ? data.imagenes[0] 
       : (data.imagen || 'imagenes/default.png')
   }" alt="Imagen de la propiedad">
+
   <h3>${data.titulo}</h3>
+
+  <div class="prop-badges">
     <span class="prop-tipo" style="background:${color};">
-    ${data.tipo || ""}
-  </span>
+      ${data.tipo || ""}
+    </span>
+    <span class="prop-badge">${data.modalidad || ""}</span>
+    <span class="prop-badge">${data.estado || ""}</span>
+  </div>
+
   <p>${data.ciudad || ""}</p>
+  <p><i class="fas fa-car"></i> <span class="prop-valor">${data.garage || 0}</span></p>
+  <p><strong>Área:</strong> <span class="prop-valor">${data.area} m²</span></p>
+  <p><strong>Baños:</strong> <span class="prop-valor">${data.banos}</span></p>
+  <p><strong>Habitaciones:</strong> <span class="prop-valor">${data.habitaciones}</span></p>
+
   <p class="prop-precio">$${data.precio || "0"}</p>
-  <p><strong>habitaciones:</strong> ${data.habitaciones}</p>
-  <p><strong>Baños:</strong> ${data.banos}</p>
-  <p><i class="fas fa-car"></i> Garajes: ${data.garage || 0}</p>   <!-- 👈 NUEVO -->
   <button onclick="verDetalle('${doc.id}')">Ver detalles</button>
 `;
 

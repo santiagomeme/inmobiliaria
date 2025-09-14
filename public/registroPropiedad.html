@@ -53,23 +53,38 @@
     <form id="registroForm">
     <label>
        <input type="checkbox" id="destacada"> Propiedad destacada
-    </label>
+  </label>
       <input type="text" id="titulo" placeholder="Título" required>
       <textarea id="descripcion" placeholder="Descripción"></textarea>
       <input type="text" id="ciudad" placeholder="Ciudad" required>
-      <label for="modalidad">Modalidad:</label>
-    <select id="modalidad" required>
+  <label for="modalidad">Modalidad:</label>
+   
+ <select id="modalidad" required>
      <option value="">Seleccione</option>
      <option value="venta">Venta</option>
      <option value="alquiler">Alquiler</option>
-    </select>
+     <option value="permuta">Permuta</option>
+  </select>
+
+<!-- Estado -->
+<label for="estado">Estado</label>
+<select id="estado" required>
+  <option value="">Seleccione</option>
+  <option value="nuevo">Nuevo</option>
+  <option value="usado">Usado</option>
+  <option value="construccion">En construcción</option>
+  <option value="proyecto">Proyecto</option>
+</select>
 
    <label for="habitaciones">Habitaciones:</label>
    <input type="number" id="habitaciones" min="0" required>
 
    <label for="banos">Baños:</label>
    <input type="number" id="banos" min="0" required>
-   
+   <!-- Área en m² -->
+<label for="area">Área (m²)</label>
+<input type="number" id="area" min="0" placeholder="Ej: 120" />
+
    <label for="garage">Número de garajes</label>
 <input type="number" id="garage" min="0" value="0">
 
@@ -108,7 +123,11 @@
    <label>
       <input type="checkbox" id="activa" checked>Propiedad activa
     </label>
-
+<!-- Propiedad nueva (checkbox) -->
+<label>
+  <input type="checkbox" id="propiedadNueva" />
+  Propiedad nueva
+</label>
       <!-- Contenedor del mapa -->
       <div id="map" style="height:400px; margin:10px 0;"></div>
 

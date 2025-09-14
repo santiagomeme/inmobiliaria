@@ -120,6 +120,10 @@ form.addEventListener("submit", async (e) => {
   const banos        = parseInt(document.getElementById("banos").value) || 0;
   const precio       = parseFloat(document.getElementById("precio").value);
   const garage = parseInt(document.getElementById("garage").value) || 0;
+  const area = parseFloat(document.getElementById("area").value) || 0;
+  const estado = document.getElementById("estado").value.trim();
+  const propiedadNueva = document.getElementById("propiedadNueva").checked;
+
 // true si está marcado, false si no
 
   // Obtener las imágenes desde el input
@@ -150,6 +154,9 @@ if (!titulo || !ciudad || !direccion || !tipo || !modalidad || !precio || imagen
     modalidad,
     habitaciones,
     banos,
+    area,              // 👈 nuevo
+    estado,            // 👈 nuevo
+    propiedadNueva,    // 👈 nuevo (true/false)
     garage,   // 👈 nuevo campo
     precio,
     imagenes,   // 👈 ahora es un array
@@ -201,8 +208,12 @@ async function cargarAdminPropiedades() {
       const prop = doc.data();
 
       // seguridad: valores por defecto
+      const area = prop.area || 0;
+      const estado = prop.estado || "Sin estado";
+      const propiedadNueva = prop.propiedadNueva === true ? "✅" : "❌";
       const titulo = prop.titulo || "Sin título";
       const precio = prop.precio ? `$${prop.precio}` : "Sin precio";
+      const modalidad = prop.modalidad ? `${prop.modalidad}` : "Sin modalidad";
       const ciudad = prop.ciudad || "Sin ciudad";
       const imagen = (prop.imagenes && prop.imagenes.length > 0) 
         ? prop.imagenes[0] 
@@ -231,7 +242,11 @@ async function cargarAdminPropiedades() {
         <p class="prop-precio">${precio}</p>
         <p>${ciudad}</p>
 
-       
+        <p><strong>Área:</strong> ${area} m²</p>
+        <p><strong>Estado:</strong> ${estado}</p>
+        <p><strong>Nueva:</strong> ${propiedadNueva}</p>
+        <p><strong>modalidad:</strong> ${modalidad}</p>
+
         <p><strong>Baños:</strong> ${banos}</p>
         <p><strong>Habitaciones:</strong> ${habitaciones}</p>
         <p><i class="fas fa-car"></i> Garajes: ${garage}</p>
@@ -268,6 +283,9 @@ async function cargarAdminPropiedades() {
       const prop = docSnap.data();
 
       // Cargar valores al formulario
+    document.getElementById("area").value = prop.area || 0;
+    document.getElementById("estado").value = prop.estado || "";
+    document.getElementById("propiedadNueva").checked = prop.propiedadNueva === true;
     document.getElementById("titulo").value       = prop.titulo || "";
     document.getElementById("descripcion").value  = prop.descripcion || "";
     document.getElementById("ciudad").value       = prop.ciudad || "";

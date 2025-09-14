@@ -90,24 +90,35 @@ function renderTarjetas(items = [], mostrarVacio = false) {
     // color por tipo
     const color = getColorByTipo(data.tipo);
 
-    card.innerHTML = `
-      <img src="${
-        (data.imagenes && data.imagenes.length > 0) 
-          ? data.imagenes[0] 
-          : (data.imagen || 'imagenes/default.png')
-      }" alt="Imagen de la propiedad">
+  card.innerHTML = `
+  ${data.propiedadNueva ? `<div class="badge-nueva">NUEVA</div>` : ""}
 
-      <h3>${data.titulo || "Propiedad"}</h3>
-      <span class="prop-tipo" style="background:${color};">
-        ${data.tipo || ""}
-      </span>
-         <p>${data.ciudad || ""}</p>
-      <p class="prop-precio">$${data.precio || "0"}</p>
-  <p><strong>habitaciones:</strong> ${data.habitaciones}</p>
-  <p><strong>Baños:</strong> ${data.banos}</p>
-  <p><i class="fas fa-car"></i> Garajes: ${data.garage || 0}</p>   <!-- 👈 NUEVO -->
-    <button onclick="verDetalle('${data.id}')">Ver detalles</button>
-    `;
+  <img src="${
+    (data.imagenes && data.imagenes.length > 0) 
+      ? data.imagenes[0] 
+      : (data.imagen || 'imagenes/default.png')
+  }" alt="Imagen de la propiedad">
+
+  <h3>${data.titulo}</h3>
+
+  <div class="prop-badges">
+    <span class="prop-tipo" style="background:${color};">
+      ${data.tipo || ""}
+    </span>
+    <span class="prop-badge">${data.modalidad || ""}</span>
+    <span class="prop-badge">${data.estado || ""}</span>
+  </div>
+
+  <p>${data.ciudad || ""}</p>
+  <p><i class="fas fa-car"></i> <span class="prop-valor">${data.garage || 0}</span></p>
+  <p><strong>Área:</strong> <span class="prop-valor">${data.area} m²</span></p>
+  <p><strong>Baños:</strong> <span class="prop-valor">${data.banos}</span></p>
+  <p><strong>Habitaciones:</strong> <span class="prop-valor">${data.habitaciones}</span></p>
+
+  <p class="prop-precio">$${data.precio || "0"}</p>
+<button onclick="verDetalle('${data.id}')">Ver detalles</button>
+`;
+
 
     cont.appendChild(card);
   });
@@ -199,6 +210,7 @@ function aplicarFiltros() {
     const pActiva    = prop.activa ? "activa" : "inactiva";
     const pGarajes   = Number(prop.garaje) || 0;
     const pDestacada = !!prop.destacada; // lo normalizamos a booleano
+    const pEstado = (prop.estado || "").toLowerCase();
 
     const okTipo      = tipoVal ? pTipo === tipoVal : true;
     const okPrecio    = pPrecio >= precioMin && pPrecio <= precioMax;
@@ -206,7 +218,7 @@ function aplicarFiltros() {
     const okModalidad = modalidadVal && modalidadVal !== "todos" ? pModalidad === modalidadVal : true;
     const okBanos     = banosVal ? pBanos >= banosVal : true;
     const okHabs      = habsVal ? pHabs >= habsVal : true;
-    const okEstado    = estadoVal && estadoVal !== "todos" ? pActiva === estadoVal : true;
+    const okEstado = estadoVal && estadoVal !== "todos" ? pEstado === estadoVal : true;
     const okGaraje    = garajeVal ? pGarajes >= garajeVal : true;
     const okDestacada = destacada ? pDestacada === true : true; // ✅ Nuevo filtro
 
