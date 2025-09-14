@@ -93,6 +93,74 @@
 
 </main>
 
+<!-- 📍 Sección para publicar propiedad -->
+<section class="publicar-propiedad">
+  <div class="anuncio">
+    <h2>¿Quieres vender o arrendar tu propiedad?</h2>
+    <p>
+      Llena este formulario y nuestro equipo revisará tu solicitud para incluir
+      tu propiedad en nuestra lista exclusiva. 🚀
+    </p>
+  </div>
+
+  <!-- ⚡ Ajustado para Formspree -->
+  <form class="form-publicar" id="formPublicar"
+        action="https://formspree.io/f/xrblnjzn"
+        method="POST">
+
+    <!-- Datos de la Propiedad -->
+    <fieldset>
+      <legend>🏡 Datos de la Propiedad</legend>
+
+      <label for="tipoPropiedad">Tipo de propiedad</label>
+      <select id="tipoPropiedad" name="tipoPropiedad" required>
+        <option value="">Seleccione...</option>
+        <option value="casa">Casa</option>
+        <option value="apartamento">Apartamento</option>
+        <option value="lote">Lote</option>
+        <option value="finca">Finca</option>
+        <option value="bodega">Bodega</option>
+        <option value="oficina">Oficina</option>
+        <option value="local">Local</option>
+        <option value="hotel">Hotel</option>
+      </select>
+
+      <label for="modalidad">Modalidad</label>
+      <select id="modalidad" name="modalidad" required>
+        <option value="">Seleccione...</option>
+        <option value="venta">Venta</option>
+        <option value="arriendo">Arriendo</option>
+      </select>
+
+      <label for="precio">Precio (COP)</label>
+      <input type="number" id="precio" name="precio" placeholder="Ej: 250000000" required>
+
+      <label for="ciudad">Ciudad</label>
+      <input type="text" id="ciudad" name="ciudad" placeholder="Ej: Medellín" required>
+
+      <label for="descripcion">Descripción</label>
+      <textarea id="descripcion" name="descripcion" rows="4" placeholder="Describe tu propiedad..." required></textarea>
+    </fieldset>
+
+    <!-- Datos del Propietario -->
+    <fieldset>
+      <legend>👤 Tus Datos</legend>
+
+      <label for="nombre">Nombre completo</label>
+      <input type="text" id="nombre" name="nombre" placeholder="Ej: Juan Pérez" required>
+
+      <label for="telefono">Teléfono</label>
+      <input type="tel" id="telefono" name="telefono" placeholder="Ej: +57 300 123 4567" required>
+
+      <label for="email">Correo electrónico</label>
+      <input type="email" id="email" name="email" placeholder="Ej: correo@ejemplo.com" required>
+    </fieldset>
+
+    <!-- Botón enviar -->
+    <button type="submit" class="btn-enviar">Enviar solicitud</button>
+  </form>
+</section>
+
 <footer>
   <!-- Sección info empresa -->
   <section class="info-empresa">

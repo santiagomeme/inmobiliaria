@@ -7,8 +7,11 @@ body {
 
 html, body {
   max-width: 100%;
-  overflow-x: hidden; /* 🔒 evita scroll horizontal */
+  overflow-y: scroll;  /* solo scroll vertical */
+  overflow-x: hidden;  /* bloquea el scroll horizontal */
+  -webkit-overflow-scrolling: touch; /* desplazamiento suave en móviles */
 }
+
 
 
 .wrap {
@@ -311,4 +314,33 @@ color: #00172e;
 
 .social-icons a:hover {
   color: #25d366; /* verde WhatsApp */
+}
+
+
+
+.map-container {
+  position: relative;
+}
+
+#mapOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent; /* Capa invisible */
+  z-index: 500; /* encima del mapa */
+}
+
+#toggleMap {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  z-index: 1001;
+  padding: 6px 12px;
+  border: none;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  border-radius: 6px;
+  cursor: pointer;
 }

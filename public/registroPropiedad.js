@@ -530,5 +530,37 @@ function setMarker(lat, lon, tipo = null) {
 
 
 
+//===============================================
+//hacer q el mapa no se active solo tiene un oton
+//===============================================
+
+
+const overlay = document.getElementById("mapOverlay");
+const toggleBtn = document.getElementById("toggleMap");
+let mapActivo = false;
+
+function bloquearMapa() {
+  overlay.style.display = "block";
+  toggleBtn.textContent = "🔓 Activar mapa";
+  mapActivo = false;
+}
+
+function activarMapa() {
+  overlay.style.display = "none";
+  toggleBtn.textContent = "🔒 Salir del mapa";
+  mapActivo = true;
+}
+
+toggleBtn.addEventListener("click", () => {
+  if (mapActivo) {
+    bloquearMapa();
+  } else {
+    activarMapa();
+  }
+});
+
+// Estado inicial bloqueado
+bloquearMapa();
+
 
 });

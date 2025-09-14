@@ -80,16 +80,13 @@ firebase.firestore().collection("propiedades").doc(propiedadId).get()
             <span class="prop-badge">${propiedad.estado || "N/A"}</span>
           </div>
 
-          <!-- Precio -->
-          <p class="prop-precio">$${propiedad.precio?.toLocaleString() || "N/A"}</p>
-
+   
           <!-- Datos clave -->
           <div class="detalle-datos">
             <p><strong>Área:</strong> <span class="prop-valor">${propiedad.metros || "-"} m²</span></p>
             <p><strong>Habitaciones:</strong> <span class="prop-valor">${propiedad.habitaciones || "-"}</span></p>
             <p><strong>Baños:</strong> <span class="prop-valor">${propiedad.banos || "-"}</span></p>
             <p><strong>Garajes:</strong> <span class="prop-valor">${propiedad.garajes || "-"}</span></p>
-            <p><strong>Estrato:</strong> <span class="prop-valor">${propiedad.estrato || "-"}</span></p>
           </div>
 
           <!-- Ubicación -->
@@ -98,6 +95,8 @@ firebase.firestore().collection("propiedades").doc(propiedadId).get()
 
           <!-- Descripción -->
           <p class="descripcion"><strong>Descripción:</strong><br> ${propiedad.descripcion || "Sin descripción"}</p>
+       <!-- Precio -->
+          <p class="prop-precio">$${propiedad.precio?.toLocaleString() || "N/A"}</p>
 
           <!-- Mapa -->
           <div id="map" class="detalle-mapa"></div>
@@ -166,3 +165,34 @@ firebase.firestore().collection("propiedades").doc(propiedadId).get()
     console.error("Error cargando la propiedad:", error);
     detalleContainer.innerHTML = `<p>⚠ Error al cargar la propiedad.</p>`;
   });
+
+
+
+  //===========================
+  //evitar q se active el mapa 
+  const overlay = document.getElementById("mapOverlay");
+const toggleBtn = document.getElementById("toggleMap");
+let mapActivo = false;
+
+function bloquearMapa() {
+  overlay.style.display = "block";
+  toggleBtn.textContent = "🔓 Activar mapa";
+  mapActivo = false;
+}
+
+function activarMapa() {
+  overlay.style.display = "none";
+  toggleBtn.textContent = "🔒 Salir del mapa";
+  mapActivo = true;
+}
+
+toggleBtn.addEventListener("click", () => {
+  if (mapActivo) {
+    bloquearMapa();
+  } else {
+    activarMapa();
+  }
+});
+
+// Estado inicial bloqueado
+bloquearMapa();

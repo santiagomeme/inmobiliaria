@@ -129,8 +129,11 @@
   Propiedad nueva
 </label>
       <!-- Contenedor del mapa -->
-      <div id="map" style="height:400px; margin:10px 0;"></div>
-
+<div class="map-container">
+  <div id="map" style="height: 400px; width: 100%;"></div>
+  <div id="mapOverlay" class="overlay"></div>
+  <button id="toggleMap">🔓 Activar mapa</button>
+</div>
       <button type="submit" class="btn">Guardar Propiedad</button>
     </form>
   </section>

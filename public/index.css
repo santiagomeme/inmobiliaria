@@ -509,3 +509,89 @@ color: #00172e;
 .btn-detalle:hover {
   background: #0056b3;
 }
+
+
+
+.publicar-propiedad {
+  max-width: 900px;
+  margin: 50px auto;
+  padding: 30px;
+  background: #f9f9f9;
+  border-radius: 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+  font-family: "Segoe UI", sans-serif;
+}
+
+.anuncio {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.anuncio h2 {
+  font-size: 1.8rem;
+  color: #00172e;
+  margin-bottom: 10px;
+}
+
+.anuncio p {
+  color: #444;
+  font-size: 1rem;
+}
+
+.form-publicar fieldset {
+  border: 2px solid #00172e;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  background: #fff;
+}
+
+.form-publicar legend {
+  font-weight: 700;
+  color: #00172e;
+  padding: 0 10px;
+}
+
+.form-publicar label {
+  display: block;
+  margin: 10px 0 4px;
+  font-weight: 600;
+  color: #333;
+}
+
+.form-publicar input,
+.form-publicar select,
+.form-publicar textarea {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-sizing: border-box;
+}
+
+.form-publicar input:focus,
+.form-publicar select:focus,
+.form-publicar textarea:focus {
+  border-color: #28a745;
+  outline: none;
+  box-shadow: 0 0 4px rgba(40,167,69,0.5);
+}
+
+.btn-enviar {
+  display: block;
+  width: 100%;
+  padding: 14px;
+  background: #28a745;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn-enviar:hover {
+  background: #218838;
+}

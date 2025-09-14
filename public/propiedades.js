@@ -217,12 +217,30 @@ cargarPropiedades();
 // Hacer que el mapa no bloquee el scroll de la página
 //====================================================
 
-const mapElement = document.getElementById("map");
 
-mapElement.addEventListener("click", () => {
-  mapElement.classList.add("active");
+const overlay = document.getElementById("mapOverlay");
+const toggleBtn = document.getElementById("toggleMap");
+let mapActivo = false;
+
+function bloquearMapa() {
+  overlay.style.display = "block";
+  toggleBtn.textContent = "🔓 Activar mapa";
+  mapActivo = false;
+}
+
+function activarMapa() {
+  overlay.style.display = "none";
+  toggleBtn.textContent = "🔒 Salir del mapa";
+  mapActivo = true;
+}
+
+toggleBtn.addEventListener("click", () => {
+  if (mapActivo) {
+    bloquearMapa();
+  } else {
+    activarMapa();
+  }
 });
 
-mapElement.addEventListener("mouseleave", () => {
-  mapElement.classList.remove("active");
-});
+// Estado inicial bloqueado
+bloquearMapa();
