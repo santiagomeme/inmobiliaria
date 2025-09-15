@@ -342,7 +342,7 @@ position: relative;
 .main-nav ul {
   list-style: none;
   margin-top: 15px;
-  margin-bottom: -70px;
+  margin-bottom:0px;
   padding: 0;
   display: flex;
   flex-wrap: wrap;
@@ -559,3 +559,43 @@ color: #00172e;
   border-radius: 6px;
   cursor: pointer;
 }
+
+
+
+.card-img-wrapper {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+}
+
+.card-img-wrapper img {
+  width: 100%;
+  border-radius: 10px;
+  display: block;
+}
+
+/* Badge de NUEVA */
+.badge-nueva {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #ff4757;
+  color: #fff;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  border-radius: 6px;
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+/* Precio atractivo */
+.prop-precio {
+  color: dodgerblue;
+  font-size: 1.4rem;
+  font-weight: bold;
+  text-align: right;
+  margin-top: 10px;
+}
+
+

@@ -57,12 +57,11 @@ firebase.firestore().collection("propiedades").doc(propiedadId).get()
       detalleContainer.innerHTML = `
         <div class="detalle-card">
 
-          <!-- Banner NUEVA -->
-          ${propiedad.propiedadNueva ? `<span class="badge-nueva">NUEVA</span>` : ""}
-
+        
           <!-- Galería -->
           <div class="detalle-galeria slider">
             ${imagenesHTML}
+            ${propiedad.propiedadNueva ? `<span class="badge-nueva">NUEVA</span>` : ""}
             ${propiedad.imagenes && propiedad.imagenes.length > 1 ? `
               <button class="prev">⬅</button>
               <button class="next">➡</button>
@@ -96,7 +95,7 @@ firebase.firestore().collection("propiedades").doc(propiedadId).get()
           <!-- Descripción -->
           <p class="descripcion"><strong>Descripción:</strong><br> ${propiedad.descripcion || "Sin descripción"}</p>
        <!-- Precio -->
-          <p class="prop-precio">$${propiedad.precio?.toLocaleString() || "N/A"}</p>
+          <p class="prop-precio">COP $${propiedad.precio?.toLocaleString() || "N/A"}</p>
 
           <!-- Mapa -->
           <div id="map" class="detalle-mapa"></div>

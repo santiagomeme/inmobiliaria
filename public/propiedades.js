@@ -46,6 +46,17 @@ function crearIcono(color, iconoFA) {
   });
 }
 
+
+// ==========================
+//  FORMATEAR PRECIO
+// ==========================
+function formatearPrecio(valor) {
+  if (!valor) return "";
+  return valor.toLocaleString("es-CO"); // 👉 2.500.000
+}
+
+
+
 // ==========================
 // ICONOS POR TIPO
 // ==========================
@@ -120,14 +131,15 @@ async function cargarPropiedades() {
 const { icono, color } = getEstiloByTipo(data.tipo);
 
 card.innerHTML = `
-  ${data.propiedadNueva ? `<div class="badge-nueva">NUEVA</div>` : ""}
+ <div class="card-img-wrapper">
+    <img src="${
+      (data.imagenes && data.imagenes.length > 0) 
+        ? data.imagenes[0] 
+        : (data.imagen || 'imagenes/default.png')
+    }" alt="Imagen de la propiedad">
 
-  <img src="${
-    (data.imagenes && data.imagenes.length > 0) 
-      ? data.imagenes[0] 
-      : (data.imagen || 'imagenes/default.png')
-  }" alt="Imagen de la propiedad">
-
+    ${data.propiedadNueva ? `<span class="badge-nueva">NUEVA</span>` : ""}
+  </div>
   <h3>${data.titulo}</h3>
 
   <div class="prop-badges">
@@ -144,7 +156,7 @@ card.innerHTML = `
   <p><strong>Baños:</strong> <span class="prop-valor">${data.banos}</span></p>
   <p><strong>Habitaciones:</strong> <span class="prop-valor">${data.habitaciones}</span></p>
 
-  <p class="prop-precio">$${data.precio || "0"}</p>
+  <p class="prop-precio">COP $${formatearPrecio(data.precio) || "$0"}</p>
   <button onclick="verDetalle('${doc.id}')">Ver detalles</button>
 `;
 
@@ -163,9 +175,8 @@ if (data.lat && data.lng) {
           : (data.imagen || "imagenes/default.png")
       }" style="width:100%;border-radius:6px;margin-bottom:4px;">
       <h4 style="margin:4px 0;font-size:14px;font-weight:600;color:#333;">${data.titulo}</h4>
-      <p style="margin:2px 0;font-size:13px;color:#2E8B57;font-weight:bold;">
-        $${data.precio || ""}
-      </p>
+      <p style="margin:2px 0;font-size:13px;color:#2E8B57;font-weight:bold;"
+>${formatearPrecio(data.precio) || "$0"}</p>
       <span style="
         display:inline-block;
         margin-top:3px;
@@ -190,7 +201,7 @@ if (data.lat && data.lng) {
         font-size:12px;
         font-weight:bold;
         transition: background 0.2s ease;
-        cursor:pointer;">
+        cursor:pointer;"onclick="verDetalle('${doc.id}')">
         Ver detalles
       </button>
     </div>

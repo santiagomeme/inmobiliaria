@@ -170,6 +170,22 @@ h2{
 
 }
 
+.precio-propiedad {
+  color: #003264!important;          /* azul intenso estilo Bootstrap */
+  font-size: 1.6rem!important;     
+  font-weight: 700!important;     
+  font-family: 'Poppins', sans-serif!important;     
+  text-align: right!important;     
+  margin-top: 12px!important;     
+  padding: 6px 10px!important;     
+  background: #f0f8ff!important;         /* fondo clarito */
+  border-radius: 8px!important;     
+  display: inline-block!important;       /* que se vea compacto */
+}
+    /* espacio arriba */
+
+
+
 /* ============================
    FOOTER
 =============================== */
@@ -277,7 +293,7 @@ footer a.btn {
 .main-nav ul {
   list-style: none;
   margin-top: 15px;
-  margin-bottom: -70px;
+  margin-bottom: 50px;
   padding: 0;
   display: flex;
   flex-wrap: wrap;
@@ -344,4 +360,30 @@ color: #00172e;
   color: white;
   border-radius: 6px;
   cursor: pointer;
+}
+
+
+
+.card-img-wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.card-img-wrapper img {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.badge-nueva {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background: #ff4757;    /* rojo vibrante */
+  color: #fff;
+  padding: 5px 10px;
+  font-size: 0.9rem;
+  font-weight: bold;
+  border-radius: 5px;
+  text-transform: uppercase;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
 }

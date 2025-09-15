@@ -495,3 +495,37 @@ footer p {
   border-radius: 6px;
   cursor: pointer;
 }
+
+
+/* Badge de NUEVA */
+.badge-nueva {
+  position: absolute!important;
+  top: 0px!important;
+  left: -50px!important; /* lo movemos hacia la izquierda para que cruce la esquina */
+  background: #ff3b3b!important;
+  color: #fff!important;
+  font-weight: bold!important;
+  padding: 5px 50px!important; /* ancho largo para que cruce bien */
+  text-align: center!important;
+  font-size: 14px!important;
+  text-transform: uppercase!important;
+  transform: rotate(-45deg)!important; /* 👉 inclinación diagonal */
+  z-index: 10!important;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.2)!important;
+}
+
+.detalle-galeria {
+  position: relative!important; /* importante para que se posicione dentro */
+  overflow: hidden!important;   /* oculta lo que sobresale */
+}
+
+
+
+
+/* 📱 Ajustes para móviles */
+@media (max-width: 500px) {
+  .badge-nueva {
+    font-size: 10px!important;
+ 
+  }
+}
