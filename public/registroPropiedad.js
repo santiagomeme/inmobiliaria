@@ -317,7 +317,7 @@ window.editarPropiedad = async function(id) {
     document.getElementById("imagenes").value      = (prop.imagenes || []).join(", ");
     document.getElementById("lat").value           = prop.lat || "";
     document.getElementById("lng").value           = prop.lng || "";
-    document.getElementById("activa").checked      = prop.activa !== false; 
+    document.getElementById("activa").checked = prop.activa === true;
     document.getElementById("destacada").checked   = prop.destacada === true;
 
   // ==========================

@@ -91,13 +91,15 @@ function renderTarjetas(items = [], mostrarVacio = false) {
     const color = getColorByTipo(data.tipo);
 
   card.innerHTML = `
-  ${data.propiedadNueva ? `<div class="badge-nueva">NUEVA</div>` : ""}
+  <div class="card-img-wrapper">
+    <img src="${
+      (data.imagenes && data.imagenes.length > 0) 
+        ? data.imagenes[0] 
+        : (data.imagen || 'imagenes/default.png')
+    }" alt="Imagen de la propiedad">
 
-  <img src="${
-    (data.imagenes && data.imagenes.length > 0) 
-      ? data.imagenes[0] 
-      : (data.imagen || 'imagenes/default.png')
-  }" alt="Imagen de la propiedad">
+    ${data.propiedadNueva ? `<span class="badge-nueva">NUEVA</span>` : ""}
+  </div>
 
   <h3>${data.titulo}</h3>
 
@@ -115,9 +117,14 @@ function renderTarjetas(items = [], mostrarVacio = false) {
   <p><strong>Baños:</strong> <span class="prop-valor">${data.banos}</span></p>
   <p><strong>Habitaciones:</strong> <span class="prop-valor">${data.habitaciones}</span></p>
 
-  <p class="prop-precio">$${data.precio || "0"}</p>
-<button onclick="verDetalle('${data.id}')">Ver detalles</button>
+  <div class="precio-container">
+    ${data.destacada ? `<span class="badge-destacada"><i class="fas fa-star"></i> Destacada</span>` : ""}
+    <p class="prop-precio">COP $${formatearPrecio(data.precio) || "0"}</p>
+  </div>
+
+  <button onclick="verDetalle('${data.id}')">Ver detalles</button>
 `;
+
 
 
     cont.appendChild(card);
@@ -188,7 +195,9 @@ const marker = L.marker([data.lat, data.lng], { icon: customIcon }).bindPopup(`
 
   // 🔎 Aplica filtros
 // 🔎 Aplica filtros
+// 🔎 Aplica filtros
 function aplicarFiltros() {
+  const soloNuevas  = document.getElementById("filtroNueva")?.checked || false;
   const tipoVal     = (document.getElementById("tipo")?.value || "").toLowerCase().trim();
   const precioMin   = parseFloat(document.getElementById("precioMin")?.value) || 0;
   const precioMax   = parseFloat(document.getElementById("precioMax")?.value) || Infinity;
@@ -196,9 +205,9 @@ function aplicarFiltros() {
   const modalidadVal= (document.getElementById("filtroTipo")?.value || "").toLowerCase().trim();
   const banosVal    = parseInt(document.getElementById("banos")?.value) || 0;
   const habsVal     = parseInt(document.getElementById("habitaciones")?.value) || 0;
-  const garajeVal   = parseInt(document.getElementById("garaje")?.value) || 0; // ✅ Nuevo
+  const garajeVal   = parseInt(document.getElementById("garaje")?.value) || 0;
   const estadoVal   = (document.getElementById("estado")?.value || "").toLowerCase().trim();
-  const destacada   = document.getElementById("destacada").checked; // ✅ Nuevo
+  const destacada   = document.getElementById("destacada")?.checked || false;
 
   const filtradas = (window.propiedades || []).filter((prop) => {
     const pTipo      = (prop.tipo || "").toLowerCase();
@@ -207,10 +216,10 @@ function aplicarFiltros() {
     const pModalidad = (prop.modalidad || "").toLowerCase();
     const pBanos     = Number(prop.banos) || 0;
     const pHabs      = Number(prop.habitaciones) || 0;
-    const pActiva    = prop.activa ? "activa" : "inactiva";
     const pGarajes   = Number(prop.garaje) || 0;
-    const pDestacada = !!prop.destacada; // lo normalizamos a booleano
-    const pEstado = (prop.estado || "").toLowerCase();
+    const pEstado    = (prop.estado || "").toLowerCase();
+    const pDestacada = !!prop.destacada;
+    const pNueva     = !!prop.propiedadNueva; // ✅ normalizamos a booleano
 
     const okTipo      = tipoVal ? pTipo === tipoVal : true;
     const okPrecio    = pPrecio >= precioMin && pPrecio <= precioMax;
@@ -218,11 +227,23 @@ function aplicarFiltros() {
     const okModalidad = modalidadVal && modalidadVal !== "todos" ? pModalidad === modalidadVal : true;
     const okBanos     = banosVal ? pBanos >= banosVal : true;
     const okHabs      = habsVal ? pHabs >= habsVal : true;
-    const okEstado = estadoVal && estadoVal !== "todos" ? pEstado === estadoVal : true;
+    const okEstado    = estadoVal && estadoVal !== "todos" ? pEstado === estadoVal : true;
     const okGaraje    = garajeVal ? pGarajes >= garajeVal : true;
-    const okDestacada = destacada ? pDestacada === true : true; // ✅ Nuevo filtro
+    const okDestacada = destacada ? pDestacada === true : true;
+    const okNueva     = soloNuevas ? pNueva === true : true; // ✅ Nuevo filtro
 
-    return okTipo && okPrecio && okCiudad && okModalidad && okBanos && okHabs && okEstado && okGaraje && okDestacada;
+    return (
+      okTipo &&
+      okPrecio &&
+      okCiudad &&
+      okModalidad &&
+      okBanos &&
+      okHabs &&
+      okEstado &&
+      okGaraje &&
+      okDestacada &&
+      okNueva // 👉 se agrega aquí
+    );
   });
 
   // 1) Marcar en mapa

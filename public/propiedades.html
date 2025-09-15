@@ -46,6 +46,11 @@
       </ul>
     </nav>
 <div class="filtros">
+  <label>
+  <input type="checkbox" id="filtroNueva" />  Nuevas en el catalogo</imput>
+
+</label>
+
   <!-- Tipo de inmueble -->
   <select id="tipo">
        <option value="">-- Tipo --</option>
@@ -62,16 +67,31 @@
     <option value="local">Local</option>
     <option value="hotel">Hotel</option>
     <option value="oficina">Oficina</option>
-    <option value="penthouse">Penthouse</option>  </select>
+    <option value="penthouse">Penthouse</option>  
+  </select>
 
   <!-- Venta o Arriendo -->
 <!-- Modalidad -->
+ Venta/Arriendo/Permuta
 <select id="filtroTipo">
   <option value="todos">Todos</option>
   <option value="venta">Venta</option>
   <option value="arriendo">Arriendo</option>
-</select>
+  <option value="permuta">Permuta</option>
 
+</select>
+Estado de la propiedad
+<select id="estado">
+  <option value="todos">Todos</option>
+  <option value="nuevo">Nuevo</option>
+  <option value="usado">Usado</option>
+  <option value="construccion">En construccion</option>
+  <option value="proyecto">Usado</option>
+
+  
+  
+  <!-- agrega más estados según tus propiedades -->
+</select>
   <!-- Rango de precio -->
   <input type="number" id="precioMin" placeholder="Precio mínimo">
   <input type="number" id="precioMax" placeholder="Precio máximo">
@@ -86,9 +106,9 @@
 
   <input type="number" id="garaje" placeholder="Mínimo garajes">
 <!-- Destacada -->
-<label>
+Destacadas
+<label >
   <input type="checkbox" id="destacada">
-  Solo destacadas
 </label>
 
 <!-- Botones -->

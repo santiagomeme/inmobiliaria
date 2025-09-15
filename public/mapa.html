@@ -34,68 +34,112 @@
   <!-- Menú principal -->
     <nav class="main-nav">
       <ul>
-        <li><a href="propiedades.html">propiedades</a></li>
         <li><a href="index.html">Inicio</a></li>
-        <li><a href="registro.html">Inicio</a></li>
-        <li><a href="registroPropiedad.html">Inicio</a></li>
+        <li><a href="propiedades.html">propiedades</a></li>
+        <li><a href="registroPropiedad.html">Crear propiedades</a></li>
 
       </ul>
     </nav>
 <!-- FILTROS -->
-<section class="filtros">
-  <h2 style="color:#00172e;">Filtros de búsqueda</h2>
-  <div class="filtros-grid">
-    <label for="tipo">Tipo de inmueble:</label>
-    <select id="tipo">
-      <option value="">-- Seleccionar --</option>
-      <option value="casa">Casa</option>
-      <option value="apartamento">Apartamento</option>
-      <option value="lote">Lote</option>
-      <option value="finca">Finca</option>
-    </select>
+<div class="filtros">
+  <label>
+  <input type="checkbox" id="filtroNueva" />  Nuevas en el catalogo</imput>
 
-    <label for="estado">Estado:</label>
-    <select id="estado">
-      <option value="todos">Todos</option>
-      <option value="activa">Activa</option>
-      <option value="inactiva">Inactiva</option>
-    </select>
+</label>
 
-    <label for="filtroTipo">Operación:</label>
-    <select id="filtroTipo">
-      <option value="todos">Todos</option>
-      <option value="venta">Venta</option>
-      <option value="arriendo">Arriendo</option>
-    </select>
+  <!-- Tipo de inmueble -->
+  <select id="tipo">
+       <option value="">-- Tipo --</option>
+    <option value="casa">Casa</option>
+    <option value="finca">Finca</option>
+    <option value="apartamento">Apartamento</option>
+    <option value="lote">Lote</option>
+    <option value="apartaestudio">Apartaestudio</option>
+    <option value="bodega">Bodega</option>
+    <option value="campestre">Campestre</option>
+    <option value="condominio">Condominio</option>
+    <option value="duplex">Dúplex</option>
+    <option value="edificio">Edificio</option>
+    <option value="local">Local</option>
+    <option value="hotel">Hotel</option>
+    <option value="oficina">Oficina</option>
+    <option value="penthouse">Penthouse</option>  
+  </select>
+
+  <!-- Venta o Arriendo -->
+<!-- Modalidad -->
+ Venta/Arriendo/Permuta
+<select id="filtroTipo">
+  <option value="todos">Todos</option>
+  <option value="venta">Venta</option>
+  <option value="arriendo">Arriendo</option>
+  <option value="permuta">Permuta</option>
+
+</select>
+Estado de la propiedad
+<select id="estado">
+  <option value="todos">Todos</option>
+  <option value="nuevo">Nuevo</option>
+  <option value="usado">Usado</option>
+  <option value="construccion">En construccion</option>
+  <option value="proyecto">Usado</option>
+
+  
+  
+  <!-- agrega más estados según tus propiedades -->
+</select>
+  <!-- Rango de precio -->
+  <input type="number" id="precioMin" placeholder="Precio mínimo">
+  <input type="number" id="precioMax" placeholder="Precio máximo">
+
+  <!-- Ciudad -->
+  <input type="text" id="ciudad" placeholder="Ciudad">
 <!-- Habitaciones -->
 <input type="number" id="habitaciones" placeholder="Mínimo habitaciones">
 
 <!-- Baños -->
 <input type="number" id="banos" placeholder="Mínimo baños">
-    <label for="precioMin">Precio mínimo:</label>
-    <input type="number" id="precioMin" placeholder="Ej: 100000000">
 
-    <label for="precioMax">Precio máximo:</label>
-    <input type="number" id="precioMax" placeholder="Ej: 500000000">
+  <input type="number" id="garaje" placeholder="Mínimo garajes">
+<!-- Destacada -->
+Destacadas
+<label >
+  <input type="checkbox" id="destacada">
+</label>
 
-    <label for="ciudad">Ciudad:</label>
-    <input type="text" id="ciudad" placeholder="Ej: Bogotá">
-  </div>
+<!-- Botones -->
+  <button id="buscarBtn">Buscar</button>
+  <button id="resetBtn">Quitar filtros</button>
+</div>
 
-  <!-- Botones -->
-  <div class="filtros-btns">
-    <button id="buscarBtn" class="btn">🔍 Buscar</button>
-    <button id="resetBtn" class="btn btn-secundario">❌ Quitar filtros</button>
-  </div>
-</section>
+
+<div id="map-legend">
+  <h4>📍 Tipos de Propiedad</h4>
+   <ul>
+    <li><i class="fas fa-home" style="color: goldenrod;"></i> Casa</li>
+    <li><i class="fas fa-building" style="color: dodgerblue;"></i> Apartamento</li>
+    <li><i class="fas fa-border-all" style="color: darkorange;"></i> Lote</li>
+    <li><i class="fas fa-tractor" style="color: green;"></i> Finca</li>
+    <li><i class="fas fa-door-open" style="color: hotpink;"></i> Apartaestudio</li>
+    <li><i class="fas fa-warehouse" style="color: gray;"></i> Bodega</li>
+    <li><i class="fas fa-tree" style="color: darkgreen;"></i> Campestre</li>
+    <li><i class="fas fa-city" style="color: lightseagreen;"></i> Condominio</li>
+    <li><i class="fas fa-house-user" style="color: saddlebrown;"></i> Dúplex</li>
+    <li><i class="fas fa-hotel" style="color: black;"></i> Edificio</li>
+    <li><i class="fas fa-store" style="color: crimson;"></i> Local</li>
+    <li><i class="fas fa-concierge-bell" style="color: darkred;"></i> Hotel</li>
+    <li><i class="fas fa-briefcase" style="color: violet;"></i> Oficina</li>
+    <li><i class="fas fa-crown" style="color: gold;"></i> Penthouse</li>
+  </ul>
+</div>
+
 
 <!-- MAPA -->
-<section>
-  <h2 style="text-align:center; margin:20px 0;color:#00172e;">Mapa de Propiedades</h2>
-  <div id="map"></div>
-
-</section>
-
+<div class="map-container">
+  <div id="map" style="height: 400px; width: 100%;"></div>
+  <div id="mapOverlay" class="overlay"></div>
+  <button id="toggleMap">🔓 Activar mapa</button>
+</div>
 <!-- PROPIEDADES -->
 <section>
   <h2 style="text-align:center; padding: 20px;color:#00172e;"">Propiedades disponibles</h2>
@@ -134,6 +178,6 @@
 <!-- Tu configuración y lógica -->
 <script src="firebase-config.js"></script>
 <script src="mapa.js"></script>
-<script src="mapaFiltro.js"></script>
+<script src="filtro.js"></script>
 
 </html>

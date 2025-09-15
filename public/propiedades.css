@@ -117,14 +117,14 @@ html, body {
 
 /* Badge general */
 .prop-badge {
-  background: #666;
-  color: #fff;
+  background: #fff;
+  color: #003264;
   padding: 2px 8px;
   border-radius: 6px;
-  font-size: 12px;
+  font-size: 13px;
   font-weight: 700;
   white-space: nowrap;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 4px rgba(0,0,0,12);
 }
 
 /* Badge del tipo de propiedad (ya tenías este estilo) */
@@ -599,3 +599,27 @@ color: #00172e;
 }
 
 
+.precio-container {
+  display: flex;
+  flex-direction: column; /* apila badge arriba del precio */
+  align-items: flex-end;  /* todo a la derecha */
+}
+
+.badge-destacada {
+  display: inline-flex;
+  align-items: center;
+  background: gold;
+  color: black;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  margin-right: 20px!important;
+
+}
+
+.badge-destacada i {
+  margin-right: 5px!important;
+  color: orange;
+}

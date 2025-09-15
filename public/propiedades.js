@@ -60,20 +60,21 @@ function formatearPrecio(valor) {
 // ==========================
 // ICONOS POR TIPO
 // ==========================
-const iconCasa        = crearIcono("goldenrod", "fas fa-home");
-const iconApartamento = crearIcono("dodgerblue", "fas fa-building");
-const iconLote        = crearIcono("darkorange", "fas fa-border-all");
-const iconFinca       = crearIcono("green", "fas fa-tractor");
+// Iconos que coinciden con la leyenda
+const iconCasa          = crearIcono("goldenrod", "fas fa-home");
+const iconApartamento   = crearIcono("dodgerblue", "fas fa-building");
+const iconLote          = crearIcono("darkorange", "fas fa-border-all");
+const iconFinca         = crearIcono("green", "fas fa-tractor");
 const iconApartaestudio = crearIcono("hotpink", "fas fa-door-open");
-const iconBodega      = crearIcono("grey", "fas fa-warehouse");
-const iconCampestre   = crearIcono("darkgreen", "fas fa-tree");
-const iconCondominio  = crearIcono("steelblue", "fas fa-city");
-const iconDuplex      = crearIcono("saddlebrown", "fas fa-building");
-const iconEdificio    = crearIcono("black", "fas fa-building-circle-check");
-const iconLocal       = crearIcono("red", "fas fa-store");
-const iconHotel       = crearIcono("darkred", "fas fa-hotel");
-const iconOficina     = crearIcono("purple", "fas fa-briefcase");
-const iconPenthouse   = crearIcono("goldenrod", "fas fa-crown");
+const iconBodega        = crearIcono("gray", "fas fa-warehouse");
+const iconCampestre     = crearIcono("darkgreen", "fas fa-tree");
+const iconCondominio    = crearIcono("lightseagreen", "fas fa-city"); // 👈 mismo que en la leyenda
+const iconDuplex        = crearIcono("saddlebrown", "fas fa-house-user"); // 👈 igual al de la leyenda
+const iconEdificio      = crearIcono("black", "fas fa-hotel"); // o usa fa-building si prefieres
+const iconLocal         = crearIcono("crimson", "fas fa-store");
+const iconHotel         = crearIcono("darkred", "fas fa-concierge-bell"); // igual que en leyenda
+const iconOficina       = crearIcono("violet", "fas fa-briefcase");
+const iconPenthouse     = crearIcono("gold", "fas fa-crown");
 
 // ==========================
 // ÍCONO + COLOR POR TIPO DE PROPIEDAD (MAPA CENTRALIZADO)
@@ -139,7 +140,8 @@ card.innerHTML = `
     }" alt="Imagen de la propiedad">
 
     ${data.propiedadNueva ? `<span class="badge-nueva">NUEVA</span>` : ""}
-  </div>
+
+    </div>
   <h3>${data.titulo}</h3>
 
   <div class="prop-badges">
@@ -155,8 +157,12 @@ card.innerHTML = `
   <p><strong>Área:</strong> <span class="prop-valor">${data.area} m²</span></p>
   <p><strong>Baños:</strong> <span class="prop-valor">${data.banos}</span></p>
   <p><strong>Habitaciones:</strong> <span class="prop-valor">${data.habitaciones}</span></p>
+  <div class="precio-container">
+  ${data.destacada ? `<span class="badge-destacada"><i class="fas fa-star"></i> Destacada</span>` : ""}
+  <p class="prop-precio">COP $${formatearPrecio(data.precio) || "$0"}
+  </p>
+  </div>
 
-  <p class="prop-precio">COP $${formatearPrecio(data.precio) || "$0"}</p>
   <button onclick="verDetalle('${doc.id}')">Ver detalles</button>
 `;
 

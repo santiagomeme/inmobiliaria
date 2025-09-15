@@ -95,15 +95,51 @@ firebase.firestore().collection("propiedades").doc(propiedadId).get()
           <!-- Descripción -->
           <p class="descripcion"><strong>Descripción:</strong><br> ${propiedad.descripcion || "Sin descripción"}</p>
        <!-- Precio -->
-          <p class="prop-precio">COP $${propiedad.precio?.toLocaleString() || "N/A"}</p>
+       <div class="precio-container">
+         ${propiedad.destacada ? `<span class="badge-destacada"><i class="fas fa-star"></i> Destacada</span>` : ""}
+       <p class="prop-precio">COP $${propiedad.precio?.toLocaleString() || "N/A"}</p>
+        </div>
 
-          <!-- Mapa -->
-          <div id="map" class="detalle-mapa"></div>
-
+         <div class="map-container">
+  <div id="map" style="height: 400px; width: 100%;"></div>
+  <div id="mapOverlay" class="overlay"></div>
+  <button id="toggleMap">🔓 Activar mapa</button>
+</div>
           <!-- Botón -->
           <button id="btnVolver">⬅ Volver</button>
         </div>
       `;
+
+
+
+const overlay = document.getElementById("mapOverlay");
+const toggleBtn = document.getElementById("toggleMap");
+let mapActivo = false;
+
+function bloquearMapa() {
+  overlay.style.display = "block";
+  toggleBtn.textContent = "🔓 Activar mapa";
+  mapActivo = false;
+}
+
+function activarMapa() {
+  overlay.style.display = "none";
+  toggleBtn.textContent = "🔒 Salir del mapa";
+  mapActivo = true;
+}
+toggleBtn.addEventListener("click", (e) => {
+  e.preventDefault(); // evita que dispare un submit
+  if (mapActivo) {
+    bloquearMapa();
+  } else {
+    activarMapa();
+  }
+});
+
+
+// Estado inicial bloqueado
+bloquearMapa();
+
 
       // Resto del slider + mapa + volver (tu mismo código)...
 
@@ -166,32 +202,3 @@ firebase.firestore().collection("propiedades").doc(propiedadId).get()
   });
 
 
-
-  //===========================
-  //evitar q se active el mapa 
-  const overlay = document.getElementById("mapOverlay");
-const toggleBtn = document.getElementById("toggleMap");
-let mapActivo = false;
-
-function bloquearMapa() {
-  overlay.style.display = "block";
-  toggleBtn.textContent = "🔓 Activar mapa";
-  mapActivo = false;
-}
-
-function activarMapa() {
-  overlay.style.display = "none";
-  toggleBtn.textContent = "🔒 Salir del mapa";
-  mapActivo = true;
-}
-
-toggleBtn.addEventListener("click", () => {
-  if (mapActivo) {
-    bloquearMapa();
-  } else {
-    activarMapa();
-  }
-});
-
-// Estado inicial bloqueado
-bloquearMapa();
