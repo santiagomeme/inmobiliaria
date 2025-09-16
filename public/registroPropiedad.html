@@ -99,7 +99,7 @@
   <select id="tipo" required>
     <option value="">-- Selecciona el tipo --</option>
     <option value="casa">Casa</option>
-       <option value="finca">Finca</option>
+    <option value="finca">Finca</option>
     <option value="apartamento">Apartamento</option>
     <option value="apartaestudio">Apartaestudio</option>
     <option value="bodega">Bodega</option>
@@ -121,8 +121,7 @@
       <input type="number" id="lat" placeholder="Latitud" step="any" required>
       <input type="number" id="lng" placeholder="Longitud" step="any" required>
    <label>
-      <input type="checkbox" id="activa" checked>Propiedad activa
-    </label>
+      <input type="checkbox" id="activa" checked>Propiedad activa</label>
 <!-- Propiedad nueva (checkbox) -->
 <label>
   <input type="checkbox" id="propiedadNueva" />
@@ -130,16 +129,18 @@
 </label>
       <!-- Contenedor del mapa -->
 <div class="map-container">
-  <div id="mapOverlay" class="overlay"></div>
+  <div id="map" class="overlay"></div>
+  <div id="mapOverlay"></div>
   <button id="toggleMap">🔓 Activar mapa</button>
 </div>
+
       <button type="submit"  type="button"class="btn">Guardar Propiedad</button>
     </form>
   </section>
 
   <section class="admin-listado">
     <h2>Listado de propiedades</h2>
-    <div id="adminPropiedadesList" class="grid"></div>
+    <div id="adminLista" class="grid"></div>
   </section>
 </main>
 

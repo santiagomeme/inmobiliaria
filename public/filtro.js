@@ -109,7 +109,9 @@ function renderTarjetas(items = [], mostrarVacio = false) {
     </span>
     <span class="prop-badge">${data.modalidad || ""}</span>
     <span class="prop-badge">${data.estado || ""}</span>
-  </div>
+  
+  
+    </div>
 
   <p>${data.ciudad || ""}</p>
   <p><i class="fas fa-car"></i> <span class="prop-valor">${data.garage || 0}</span></p>
@@ -182,7 +184,7 @@ const marker = L.marker([data.lat, data.lng], { icon: customIcon }).bindPopup(`
           font-size:12px;
           font-weight:bold;
           transition: background 0.2s ease;
-          cursor:pointer;">
+          cursor:pointer;"onclick="verDetalle('${data.id}')">
           Ver detalles
         </button>
       </div>
@@ -208,6 +210,7 @@ function aplicarFiltros() {
   const garajeVal   = parseInt(document.getElementById("garaje")?.value) || 0;
   const estadoVal   = (document.getElementById("estado")?.value || "").toLowerCase().trim();
   const destacada   = document.getElementById("destacada")?.checked || false;
+  const activaVal   = (document.getElementById("filtroActiva")?.value || "todas").toLowerCase().trim();
 
   const filtradas = (window.propiedades || []).filter((prop) => {
     const pTipo      = (prop.tipo || "").toLowerCase();
@@ -220,17 +223,23 @@ function aplicarFiltros() {
     const pEstado    = (prop.estado || "").toLowerCase();
     const pDestacada = !!prop.destacada;
     const pNueva     = !!prop.propiedadNueva; // ✅ normalizamos a booleano
+    const pActiva = String(prop.activa).toLowerCase() === "true";
 
-    const okTipo      = tipoVal ? pTipo === tipoVal : true;
+    const okTipo = tipoVal ? pTipo.includes(tipoVal) : true;
     const okPrecio    = pPrecio >= precioMin && pPrecio <= precioMax;
     const okCiudad    = ciudadVal ? pCiudad.includes(ciudadVal) : true;
-    const okModalidad = modalidadVal && modalidadVal !== "todos" ? pModalidad === modalidadVal : true;
+    const okModalidad = modalidadVal && modalidadVal !== "todos" ? pModalidad.includes(modalidadVal) : true;
     const okBanos     = banosVal ? pBanos >= banosVal : true;
     const okHabs      = habsVal ? pHabs >= habsVal : true;
-    const okEstado    = estadoVal && estadoVal !== "todos" ? pEstado === estadoVal : true;
+    const okEstado = estadoVal && estadoVal !== "todos" ? pEstado.includes(estadoVal) : true;
     const okGaraje    = garajeVal ? pGarajes >= garajeVal : true;
     const okDestacada = destacada ? pDestacada === true : true;
     const okNueva     = soloNuevas ? pNueva === true : true; // ✅ Nuevo filtro
+   
+    // 🔎 Filtro nueva condición: activa/inactiva
+    const okActiva = activaVal !== "todas"
+      ? (activaVal === "true" ? pActiva === true : pActiva === false)
+      : true;
 
     return (
       okTipo &&
@@ -242,7 +251,9 @@ function aplicarFiltros() {
       okEstado &&
       okGaraje &&
       okDestacada &&
-      okNueva // 👉 se agrega aquí
+      okNueva &&// 👉 se agrega aquí
+      okActiva // 👉 se agrega aquí
+
     );
   });
 

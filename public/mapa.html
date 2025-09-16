@@ -83,11 +83,16 @@ Estado de la propiedad
   <option value="usado">Usado</option>
   <option value="construccion">En construccion</option>
   <option value="proyecto">Usado</option>
-
-  
-  
   <!-- agrega más estados según tus propiedades -->
 </select>
+<!-- Activa/Inactiva -->
+Activa/Inactiva
+<select id="filtroActiva">
+  <option value="todas">Todas</option>
+  <option value="true">Activa</option>
+  <option value="false">Inactiva</option>
+</select>
+
   <!-- Rango de precio -->
   <input type="number" id="precioMin" placeholder="Precio mínimo">
   <input type="number" id="precioMax" placeholder="Precio máximo">
@@ -178,6 +183,6 @@ Destacadas
 <!-- Tu configuración y lógica -->
 <script src="firebase-config.js"></script>
 <script src="mapa.js"></script>
-<script src="filtro.js"></script>
+<script src="mapaFiltro.js"></script>
 
 </html>

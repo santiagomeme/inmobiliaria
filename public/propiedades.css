@@ -53,32 +53,32 @@ html, body {
 
 
 .prop-card h3 {
-  margin: 1px auto;
-  color: #003264;
-  font-size: 1.2rem;
-  font-weight: 600;   /* más grueso */
+  margin: 1px auto!important;
+  color: #003264!important;
+  font-size: 1.2rem!important;
+  font-weight: 600   /* más grueso */
 }
 .prop-card p {
-  margin: 6px 9px;
-  line-height: 1.5;   /* más legible */
-  font-size: 0.95rem;
-  font-weight: 400;   /* normal, fácil de leer */
-  color: #2e2e2e;
+  margin: 6px 9px!important;
+  line-height: 1.5!important;   /* más legible */
+  font-size: 0.95rem!important;
+  font-weight: 400!important;   /* normal, fácil de leer */
+  color: #2e2e2e!important;
 }
 .prop-card strong{
  /* un poco más fuerte */
-  color: #003264;     /* resaltar en azul elegante */
+  color: #003264!important;    /* resaltar en azul elegante */
 }
 .prop-card button {
-  margin: 10px;
-  padding: 8px 12px;
-  background: #00172e;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background 0.2s ease;
+  margin: 10px!important;
+  padding: 8px 12px!important;
+  background: #00172e!important;
+  color: #fff!important;
+  border: none!important;
+  border-radius: 8px!important;
+  cursor: pointer!important;
+  font-size: 0.9rem!important;
+  transition: background 0.2s ease!important;
 }
 
 .prop-card button:hover {
@@ -109,22 +109,22 @@ html, body {
 
 /* Contenedor de badges (tipo, modalidad, estado) */
 .prop-badges {
-  display: flex;
-  gap: 8px;
-  margin: 6px 13px;
-  flex-wrap: wrap; /* para que no se desborden en móviles */
+  display: flex!important;;
+  gap: 8px!important;
+  margin: 6px 13px!important;
+  flex-wrap: wrap!important; /* para que no se desborden en móviles */
 }
 
 /* Badge general */
 .prop-badge {
-  background: #fff;
-  color: #003264;
-  padding: 2px 8px;
-  border-radius: 6px;
-  font-size: 13px;
-  font-weight: 700;
-  white-space: nowrap;
-  box-shadow: 0 2px 4px rgba(0,0,0,12);
+  background: #fff!important;
+  color: #003264!important;
+  padding: 2px 8px!important;
+  border-radius: 6px!important;
+  font-size: 13px!important;
+  font-weight: 700!important;
+  white-space: nowrap!important;
+  box-shadow: 0 2px 4px rgba(0,0,0,12)!important;
 }
 
 /* Badge del tipo de propiedad (ya tenías este estilo) */
@@ -623,3 +623,4 @@ color: #00172e;
   margin-right: 5px!important;
   color: orange;
 }
+

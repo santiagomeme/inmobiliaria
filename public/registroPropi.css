@@ -115,11 +115,13 @@ h2{
 
 
 .prop-card h3 {
-  margin: 1px auto;
-  color: #003264;
-  font-size: 1.2rem;
-  font-weight: 600;   /* más grueso */
+  margin: 1px auto!important;
+  color: #003264!important;
+  font-size: 1.2rem!important;
+  font-weight: 600!important;  /* más grueso */
+  text-align: center;
 }
+
 .prop-card p {
   margin: 6px 9px;
   line-height: 1.5;   /* más legible */
@@ -132,43 +134,51 @@ h2{
   color: #003264;     /* resaltar en azul elegante */
 }
 .prop-card button {
-  margin: 10px;
-  padding: 8px 12px;
-  background: #00172e;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 0.9rem;
-  transition: background 0.2s ease;
+  margin: 10px!important;
+  padding: 8px 12px!important;
+  background: #00172e!important;
+  color: #fff!important;
+  border: none!important;
+  border-radius: 8px!important;
+  cursor: pointer!important;
+  font-size: 0.9rem!important;
+  transition: background 0.2s ease!important;
 }
 
 .prop-card button:hover {
-  background: #005fa3;
+  background: #005fa3!important;
 }
 
 .prop-card b {
  /* un poco más fuerte */
-  color: #003264;     /* resaltar en azul elegante */
+  color: #003264!important;     /* resaltar en azul elegante */
 }
 
 /* Badge del tipo de propiedad — pega esto en tu CSS externo */
 .prop-card .prop-tipo {
-  display: inline-block;      /* que el fondo abrace solo el texto */
-  align-self: flex-start;     /* evita que se estire en el contenedor flex */
-  flex: 0 0 auto;             /* no crecer ni encoger */
+  display: inline-block!important;    /* que el fondo abrace solo el texto */
+  align-self: flex-start!important;   /* evita que se estire en el contenedor flex */
+  flex: 0 0 auto!important;         /* no crecer ni encoger */
   width: auto !important;     /* por si alguna regla fuerza width:100% */
   max-width: none !important;
-  padding: 2px 8px;
-  border-radius: 6px;
-  font-size: 12px;
-  font-weight: 700;
-  color: #fff;
-  white-space: nowrap;
-  box-sizing: border-box;
-    margin: 6px 13px;
+  padding: 2px 8px!important;
+  border-radius: 6px!important;
+  font-size: 12px!important;
+  font-weight: 700!important;
+  color: #fff!important;
+  white-space: nowrap!important;
+  box-sizing: border-box!important;
+    margin: 6px 13px!important;
 
 }
+
+/* Valores numéricos (baños, habitaciones, garajes, área) */
+.prop-card .prop-valor {
+  font-weight: 600;        /* semibold */
+  color: #1a1a1a;          /* gris oscuro elegante */
+  font-size: 1rem;
+}
+
 
 .precio-propiedad {
   color: #003264!important;          /* azul intenso estilo Bootstrap */
@@ -332,8 +342,47 @@ color: #00172e;
 .social-icons a:hover {
   color: #25d366; /* verde WhatsApp */
 }
+#map-legend {
+  position: relative;
+  bottom: 10px; /* 👈 lo bajamos para que no tape el header */
+  left: 10px;
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  font-family: "Segoe UI", sans-serif;
+  font-size: 13px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+  z-index: 1000;
+  max-width: 95%;
+}
+
+#map-legend h4 {
+  margin: 5px 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+#map-legend ul {
+  display: grid; /* 👈 ahora son filas y columnas */
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); 
+  gap: 6px 15px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#map-legend li {
+  display: flex;
+  align-items: center;
+}
 
 
+#map-legend img {
+  width: 18px;
+  height: 28px;
+  margin-right: 6px;
+}
 
 .map-container {
   position: relative;
@@ -364,26 +413,89 @@ color: #00172e;
 
 
 
+
+
+
 .card-img-wrapper {
   position: relative;
   display: inline-block;
+  width: 100%;
 }
 
 .card-img-wrapper img {
   width: 100%;
   border-radius: 10px;
+  display: block;
 }
 
+/* Badge de NUEVA */
 .badge-nueva {
   position: absolute;
   top: 10px;
   left: 10px;
-  background: #ff4757;    /* rojo vibrante */
+  background: #ff4757;
   color: #fff;
-  padding: 5px 10px;
-  font-size: 0.9rem;
+  padding: 6px 12px;
+  font-size: 0.85rem;
   font-weight: bold;
-  border-radius: 5px;
+  border-radius: 6px;
   text-transform: uppercase;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+}
+
+/* Precio atractivo */
+.prop-precio {
+  color: #003264!important;
+  font-size: 1.3rem!important;
+  font-weight: 700!important;
+  text-align: right!important;
+ margin: 8px 12px!important;
+}
+
+
+.precio-container {
+  display: flex!important;
+  flex-direction: column!important;/* apila badge arriba del precio */
+  align-items: flex-end!important;  /* todo a la derecha */
+}
+
+.badge-destacada {
+  display: inline-flex;
+  align-items: center;
+  background: gold;
+  color: black;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 6px;
+  margin-bottom: 4px;
+  margin-right: 20px!important;
+
+}
+
+.badge-destacada i {
+  margin-right: 5px!important;
+  color: orange;
+}
+.prop-badge {
+
+  background: #fff;
+  margin-left: 5px;
+  color: #003264;
+  padding: 2px 8px!important;
+  border-radius: 6px!important;
+  font-size: 13px!important;
+  font-weight: 700!important;
+  white-space: nowrap!important;
+  box-shadow: 0 2px 4px rgba(0,0,0,12)!important;
+
+}
+
+.badge-activa {
+  background: #28a745; /* verde */
+  color: white;
+}
+.badge-inactiva {
+  background: #dc3545; /* rojo */
+  color: white;
 }

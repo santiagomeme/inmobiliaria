@@ -10,7 +10,7 @@ function formatearPrecio(valor) {
   return valor.toLocaleString("es-CO"); // 👉 2.500.000
 }
 
-  const adminLista = document.getElementById("adminPropiedadesList");
+const adminLista = document.getElementById("adminLista");
 
   let modoEdicion = false; // Saber si estamos editando
   let propiedadId = null;  // ID de la propiedad que se edita
@@ -201,10 +201,9 @@ if (!titulo || !ciudad || !direccion || !tipo || !modalidad || !precio || imagen
     alert("No se pudo guardar la propiedad.");
   }
 });
-
-  // ==========================
-  //  LISTADO ADMIN PROPIEDADES
-  // ==========================
+// ==========================
+//  LISTADO ADMIN PROPIEDADES
+// ==========================
 async function cargarAdminPropiedades() {
   if (!adminLista) return;
   adminLista.innerHTML = "";
@@ -215,57 +214,75 @@ async function cargarAdminPropiedades() {
     snapshot.forEach(doc => {
       const prop = doc.data();
 
-      // seguridad: valores por defecto
+      // valores por defecto
       const area = prop.area || 0;
       const estado = prop.estado || "Sin estado";
-      const propiedadNueva = prop.propiedadNueva === true ? "✅" : "❌";
+      const propiedadNueva = prop.propiedadNueva === true;
       const titulo = prop.titulo || "Sin título";
-      const precio = prop.precio ? `$${formatearPrecio(prop.precio)}` : "Sin precio";
-      const modalidad = prop.modalidad ? `${prop.modalidad}` : "Sin modalidad";
+      const precio = prop.precio || 0;
+      const modalidad = prop.modalidad || "Sin modalidad";
       const ciudad = prop.ciudad || "Sin ciudad";
-     let imagen = "imagenes/default.png";
-
-if (prop.imagenes && Array.isArray(prop.imagenes)) {
-  imagen = prop.imagenes.length > 0 ? prop.imagenes[0] : "imagenes/default.png";
-}
-
       const banos = prop.banos || 0;
       const habitaciones = prop.habitaciones || 0;
       const garage = prop.garage || 0;
       const tipo = prop.tipo || "Otro";
+      const destacada = prop.destacada === true;
+      const activa = prop.activa === true;   // ✅ se agrega esta línea
 
-      // color según tipo
+      // imagen principal
+      let imagen = "imagenes/default.png";
+      if (prop.imagenes && Array.isArray(prop.imagenes)) {
+        imagen = prop.imagenes.length > 0 ? prop.imagenes[0] : "imagenes/default.png";
+      }
+
+      // estilo por tipo
       const estilo = estilosPorTipo[tipo.toLowerCase()] || { color: "#555" };
       const color = estilo.color;
 
-      // card
+      // ==========================
+      // Card unificada (modelo mapa.js)
+      // ==========================
       const card = document.createElement("div");
       card.classList.add("prop-card");
 
       card.innerHTML = `
-  <div class="card-img-wrapper">
-    <img src="${imagen}" alt="${titulo}" />
-    ${propiedadNueva ? '<span class="badge-nueva">NUEVO</span>' : ''}
-  </div>
-        <h3>${titulo}</h3>
-         <!-- tipo con color -->
-        <span class="prop-tipo" style="background:${color};">${tipo}</span>
+        <div class="card-img-wrapper">
+          <img src="${imagen}" alt="${titulo}">
+          ${propiedadNueva ? '<span class="badge-nueva">NUEVO</span>' : ""}
+        </div>
 
+        <div class="card-body">
+          <h3 class="card-title">${titulo}</h3>
+         
+        <div class="prop-badges">
+          <span class="prop-tipo" style="background:${color};">${tipo}
+          </span>
+          <span class="prop-badge">${modalidad || ""}</span>
+          <span class="prop-badge">${estado || ""}</span>
+   <span class="prop-badge ${activa ? "badge-activa" : "badge-inactiva"}">
+    ${activa ? "Activa" : "Inactiva"}
+  </span>      
+          </div>
+          
+          <p >${ciudad}</p>
+          <p><i class="fas fa-car"></i>  ${garage}</p>
+          <p><strong>Baños:</strong> <span class="prop-valor">${banos}</span></p>
+          <p><strong>Área:</strong> <span class="prop-valor">${area} m²</span></p>
+          <p><strong>Habitaciones:</strong> <span class="prop-valor">${habitaciones}</span></p>
 
-        <p>${ciudad}</p>
-
-        <p><strong>Área:</strong> ${area} m²</p>
-        <p><strong>Estado:</strong> ${estado}</p>
-        <p><strong>modalidad:</strong> ${modalidad}</p>
-
-        <p><strong>Baños:</strong> ${banos}</p>
-        <p><strong>Habitaciones:</strong> ${habitaciones}</p>
-        <p><i class="fas fa-car"></i> Garajes: ${garage}</p>
-
-        <p class="precio-propiedad">
-    ${formatearPrecio(precio)}</p>
-        <button onclick="editarPropiedad('${doc.id}')">Editar</button>
-        <button onclick="eliminarPropiedad('${doc.id}')">Eliminar</button>
+        <div class="precio-container">
+        ${destacada ? `<span class="badge-destacada"><i class="fas fa-star"></i> Destacada</span>` : ""}
+        <p class="prop-precio">COP $${formatearPrecio(precio) || "$0"}
+        </p>
+          <div class="card-actions">
+            <button class="btn-edit" onclick="editarPropiedad('${doc.id}')">
+              ✏️ Editar
+            </button>
+            <button class="btn-delete" onclick="eliminarPropiedad('${doc.id}')">
+              🗑️ Eliminar
+            </button>
+          </div>
+        </div>
       `;
 
       adminLista.appendChild(card);
@@ -275,6 +292,7 @@ if (prop.imagenes && Array.isArray(prop.imagenes)) {
     console.error("Error cargando propiedades:", err);
   }
 }
+
 
   // ==========================
   //  ELIMINAR PROPIEDAD
