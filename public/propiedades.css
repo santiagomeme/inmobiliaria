@@ -624,3 +624,6 @@ color: #00172e;
   color: orange;
 }
 
+.leaflet-popup {
+  z-index: 99999 !important;
+}

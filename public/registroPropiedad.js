@@ -118,7 +118,9 @@ form.addEventListener("submit", async (e) => {
   const descripcion  = document.getElementById("descripcion").value.trim();
   const ciudad       = document.getElementById("ciudad").value.trim();
   const direccion    = document.getElementById("direccion").value.trim();
-  const tipo         = document.getElementById("tipo").value.trim();       // casa, apto, lote...
+// Normalizamos el tipo: minúsculas y sin tildes
+let tipo = document.getElementById("tipo").value.trim().toLowerCase();
+tipo = tipo.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); 
   const modalidad    = document.getElementById("modalidad").value.trim();  // venta o alquiler
   const habitaciones = parseInt(document.getElementById("habitaciones").value) || 0;
   const banos        = parseInt(document.getElementById("banos").value) || 0;
@@ -230,10 +232,15 @@ async function cargarAdminPropiedades() {
       const activa = prop.activa === true;   // ✅ se agrega esta línea
 
       // imagen principal
-      let imagen = "imagenes/default.png";
-      if (prop.imagenes && Array.isArray(prop.imagenes)) {
-        imagen = prop.imagenes.length > 0 ? prop.imagenes[0] : "imagenes/default.png";
-      }
+let imagen = "imagenes/default.png";
+if (prop.imagenes && Array.isArray(prop.imagenes)) {
+  imagen = prop.imagenes.length > 0 ? prop.imagenes[0] : "imagenes/default.png";
+}
+
+// 👇 Asegurar que sea ruta absoluta en hosting
+if (!imagen.startsWith("http")) {
+  imagen = "/" + imagen;
+}
 
       // estilo por tipo
       const estilo = estilosPorTipo[tipo.toLowerCase()] || { color: "#555" };
@@ -332,7 +339,11 @@ window.editarPropiedad = async function(id) {
     document.getElementById("habitaciones").value  = prop.habitaciones || 0;
     document.getElementById("banos").value         = prop.banos || 0;
     document.getElementById("precio").value = formatearPrecio(prop.precio) || "";
-    document.getElementById("imagenes").value      = (prop.imagenes || []).join(", ");
+let imgs = [];
+if (prop.imagenes) {
+  imgs = Array.isArray(prop.imagenes) ? prop.imagenes : [prop.imagenes];
+}
+document.getElementById("imagenes").value = imgs.join(", ");
     document.getElementById("lat").value           = prop.lat || "";
     document.getElementById("lng").value           = prop.lng || "";
     document.getElementById("activa").checked = prop.activa === true;
