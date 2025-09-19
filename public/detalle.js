@@ -77,7 +77,8 @@ firebase.firestore().collection("propiedades").doc(propiedadId).get()
             </span>
             <span class="prop-badge">${propiedad.modalidad || "N/A"}</span>
             <span class="prop-badge">${propiedad.estado || "N/A"}</span>
-          </div>
+       
+            </div>
 
    
           <!-- Datos clave -->
@@ -88,13 +89,43 @@ firebase.firestore().collection("propiedades").doc(propiedadId).get()
             <p><strong>Garajes:</strong> <span class="prop-valor">${propiedad.garajes || "-"}</span></p>
           </div>
 
-          <!-- Ubicación -->
+  <!-- 🔹 Nuevos campos -->
+  <p><strong>Código:</strong> <span class="prop-valor">${propiedad.codigo || "N/A"}</span></p>
+  <p><strong>Piso:</strong> <span class="prop-valor">${propiedad.piso || "N/A"}</span></p>
+  <p><strong>Estrato:</strong> <span class="prop-valor">${propiedad.estrato || "N/A"}</span></p>
+  <p><strong>País:</strong> <span class="prop-valor">${propiedad.pais || "N/A"}</span></p>
+  <p><strong>Departamento:</strong> <span class="prop-valor">${propiedad.departamento || "N/A"}</span></p>
+
+  <!-- Ubicación -->
           <p><strong>Ciudad:</strong> ${propiedad.ciudad || "N/A"}</p>
           <p><strong>Dirección:</strong> ${propiedad.direccion || "No especificada"}</p>
 
           <!-- Descripción -->
           <p class="descripcion"><strong>Descripción:</strong><br> ${propiedad.descripcion || "Sin descripción"}</p>
-       <!-- Precio -->
+ 
+
+
+<!-- 🔹 Características internas -->
+${propiedad.internas && propiedad.internas.length > 0 ? `
+  <div class="detalle-caracteristicas">
+    <h3>Características internas</h3>
+    <ul>
+      ${propiedad.internas.map(c => `<li>${c}</li>`).join("")}
+    </ul>
+  </div>
+` : ""}
+
+<!-- 🔹 Características externas -->
+${propiedad.externas && propiedad.externas.length > 0 ? `
+  <div class="detalle-caracteristicas">
+    <h3>Características externas</h3>
+    <ul>
+      ${propiedad.externas.map(c => `<li>${c}</li>`).join("")}
+    </ul>
+  </div>
+` : ""}
+  </div>
+              <!-- Precio -->
        <div class="precio-container">
          ${propiedad.destacada ? `<span class="badge-destacada"><i class="fas fa-star"></i> Destacada</span>` : ""}
        <p class="prop-precio">COP $${propiedad.precio?.toLocaleString() || "N/A"}</p>

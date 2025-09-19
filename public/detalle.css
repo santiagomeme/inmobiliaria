@@ -182,26 +182,8 @@ position: relative;
   margin-bottom: 10px;
 }
 
-/* Contenedor de badges (tipo, estado, modalidad) */
-.detalle-badges {
-  display: flex;
-  gap: 8px;
-  margin: 8px 12px 15px;
-  flex-wrap: wrap;
-}
 
-/* Badge general */
-.prop-badge{
-  background: #666!important;          /* gris neutro por defecto */
-  padding: 2px 8px!important;
-  margin-left: 5px!important;
-  border-radius: 6px!important;
-  font-size: 12px!important;
-  font-weight: 700!important;
-  color: #fff!important;
-  white-space: nowrap!important;
-  box-sizing: border-box!important;
-}
+
 
 /* Badge de tipo (con color dinámico desde JS) */
 
@@ -549,4 +531,161 @@ footer p {
 .badge-destacada i {
   margin-right: 5px!important;
   color: orange;
+}
+
+
+/* Contenedor general de características */
+.detalle-caracteristicas {
+  margin: 15px 0;
+  padding: 15px;
+  background-color: #f9f9f9; /* fondo suave */
+  border-radius: 8px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.08);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Título de sección */
+.detalle-caracteristicas h3 {
+  margin-bottom: 10px;
+  font-size: 16px;
+  color: #00172e; /* verde elegante */
+  font-weight: 600;
+  border-bottom: 2px solid #00172e;
+  padding-bottom: 4px;
+}
+
+/* Lista de características */
+.detalle-caracteristicas ul {
+  list-style: none; /* quitar bullets por defecto */
+  padding-left: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px; /* espacio entre ítems */
+}
+
+/* Ítems individuales */
+.detalle-caracteristicas ul li {
+  background-color: #ffffff;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 16px;
+  color: #333;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  transition: all 0.2s ease-in-out;
+}
+
+/* Efecto hover */
+.detalle-caracteristicas ul li:hover {
+  background-color: #005fa3;
+  color: #fff;
+  cursor: default;
+  transform: translateY(-2px);
+}
+
+
+.contact-section {
+  margin-top: 30px;
+  padding: 25px 20px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  font-family: 'Segoe UI', 'Helvetica Neue', sans-serif;
+}
+
+.contact-info {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 15px;
+  color: #333;
+  font-weight: 600; /* ✅ más grueso */
+}
+
+.contact-info a {
+  color: #00172e;
+  text-decoration: none;
+  font-weight: 700; /* ✅ enlaces más destacados */
+}
+
+.contact-info a:hover {
+  text-decoration: underline;
+}
+
+.contact-section h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  color: #00172e;
+  font-size: 28px;  /* ✅ más grande */
+  font-weight: 700; /* ✅ grueso */
+}
+
+.contact-section p {
+  text-align: center;
+  margin-bottom: 20px;
+  color: #555;
+  font-size: 16px;  /* ✅ tamaño un poco mayor */
+  font-weight: 500; /* ✅ más visible */
+  line-height: 1.6;
+}
+
+#formContacto input,
+#formContacto textarea {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 15px;
+  width: 100%;
+  font-weight: 500; /* ✅ más legible */
+}
+
+#formContacto input:focus,
+#formContacto textarea:focus {
+  border-color: #00172e;
+  outline: none;
+}
+
+#formContacto button {
+  background-color: #00172e;
+  color: #fff;
+  padding: 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700; /* ✅ botón más destacado */
+  font-size: 16px;
+  transition: background 0.2s ease-in-out;
+}
+
+#formContacto button:hover {
+  background-color: #005fa3;
+}
+
+
+
+.badge-activa {
+  background: #28a745; /* verde */
+  color: white;
+}
+.badge-inactiva {
+  background: #dc3545; /* rojo */
+  color: white;
+}
+/* Contenedor de badges (tipo, modalidad, estado) */
+.prop-badges {
+  display: flex!important;;
+  gap: 8px!important;
+  margin: 4px 8px!important;
+  flex-wrap: wrap!important; /* para que no se desborden en móviles */
+}
+
+/* Badge general */
+.prop-badge {
+  background: #fff;
+  color: #003264;
+  padding: 2px 8px;
+  border-radius: 6px!important;
+  font-size: 13px!important;
+  font-weight: 700!important;
+  white-space: nowrap!important;
+  box-shadow: 0 2px 4px rgba(0,0,0,12)!important;
+
 }

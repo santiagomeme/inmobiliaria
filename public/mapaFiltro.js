@@ -213,6 +213,12 @@ function aplicarFiltros() {
   const estadoVal   = (document.getElementById("estado")?.value || "").toLowerCase().trim();
   const destacada   = document.getElementById("destacada")?.checked || false;
   const activaVal   = (document.getElementById("filtroActiva")?.value || "todas").toLowerCase().trim();
+  // 🔹 Nuevos filtros
+  const estratoVal     = parseInt(document.getElementById("estrato")?.value) || 0;
+  const codigoVal      = (document.getElementById("codigo")?.value || "").toLowerCase().trim();
+  const pisoVal        = parseInt(document.getElementById("piso")?.value) || 0;
+  const paisVal        = (document.getElementById("pais")?.value || "").toLowerCase().trim();
+  const departamentoVal= (document.getElementById("departamento")?.value || "").toLowerCase().trim();
 
   const filtradas = (window.propiedades || []).filter((prop) => {
     const pTipo      = (prop.tipo || "").toLowerCase();
@@ -226,6 +232,12 @@ function aplicarFiltros() {
     const pDestacada = !!prop.destacada;
     const pNueva     = !!prop.propiedadNueva; // ✅ normalizamos a booleano
     const pActiva = String(prop.activa).toLowerCase() === "true";
+  // 🔹 Nuevos valores de propiedades
+    const pEstrato     = Number(prop.estrato) || 0;
+    const pCodigo      = (prop.codigo || "").toLowerCase();
+    const pPiso        = Number(prop.piso) || 0;
+    const pPais        = (prop.pais || "").toLowerCase();
+    const pDepartamento= (prop.departamento || "").toLowerCase();
 
     const okTipo = tipoVal ? pTipo.includes(tipoVal) : true;
     const okPrecio    = pPrecio >= precioMin && pPrecio <= precioMax;
@@ -237,7 +249,13 @@ function aplicarFiltros() {
     const okGaraje    = garajeVal ? pGarajes >= garajeVal : true;
     const okDestacada = destacada ? pDestacada === true : true;
     const okNueva     = soloNuevas ? pNueva === true : true; // ✅ Nuevo filtro
-   
+    // 🔹 Nuevos filtros
+    const okEstrato     = estratoVal ? pEstrato === estratoVal : true;
+    const okCodigo      = codigoVal ? pCodigo.includes(codigoVal) : true;
+    const okPiso        = pisoVal ? pPiso === pisoVal : true;
+    const okPais        = paisVal ? pPais.includes(paisVal) : true;
+    const okDepartamento= departamentoVal ? pDepartamento.includes(departamentoVal) : true;
+
     // 🔎 Filtro nueva condición: activa/inactiva
     const okActiva = activaVal !== "todas"
       ? (activaVal === "true" ? pActiva === true : pActiva === false)
@@ -254,8 +272,13 @@ function aplicarFiltros() {
       okGaraje &&
       okDestacada &&
       okNueva &&// 👉 se agrega aquí
-      okActiva // 👉 se agrega aquí
-
+      okActiva &&// 👉 se agrega aquí
+      okEstrato &&        // 👈 agregado
+      okCodigo &&         // 👈 agregado
+      okPiso &&           // 👈 agregado
+      okPais &&           // 👈 agregado
+      okDepartamento      // 👈 agregado
+  
     );
   });
 

@@ -75,6 +75,7 @@
   <option value="construccion">En construcción</option>
   <option value="proyecto">Proyecto</option>
 </select>
+   <!-- Habitaciones -->
 
    <label for="habitaciones">Habitaciones:</label>
    <input type="number" id="habitaciones" min="0" required>
@@ -94,6 +95,39 @@
         <button type="button" id="buscarDireccion">Buscar dirección</button>
         <button type="button" id="abrirGoogleMaps">Ver en Google Maps</button>
       </div>
+<!-- Campos adicionales -->
+<label for="codigo">Código de propiedad</label>
+<input type="text" id="codigo" placeholder="Ej: APT-001" required>
+
+<label for="piso">Piso</label>
+<input type="number" id="piso" min="0" required>
+
+<label for="estrato">Estrato</label>
+<input type="number" id="estrato" min="1" max="6" required>
+
+<label for="pais">País</label>
+<input type="text" id="pais" placeholder="Ej: Colombia" required>
+
+<label for="departamento">Departamento</label>
+<input type="text" id="departamento" placeholder="Ej: Cundinamarca" required>
+
+<!-- Características internas -->
+<div id="caracteristicas-internas-container">
+  <label>Características internas</label>
+  <div class="caracteristica-item">
+    <input type="text" class="caracteristica-interna" placeholder="Ej: Piso en cerámica">
+  </div>
+</div>
+<button type="button" onclick="agregarCaracteristica('interna')">+ Agregar característica interna</button>
+
+<!-- Características externas -->
+<div id="caracteristicas-externas-container">
+  <label>Características externas</label>
+  <div class="caracteristica-item">
+    <input type="text" class="caracteristica-externa" placeholder="Ej: Parqueadero visitantes">
+  </div>
+</div>
+<button type="button" onclick="agregarCaracteristica('externa')">+ Agregar característica externa</button>
 
      <!-- Nuevo select para Tipo de Propiedad -->
   <select id="tipo" required>
@@ -113,7 +147,7 @@
     <option value="penthouse">Penthouse</option>
     <option value="lote">Lote</option>
   </select>
-      <input type="number" id="precio" placeholder="Precio" required>
+      <input type="text" id="precio" placeholder="Precio" required>
 <label for="imagenes">Imágenes</label>
 <input type="text" id="imagenes" name="imagenes" placeholder="ruta1.jpg, ruta2.jpg">
 <small>Escribe los nombres de archivo separados por coma</small>
@@ -137,6 +171,19 @@
       <button type="submit"  type="button"class="btn">Guardar Propiedad</button>
     </form>
   </section>
+<button id="btnVerPropiedades" style="
+  margin: 10px;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  background: #00172e;
+  color: #fff;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+">
+  📍 Ver propiedades en el mapa
+</button>
 
   <section class="admin-listado">
     <h2>Listado de propiedades</h2>

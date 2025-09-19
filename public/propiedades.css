@@ -117,9 +117,9 @@ html, body {
 
 /* Badge general */
 .prop-badge {
-  background: #fff!important;
-  color: #003264!important;
-  padding: 2px 8px!important;
+  background: #fff;
+  color: #003264;
+  padding: 2px 8px;
   border-radius: 6px!important;
   font-size: 13px!important;
   font-weight: 700!important;
@@ -140,11 +140,11 @@ html, body {
 }
 /* Precio bien resaltado */
 .prop-card .prop-precio {
-  font-size: 1.3rem;       /* más grande */
-  font-weight: 700;        /* más grueso */
-  color: #003264;          /* azul elegante */
-  margin: 8px 12px;
-  text-align: right;       /* alineado a la derecha */
+  font-size: 1.3rem!important;       /* más grande */
+  font-weight: 700!important;        /* más grueso */
+  color: #003264!important;          /* azul elegante */
+  margin: 8px 12px!important;
+  text-align: right!important;       /* alineado a la derecha */
 }
 
 /* Valores numéricos (baños, habitaciones, garajes, área) */
@@ -589,15 +589,6 @@ color: #00172e;
   box-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }
 
-/* Precio atractivo */
-.prop-precio {
-  color: dodgerblue;
-  font-size: 1.4rem;
-  font-weight: bold;
-  text-align: right;
-  margin-top: 10px;
-}
-
 
 .precio-container {
   display: flex;
@@ -621,9 +612,18 @@ color: #00172e;
 
 .badge-destacada i {
   margin-right: 5px!important;
-  color: orange;
+  color: orange!important;
 }
 
 .leaflet-popup {
   z-index: 99999 !important;
+}
+
+.badge-activa {
+  background: #28a745; /* verde */
+  color: white;
+}
+.badge-inactiva {
+  background: #dc3545; /* rojo */
+  color: white;
 }

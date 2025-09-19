@@ -150,9 +150,10 @@ async function cargarPropiedades() {
           </span>
           <span class="prop-badge">${data.modalidad || ""}</span>
           <span class="prop-badge">${data.estado || ""}</span>
-          <span class="prop-badge" style="background:${data.activa ? '#2E8B57' : '#B22222'};color:#fff;">
-            ${data.activa ? 'Activa' : 'Inactiva'}
-          </span>
+        <span class="prop-badge ${data.activa ? "badge-activa" : "badge-inactiva"}">
+        ${data.activa ? "Activa" : "Inactiva"}
+        </span>
+
         </div>
 
         <p>${data.ciudad || ""}</p>

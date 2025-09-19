@@ -61,12 +61,12 @@ function formatearPrecio(valor) {
 // ICONOS POR TIPO
 // ==========================
 // Iconos que coinciden con la leyenda
-const iconCasa          = crearIcono("goldenrod", "fas fa-home");
+const iconCasa          = crearIcono("#FFBF00", "fas fa-home");
 const iconApartamento   = crearIcono("dodgerblue", "fas fa-building");
 const iconLote          = crearIcono("darkorange", "fas fa-border-all");
-const iconFinca         = crearIcono("green", "fas fa-tractor");
+const iconFinca         = crearIcono("#66FF00", "fas fa-tractor");
 const iconApartaestudio = crearIcono("hotpink", "fas fa-door-open");
-const iconBodega        = crearIcono("gray", "fas fa-warehouse");
+const iconBodega        = crearIcono("#666633", "fas fa-warehouse");
 const iconCampestre     = crearIcono("darkgreen", "fas fa-tree");
 const iconCondominio    = crearIcono("lightseagreen", "fas fa-city"); // 👈 mismo que en la leyenda
 const iconDuplex        = crearIcono("saddlebrown", "fas fa-house-user"); // 👈 igual al de la leyenda
@@ -86,7 +86,7 @@ const estilosPorTipo = {
   "casa":        { icono: iconCasa,        color: "goldenrod" },
   "apartamento": { icono: iconApartamento, color: "dodgerblue" },
   "lote":        { icono: iconLote,        color: "darkorange" },
-  "finca":       { icono: iconFinca,       color: "green" },
+  "finca":       { icono: iconFinca,       color: "#66FF00" },
   "apartaestudio": { icono: iconApartaestudio, color: "hotpink" },
   "bodega":      { icono: iconBodega,      color: "grey" },
   "campestre":   { icono: iconCampestre,   color: "darkgreen" },

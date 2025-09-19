@@ -4,6 +4,67 @@ document.addEventListener("DOMContentLoaded", () => {
   // ==========================
   const form = document.getElementById("registroForm");
   if (!form) return;
+// Ícono especial para edición
+const iconEdicion = crearIcono("orangered", "fas fa-edit");
+
+
+  // Crear mapa centrado en Bogotá
+const map = L.map("map").setView([3.4516, -76.5320], 13);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  maxZoom: 19,
+}).addTo(map);
+
+let marker;
+
+
+let markersLayer = L.layerGroup().addTo(map);
+
+function crearPopup(datos) {
+  // ✅ Valores seguros
+  const img   = datos.imagen || "img/no-image.png";
+  const titulo = datos.titulo || "Sin título";
+  const precio = datos.precio ? `$${datos.precio.toLocaleString()}` : "Sin precio";
+  const tipo    = datos.tipo || "Sin tipo";
+
+  return `
+    <div style="text-align:center; width:160px; font-family:sans-serif;">
+      <img src="${img}" 
+           style="width:100%; border-radius:6px; margin-bottom:4px;" 
+           alt="${titulo}">
+      <h4 style="margin:4px 0; font-size:14px; font-weight:600; color:#333;">
+        ${titulo}
+      </h4>
+      <p style="margin:2px 0; font-size:13px; color:#2E8B57; font-weight:bold;">
+        ${precio}
+      </p>
+       <p style="margin:2px 0; font-size:12px; color:#555;">
+        Tipo: <strong>${tipo}</strong>
+      </p>
+    </div>
+  `;
+}
+
+
+
+function setMarker(lat, lng, estilo = null) {
+  markersLayer.clearLayers(); // 👈 limpia todos los anteriores
+
+  const icono = estilo?.icono || new L.Icon.Default();
+
+  marker = L.marker([lat, lng], { draggable: true, icon: icono }).addTo(markersLayer);
+
+  marker.on("dragend", (e) => {
+    const { lat, lng } = e.target.getLatLng();
+    document.getElementById("lat").value = lat;
+    document.getElementById("lng").value = lng;
+  });
+
+  document.getElementById("lat").value = lat;
+  document.getElementById("lng").value = lng;
+}
+
+
+
 
 function formatearPrecio(valor) {
   if (!valor) return "";
@@ -33,14 +94,6 @@ L.Icon.Default.mergeOptions({
   shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png"
 });
 
-
-// Crear mapa centrado en Bogotá
-const map = L.map("map").setView([3.4516, -76.5320], 13);
-L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  maxZoom: 19,
-}).addTo(map);
-
-let marker;
 
 
 
@@ -85,12 +138,13 @@ buscarBtn.addEventListener("click", async () => {
 // ==========================
 // 2. Click en el mapa → Coordenadas → Dirección (opcional)
 // ==========================
-// 👉 Si ya no quieres que se cambie la dirección, puedes comentar esta parte.
-//    Así el pin solo se mueve con click y arrastre, pero sin sobreescribir la dirección.
-map.on("click", (e) => {
-  const { lat, lng } = e.latlng;
-  setMarker(lat, lng);
+
+map.on("click", function (e) {
+  // Siempre permite mover el pin, tanto en creación como en edición
+  const tipo = document.getElementById("tipo").value.trim().toLowerCase();
+  setMarker(e.latlng.lat, e.latlng.lng, tipo);
 });
+
 
 // ==========================
 // 3. Abrir Google Maps con la dirección o coordenadas
@@ -106,6 +160,37 @@ mapsBtn.addEventListener("click", () => {
   );
 });
 
+// ==========================
+// FUNCION: agregarCaracteristica
+// ==========================
+// ==========================
+// FUNCION: agregarCaracteristica
+// ==========================
+window.agregarCaracteristica = function (tipo, valor = "") {
+  const container = document.getElementById(
+    tipo === "interna"
+      ? "caracteristicas-internas-container"
+      : "caracteristicas-externas-container"
+  );
+
+  const div = document.createElement("div");
+  div.classList.add("caracteristica-item");
+  div.innerHTML = `
+    <input type="text" 
+           class="caracteristica-${tipo}" 
+           placeholder="Escribe una característica"
+           value="${valor}">
+    <button type="button" class="btn-quitar">❌</button>
+  `;
+
+  // Evento para quitar característica
+  div.querySelector(".btn-quitar").addEventListener("click", () => {
+    div.remove();
+  });
+
+  container.appendChild(div);
+};
+
 
 
 // ==========================
@@ -118,15 +203,15 @@ form.addEventListener("submit", async (e) => {
   const descripcion  = document.getElementById("descripcion").value.trim();
   const ciudad       = document.getElementById("ciudad").value.trim();
   const direccion    = document.getElementById("direccion").value.trim();
-// Normalizamos el tipo: minúsculas y sin tildes
-let tipo = document.getElementById("tipo").value.trim().toLowerCase();
-tipo = tipo.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); 
+  // Normalizamos el tipo: minúsculas y sin tildes
+  let tipo = document.getElementById("tipo").value.trim().toLowerCase();
+  tipo = tipo.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); 
   const modalidad    = document.getElementById("modalidad").value.trim();  // venta o alquiler
   const habitaciones = parseInt(document.getElementById("habitaciones").value) || 0;
   const banos        = parseInt(document.getElementById("banos").value) || 0;
-// limpiar puntos y comas, para que siempre se guarde como número
-const precioRaw = document.getElementById("precio").value.replace(/\./g, "").replace(/,/g, "");
-const precio = parseFloat(precioRaw) || 0;
+  // limpiar puntos y comas, para que siempre se guarde como número
+  const precioRaw = document.getElementById("precio").value.replace(/\./g, "").replace(/,/g, "");
+  const precio = parseFloat(precioRaw) || 0;
   const garage = parseInt(document.getElementById("garage").value) || 0;
   const area = parseFloat(document.getElementById("area").value) || 0;
   const estado = document.getElementById("estado").value.trim();
@@ -147,6 +232,22 @@ const precio = parseFloat(precioRaw) || 0;
   const activa = document.getElementById("activa").checked; 
   const destacada = document.getElementById("destacada").checked;
 
+    // 👇 NUEVOS CAMPOS
+  const codigo       = document.getElementById("codigo")?.value.trim() || "";
+  const piso         = parseInt(document.getElementById("piso")?.value) || 0;
+  const estrato      = parseInt(document.getElementById("estrato")?.value) || 0;
+  const pais         = document.getElementById("pais")?.value.trim() || "";
+  const departamento = document.getElementById("departamento")?.value.trim() || "";
+
+
+    // 👇 Características internas/externas
+  const internas = Array.from(document.querySelectorAll(".caracteristica-interna"))
+    .map(input => input.value.trim())
+    .filter(val => val !== "");
+
+  const externas = Array.from(document.querySelectorAll(".caracteristica-externa"))
+    .map(input => input.value.trim())
+    .filter(val => val !== "");
   // Validación
 if (!titulo || !ciudad || !direccion || !tipo || !modalidad || !precio || imagenes.length === 0 || lat === null || lng === null) {
     alert("Completa todos los campos correctamente.");
@@ -172,7 +273,15 @@ if (!titulo || !ciudad || !direccion || !tipo || !modalidad || !precio || imagen
     lng,
     activa,
     destacada,
-    fecha: firebase.firestore.FieldValue.serverTimestamp()
+    codigo,       // 👈 nuevo
+    piso,         // 👈 nuevo
+    estrato,      // 👈 nuevo
+    pais,         // 👈 nuevo
+    departamento, // 👈 nuevo
+    internas,     // 👈 array
+    externas,     // 👈 array
+    fecha: firebase.firestore.FieldValue.serverTimestamp(),
+
   };
 
   try {
@@ -188,15 +297,17 @@ if (!titulo || !ciudad || !direccion || !tipo || !modalidad || !precio || imagen
       alert("Propiedad registrada ✅");
     }
 
-    form.reset();
-    if (marker) {
-      map.removeLayer(marker);
-    }
-    marker = L.marker([4.6097, -74.0817]).addTo(map); // reset marcador
-    map.setView([4.6097, -74.0817], 13);
+// 👉 Mostrar marcador con popup
+// 👇 Limpia y vuelve a cargar todos los marcadores desde la BD
+markersLayer.clearLayers();
+await cargarAdminPropiedades();
 
-    cargarAdminPropiedades();
-    cargarPropiedadesMapa();
+ // 👉 Centrar el mapa en la propiedad editada/creada
+  if (lat && lng) {
+    map.setView([lat, lng], 16);
+  }
+    form.reset();
+ 
 
   } catch (err) {
     console.error("Error guardando propiedad:", err);
@@ -230,6 +341,17 @@ async function cargarAdminPropiedades() {
       const tipo = prop.tipo || "Otro";
       const destacada = prop.destacada === true;
       const activa = prop.activa === true;   // ✅ se agrega esta línea
+      const codigo       = prop.codigo || "Sin código";
+      const piso         = prop.piso || 0;
+      const estrato      = prop.estrato || 0;
+      const pais         = prop.pais || "Sin país";
+      const departamento = prop.departamento || "Sin departamento";
+
+      const internas     = prop.internas || [];
+      const externas     = prop.externas || [];
+
+
+
 
       // imagen principal
 let imagen = "imagenes/default.png";
@@ -245,6 +367,7 @@ if (!imagen.startsWith("http")) {
       // estilo por tipo
       const estilo = estilosPorTipo[tipo.toLowerCase()] || { color: "#555" };
       const color = estilo.color;
+
 
       // ==========================
       // Card unificada (modelo mapa.js)
@@ -311,7 +434,9 @@ if (!imagen.startsWith("http")) {
     }
   };
 cargarAdminPropiedades();
-cargarPropiedadesMapa();
+//cargarPropiedadesMapa();
+
+
 
 // ==========================
 //  EDITAR PROPIEDAD
@@ -326,33 +451,67 @@ window.editarPropiedad = async function(id) {
     // ==========================
     //  Cargar valores al formulario
     // ==========================
-    document.getElementById("area").value          = prop.area || 0;
-    document.getElementById("estado").value        = prop.estado || "";
-    document.getElementById("propiedadNueva").checked = prop.propiedadNueva === true;
-    document.getElementById("titulo").value        = prop.titulo || "";
-    document.getElementById("descripcion").value   = prop.descripcion || "";
-    document.getElementById("ciudad").value        = prop.ciudad || "";
-    document.getElementById("direccion").value     = prop.direccion || "";
-    document.getElementById("garage").value        = prop.garage || 0;
-    document.getElementById("tipo").value          = prop.tipo || "";
-    document.getElementById("modalidad").value     = prop.modalidad || "";
-    document.getElementById("habitaciones").value  = prop.habitaciones || 0;
-    document.getElementById("banos").value         = prop.banos || 0;
-    document.getElementById("precio").value = formatearPrecio(prop.precio) || "";
-let imgs = [];
-if (prop.imagenes) {
-  imgs = Array.isArray(prop.imagenes) ? prop.imagenes : [prop.imagenes];
-}
-document.getElementById("imagenes").value = imgs.join(", ");
-    document.getElementById("lat").value           = prop.lat || "";
-    document.getElementById("lng").value           = prop.lng || "";
-    document.getElementById("activa").checked = prop.activa === true;
-    document.getElementById("destacada").checked   = prop.destacada === true;
+    document.getElementById("area").value            = prop.area || 0;
+    document.getElementById("estado").value          = prop.estado || "";
+    document.getElementById("propiedadNueva").checked= prop.propiedadNueva === true;
+    document.getElementById("titulo").value          = prop.titulo || "";
+    document.getElementById("descripcion").value     = prop.descripcion || "";
+    document.getElementById("ciudad").value          = prop.ciudad || "";
+    document.getElementById("direccion").value       = prop.direccion || "";
+    document.getElementById("garage").value          = prop.garage || 0;
+    document.getElementById("tipo").value            = prop.tipo || "";
+    document.getElementById("modalidad").value       = prop.modalidad || "";
+    document.getElementById("habitaciones").value    = prop.habitaciones || 0;
+    document.getElementById("banos").value           = prop.banos || 0;
+    document.getElementById("codigo").value       = prop.codigo || "";
+    document.getElementById("estrato").value      = prop.estrato || "";
+    document.getElementById("piso").value         = prop.piso || "";
+    document.getElementById("pais").value         = prop.pais || "";
+    document.getElementById("departamento").value = prop.departamento || "";
+    document.getElementById("precio").value = prop.precio != null ? prop.precio.toLocaleString("es-CO") : "";
 
-  // ==========================
-//  Actualizar marcador en el mapa
-// ==========================
-setMarker(prop.lat || 4.6097, prop.lng || -74.0817, prop.tipo?.toLowerCase());
+    let imgs = [];
+    if (prop.imagenes) {
+      imgs = Array.isArray(prop.imagenes) ? prop.imagenes : [prop.imagenes];
+    }
+    document.getElementById("imagenes").value = imgs.join(", ");
+
+    document.getElementById("lat").value = prop.lat || "";
+    document.getElementById("lng").value = prop.lng || "";
+    document.getElementById("activa").checked   = prop.activa === true;
+    document.getElementById("destacada").checked= prop.destacada === true;
+
+    // ==========================
+    //  Características internas y externas
+    // ==========================
+    const internasContainer = document.getElementById("caracteristicas-internas-container");
+    internasContainer.innerHTML = ""; // limpiar antes de insertar
+    if (prop.internas && prop.internas.length > 0) {
+      prop.internas.forEach(car => agregarCaracteristica("interna", car));
+    } else {
+      agregarCaracteristica("interna"); // siempre al menos un campo
+    }
+
+    const externasContainer = document.getElementById("caracteristicas-externas-container");
+    externasContainer.innerHTML = "";
+    if (prop.externas && prop.externas.length > 0) {
+      prop.externas.forEach(car => agregarCaracteristica("externa", car));
+    } else {
+      agregarCaracteristica("externa");
+    }
+
+    // ==========================
+    //  Actualizar marcador en el mapa SOLO UNO
+    // ==========================
+    const iconEdicion = crearIcono("orangered", "fas fa-edit"); // 🔥 Ícono especial para edición
+
+    setMarker(
+      prop.lat || 4.6097,
+      prop.lng || -74.0817,
+      prop.tipo?.toLowerCase(),
+      prop,          // datos de la propiedad (para popup)
+      true           // 👈 modo edición = ícono naranja
+    );
 
     // ==========================
     //  Activar modo edición
@@ -371,8 +530,11 @@ setMarker(prop.lat || 4.6097, prop.lng || -74.0817, prop.tipo?.toLowerCase());
 };
 
 
+
+
+
   cargarAdminPropiedades();
-cargarPropiedadesMapa();
+//cargarPropiedadesMapa();
 
 
 
@@ -405,30 +567,30 @@ function crearIcono(color, iconoFA) {
   });
 }
 
-const iconCasa        = crearIcono("goldenrod", "fas fa-home");
+const iconCasa        = crearIcono("#FFBF00", "fas fa-home");
 const iconApartamento = crearIcono("dodgerblue", "fas fa-building");
 const iconLote        = crearIcono("darkorange", "fas fa-border-all");
-const iconFinca       = crearIcono("green", "fas fa-tractor");
+const iconFinca       = crearIcono("#66FF00", "fas fa-tractor");
 const iconApartaestudio = crearIcono("hotpink", "fas fa-door-open");
-const iconBodega      = crearIcono("grey", "fas fa-warehouse");
+const iconBodega      = crearIcono("#666633", "fas fa-warehouse");
 const iconCampestre   = crearIcono("darkgreen", "fas fa-tree");
 const iconCondominio  = crearIcono("navy", "fas fa-city"); // 🔵 cambiado a azul más oscuro
 const iconDuplex      = crearIcono("saddlebrown", "fas fa-building");
 const iconEdificio    = crearIcono("black", "fas fa-building-circle-check");
 const iconLocal       = crearIcono("red", "fas fa-store");
-const iconHotel       = crearIcono("darkred", "fas fa-hotel");
+const iconHotel       = crearIcono("darkred", "fas fa-concierge-bell"); // igual que en leyenda
 const iconOficina     = crearIcono("purple", "fas fa-briefcase");
 const iconPenthouse   = crearIcono("goldenrod", "fas fa-crown");
 
 
 // Mapeo tipo -> icono + color (útil para badges también)
 const estilosPorTipo = {
-  "casa":        { icono: iconCasa,        color: "goldenrod" },
+  "casa":        { icono: iconCasa,        color: "#FFBF00" },
   "apartamento": { icono: iconApartamento, color: "dodgerblue" },
   "lote":        { icono: iconLote,        color: "darkorange" },
-  "finca":       { icono: iconFinca,       color: "green" },
+  "finca":       { icono: iconFinca,       color: "#66FF00" },
   "apartaestudio": { icono: iconApartaestudio, color: "hotpink" },
-  "bodega":      { icono: iconBodega,      color: "grey" },
+  "bodega":      { icono: iconBodega,      color: "#666633" },
   "campestre":   { icono: iconCampestre,   color: "darkgreen" },
   "condominio":  { icono: iconCondominio,  color: "navy" },  // 🔵 diferente de apartamento
   "duplex":      { icono: iconDuplex,      color: "saddlebrown" },
@@ -440,69 +602,133 @@ const estilosPorTipo = {
 };
 
 
-function setMarker(lat, lon, tipo = null) {
-
+// ==========================
+//  SETEAR MARCADOR EN EL MAPA
+// ==========================
+function setMarker(lat, lon, tipo = null, datos = null, modoEdicion = false) {
+  // Si ya hay un marcador, lo quitamos antes de crear uno nuevo
   if (marker) map.removeLayer(marker);
 
   let icon;
-  if (tipo === 'casa') icon = iconCasa;
-  else if (tipo === 'finca') icon = iconFinca;
-  else if (tipo === 'apartamento' || tipo === 'departamento') icon = iconApartamento;
-  else if (tipo === 'lote') icon = iconLote;
-  else if (tipo === 'apartaestudio') icon = iconApartaestudio;
-  else if (tipo === 'bodega') icon = iconBodega;
-  else if (tipo === 'campestre') icon = iconCampestre;
-  else if (tipo === 'condominio') icon = iconCondominio;
-  else if (tipo === 'duplex') icon = iconDuplex;
-  else if (tipo === 'edificio') icon = iconEdificio;
-  else if (tipo === 'local') icon = iconLocal;
-  else if (tipo === 'hotel') icon = iconHotel;
-  else if (tipo === 'oficina') icon = iconOficina;
-  else if (tipo === 'penthouse') icon = iconPenthouse;
-  else {
-    // 👇 Ícono por defecto si no hay tipo o no coincide
-    icon = L.icon({
-      iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
-      shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
-      iconSize: [25, 41],
-      iconAnchor: [12, 41],
-      popupAnchor: [1, -34],
-      shadowSize: [41, 41]
-    });
+
+  // 🎯 Si estamos editando, usamos un ícono especial naranja
+  if (modoEdicion) {
+    icon = crearIcono("#00172e", "fas fa-edit");
+  } else {
+    // Caso normal: asignamos icono según tipo
+    if (tipo === "casa") icon = iconCasa;
+    else if (tipo === "finca") icon = iconFinca;
+    else if (tipo === "apartamento" || tipo === "departamento") icon = iconApartamento;
+    else if (tipo === "lote") icon = iconLote;
+    else if (tipo === "apartaestudio") icon = iconApartaestudio;
+    else if (tipo === "bodega") icon = iconBodega;
+    else if (tipo === "campestre") icon = iconCampestre;
+    else if (tipo === "condominio") icon = iconCondominio;
+    else if (tipo === "duplex") icon = iconDuplex;
+    else if (tipo === "edificio") icon = iconEdificio;
+    else if (tipo === "local") icon = iconLocal;
+    else if (tipo === "hotel") icon = iconHotel;
+    else if (tipo === "oficina") icon = iconOficina;
+    else if (tipo === "penthouse") icon = iconPenthouse;
+    else {
+      // 👇 Ícono por defecto si no hay tipo o no coincide
+      icon = L.icon({
+        iconUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+        shadowUrl: "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+        iconSize: [30, 51],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41],
+        
+      });
+    }
   }
 
+  // ✅ Creamos el marcador
   marker = L.marker([lat, lon], { draggable: true, icon }).addTo(map);
   map.setView([lat, lon], 15);
 
-  latInput.value = lat;
-  lngInput.value = lon;
+  // ✅ Si nos pasaron datos (propiedad existente), mostramos popup
+ if (datos) {
+  // Seguridad básica para evitar errores de null/undefined
+  const safeTitulo = datos.titulo || "Sin título";
+  const safePrecio = datos.precio ? "COP $" + formatearPrecio(datos.precio) : "";
+  const safeTipo   = datos.tipo || "Propiedad";
+  const imgSrcPopup = (datos.imagenes && datos.imagenes[0]) 
+    ? datos.imagenes[0] 
+    : "https://via.placeholder.com/160x100?text=Sin+Imagen"; // 👈 imagen por defecto
+  const color = "#2E8B57"; // verde por ejemplo (puedes cambiarlo)
 
+  marker
+    .bindPopup(`
+      <div style="
+        width:180px;
+        text-align:center;
+        font-family:sans-serif;
+        border-radius:10px;
+        background:#fff;
+        box-shadow:0 2px 8px rgba(0,0,0,0.25);
+        padding:8px;">
+        
+        <img src="${imgSrcPopup}" 
+             alt="${safeTitulo}" 
+             style="width:100%;border-radius:8px;margin-bottom:6px;">
+        
+        <h4 style="margin:4px 0;font-size:14px;font-weight:600;color:#333;">
+          ${safeTitulo}
+        </h4>
+        
+        <p style="margin:2px 0;font-size:13px;color:#2E8B57;font-weight:bold;">
+          ${safePrecio}
+        </p>
+        
+        <span style="
+          display:inline-block;
+          margin-top:3px;
+          padding:2px 6px;
+          border-radius:6px;
+          font-size:12px;
+          background:${color};
+          color:#fff;
+          font-weight:bold;
+          white-space:nowrap;">
+          ${safeTipo}
+        </span>
+       
+      </div>
+    `)
+    .openPopup();
+}
+
+  
+
+  // ✅ Guardamos coordenadas si el usuario arrastra el pin
   marker.on("dragend", function (e) {
     const newPos = e.target.getLatLng();
     latInput.value = newPos.lat;
     lngInput.value = newPos.lng;
-    console.log("Pin ajustado manualmente:", newPos.lat, newPos.lng);
+    console.log("📍 Pin ajustado manualmente:", newPos.lat, newPos.lng);
   });
 
-
-
-
-
+  // ✅ Guardar coordenadas iniciales
+  latInput.value = lat;
+  lngInput.value = lon;
 }
+
 
 
 
 // ==========================
 // CAPA DE MARCADORES DEL LISTADO
 // ==========================
-const markersLayer = L.layerGroup().addTo(map);
+markersLayer = L.layerGroup().addTo(map);
 
 function getEstiloByTipo(tipo) {
   return estilosPorTipo[tipo?.toLowerCase()] || { icono: L.Icon.Default, color: "#555" };
 }
 
 async function cargarPropiedadesMapa() {
-  markersLayer.clearLayers();
+ // markersLayer.clearLayers();
 
   try {
     const snapshot = await firebase.firestore().collection("propiedades").get();
@@ -516,8 +742,10 @@ async function cargarPropiedadesMapa() {
         const marker = L.marker([data.lat, data.lng], { icon: icono }).addTo(markersLayer);
 
         marker.bindPopup(`
+          
           <strong>${data.titulo || "Sin título"}</strong><br>
           ${data.ciudad || ""}<br>
+          ${data.tipo || ""}<br>
           ${data.precio ? "$" + data.precio : ""}
         `);
       }
@@ -526,6 +754,22 @@ async function cargarPropiedadesMapa() {
     console.error("Error cargando propiedades en mapa:", err);
   }
 }
+//boton para ver todas las propiedades n el mapa
+let mostrandoPropiedades = false; // Estado: cargadas o no
+
+document.getElementById("btnVerPropiedades").addEventListener("click", () => {
+  if (mostrandoPropiedades) {
+    // 👉 Ocultar
+    markersLayer.clearLayers(); // elimina todos los pines del mapa
+    document.getElementById("btnVerPropiedades").textContent = "📍 Ver propiedades en el mapa";
+    mostrandoPropiedades = false;
+  } else {
+    // 👉 Mostrar
+    cargarPropiedadesMapa();
+    document.getElementById("btnVerPropiedades").textContent = "❌ Ocultar propiedades";
+    mostrandoPropiedades = true;
+  }
+});
 
 //===============================================
 //hacer q el mapa no se active solo tiene un oton
