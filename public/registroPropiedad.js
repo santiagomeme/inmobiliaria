@@ -66,10 +66,7 @@ function setMarker(lat, lng, estilo = null) {
 
 
 
-function formatearPrecio(valor) {
-  if (!valor) return "";
-  return valor.toLocaleString("es-CO"); // 👉 2.500.000
-}
+
 
 const adminLista = document.getElementById("adminLista");
 
@@ -203,225 +200,149 @@ form.addEventListener("submit", async (e) => {
   const descripcion  = document.getElementById("descripcion").value.trim();
   const ciudad       = document.getElementById("ciudad").value.trim();
   const direccion    = document.getElementById("direccion").value.trim();
-  // Normalizamos el tipo: minúsculas y sin tildes
-  let tipo = document.getElementById("tipo").value.trim().toLowerCase();
+  let tipo           = document.getElementById("tipo").value.trim().toLowerCase();
   tipo = tipo.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); 
-  const modalidad    = document.getElementById("modalidad").value.trim();  // venta o alquiler
+  const modalidad    = document.getElementById("modalidad").value.trim();
   const habitaciones = parseInt(document.getElementById("habitaciones").value) || 0;
   const banos        = parseInt(document.getElementById("banos").value) || 0;
-  // limpiar puntos y comas, para que siempre se guarde como número
+
+  // limpiar puntos y comas del precio
   const precioRaw = document.getElementById("precio").value.replace(/\./g, "").replace(/,/g, "");
   const precio = parseFloat(precioRaw) || 0;
+
   const garage = parseInt(document.getElementById("garage").value) || 0;
   const area = parseFloat(document.getElementById("area").value) || 0;
   const estado = document.getElementById("estado").value.trim();
   const propiedadNueva = document.getElementById("propiedadNueva").checked;
 
-// true si está marcado, false si no
-
-  // Obtener las imágenes desde el input
+  // imágenes
   const imagenesInput = document.getElementById("imagenes").value.trim();
-
-  // Convertir en array separando por comas
   const imagenes = imagenesInput.split(",")
     .map(img => img.trim())
-    .filter(img => img !== "");  // limpiar vacíos
+    .filter(img => img !== "");
 
   const lat = parseFloat(document.getElementById("lat").value) || null;
   const lng = parseFloat(document.getElementById("lng").value) || null;
   const activa = document.getElementById("activa").checked; 
   const destacada = document.getElementById("destacada").checked;
 
-    // 👇 NUEVOS CAMPOS
-  const codigo       = document.getElementById("codigo")?.value.trim() || "";
+  // 👇 NUEVOS CAMPOS
   const piso         = parseInt(document.getElementById("piso")?.value) || 0;
   const estrato      = parseInt(document.getElementById("estrato")?.value) || 0;
   const pais         = document.getElementById("pais")?.value.trim() || "";
   const departamento = document.getElementById("departamento")?.value.trim() || "";
 
-
-    // 👇 Características internas/externas
+  // 👇 Características internas/externas
   const internas = Array.from(document.querySelectorAll(".caracteristica-interna"))
     .map(input => input.value.trim())
     .filter(val => val !== "");
-
   const externas = Array.from(document.querySelectorAll(".caracteristica-externa"))
     .map(input => input.value.trim())
     .filter(val => val !== "");
+
   // Validación
-if (!titulo || !ciudad || !direccion || !tipo || !modalidad || !precio || imagenes.length === 0 || lat === null || lng === null) {
+  if (!titulo || !ciudad || !direccion || !tipo || !modalidad || !precio || imagenes.length === 0 || lat === null || lng === null) {
     alert("Completa todos los campos correctamente.");
     return;
   }
 
-  const datos = {
-    titulo,
-    descripcion,
-    ciudad,
-    direccion,
-    tipo,
-    modalidad,
-    habitaciones,
-    banos,
-    area,              // 👈 nuevo
-    estado,            // 👈 nuevo
-    propiedadNueva,    // 👈 nuevo (true/false)
-    garage,   // 👈 nuevo campo
-    precio,
-    imagenes,   // 👈 ahora es un array
-    lat,
-    lng,
-    activa,
-    destacada,
-    codigo,       // 👈 nuevo
-    piso,         // 👈 nuevo
-    estrato,      // 👈 nuevo
-    pais,         // 👈 nuevo
-    departamento, // 👈 nuevo
-    internas,     // 👈 array
-    externas,     // 👈 array
-    fecha: firebase.firestore.FieldValue.serverTimestamp(),
-
-  };
-
   try {
     if (modoEdicion && propiedadId) {
       // === ACTUALIZAR ===
+      const datos = {
+        titulo, descripcion, ciudad, direccion, tipo, modalidad,
+        habitaciones, banos, area, estado, propiedadNueva,
+        garage, precio, imagenes, lat, lng, activa, destacada,
+        piso, estrato, pais, departamento,
+        internas, externas,
+        fecha: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
       await firebase.firestore().collection("propiedades").doc(propiedadId).update(datos);
       alert("Propiedad actualizada ✅");
       modoEdicion = false;
       propiedadId = null;
+
     } else {
       // === CREAR ===
-      await firebase.firestore().collection("propiedades").add(datos);
-      alert("Propiedad registrada ✅");
+      // 👉 Usamos una transacción para generar el código único
+      const db = firebase.firestore();
+      const configRef = db.collection("config").doc("contador");
+
+      const codigoGenerado = await db.runTransaction(async (transaction) => {
+        const configDoc = await transaction.get(configRef);
+
+        if (!configDoc.exists) {
+          throw "El documento config/contador no existe ⚠️";
+        }
+
+        let ultimoCodigo = configDoc.data().ultimoCodigo || 0;
+        ultimoCodigo += 1; // incrementar
+
+        // actualizar en la BD
+        transaction.update(configRef, { ultimoCodigo });
+
+        // formatear como P0001
+        return "P" + String(ultimoCodigo).padStart(4, "0");
+      });
+
+      const datos = {
+        titulo, descripcion, ciudad, direccion, tipo, modalidad,
+        habitaciones, banos, area, estado, propiedadNueva,
+        garage, precio, imagenes, lat, lng, activa, destacada,
+        piso, estrato, pais, departamento,
+        internas, externas,
+        codigo: codigoGenerado, // 👈 asignamos el código único
+        fecha: firebase.firestore.FieldValue.serverTimestamp()
+      };
+
+      await db.collection("propiedades").add(datos);
+      alert("Propiedad registrada ✅ con código: " + codigoGenerado);
     }
 
-// 👉 Mostrar marcador con popup
-// 👇 Limpia y vuelve a cargar todos los marcadores desde la BD
-markersLayer.clearLayers();
-await cargarAdminPropiedades();
+    // 👉 Refrescar mapa
+    markersLayer.clearLayers();
+    await cargarAdminPropiedades();
 
- // 👉 Centrar el mapa en la propiedad editada/creada
-  if (lat && lng) {
-    map.setView([lat, lng], 16);
-  }
+    if (lat && lng) {
+      map.setView([lat, lng], 16);
+    }
+
     form.reset();
- 
 
   } catch (err) {
     console.error("Error guardando propiedad:", err);
     alert("No se pudo guardar la propiedad.");
   }
 });
+
+
 // ==========================
 //  LISTADO ADMIN PROPIEDADES
 // ==========================
 async function cargarAdminPropiedades() {
   if (!adminLista) return;
-  adminLista.innerHTML = "";
 
   try {
     const snapshot = await firebase.firestore().collection("propiedades").get();
+    const propiedades = [];
 
     snapshot.forEach(doc => {
       const prop = doc.data();
-
-      // valores por defecto
-      const area = prop.area || 0;
-      const estado = prop.estado || "Sin estado";
-      const propiedadNueva = prop.propiedadNueva === true;
-      const titulo = prop.titulo || "Sin título";
-      const precio = prop.precio || 0;
-      const modalidad = prop.modalidad || "Sin modalidad";
-      const ciudad = prop.ciudad || "Sin ciudad";
-      const banos = prop.banos || 0;
-      const habitaciones = prop.habitaciones || 0;
-      const garage = prop.garage || 0;
-      const tipo = prop.tipo || "Otro";
-      const destacada = prop.destacada === true;
-      const activa = prop.activa === true;   // ✅ se agrega esta línea
-      const codigo       = prop.codigo || "Sin código";
-      const piso         = prop.piso || 0;
-      const estrato      = prop.estrato || 0;
-      const pais         = prop.pais || "Sin país";
-      const departamento = prop.departamento || "Sin departamento";
-
-      const internas     = prop.internas || [];
-      const externas     = prop.externas || [];
-
-
-
-
-      // imagen principal
-let imagen = "imagenes/default.png";
-if (prop.imagenes && Array.isArray(prop.imagenes)) {
-  imagen = prop.imagenes.length > 0 ? prop.imagenes[0] : "imagenes/default.png";
-}
-
-// 👇 Asegurar que sea ruta absoluta en hosting
-if (!imagen.startsWith("http")) {
-  imagen = "/" + imagen;
-}
-
-      // estilo por tipo
-      const estilo = estilosPorTipo[tipo.toLowerCase()] || { color: "#555" };
-      const color = estilo.color;
-
-
-      // ==========================
-      // Card unificada (modelo mapa.js)
-      // ==========================
-      const card = document.createElement("div");
-      card.classList.add("prop-card");
-
-      card.innerHTML = `
-        <div class="card-img-wrapper">
-          <img src="${imagen}" alt="${titulo}">
-          ${propiedadNueva ? '<span class="badge-nueva">NUEVO</span>' : ""}
-        </div>
-
-        <div class="card-body">
-          <h3 class="card-title">${titulo}</h3>
-         
-        <div class="prop-badges">
-          <span class="prop-tipo" style="background:${color};">${tipo}
-          </span>
-          <span class="prop-badge">${modalidad || ""}</span>
-          <span class="prop-badge">${estado || ""}</span>
-   <span class="prop-badge ${activa ? "badge-activa" : "badge-inactiva"}">
-    ${activa ? "Activa" : "Inactiva"}
-  </span>      
-          </div>
-          
-          <p >${ciudad}</p>
-          <p><i class="fas fa-car"></i>  ${garage}</p>
-          <p><strong>Baños:</strong> <span class="prop-valor">${banos}</span></p>
-          <p><strong>Área:</strong> <span class="prop-valor">${area} m²</span></p>
-          <p><strong>Habitaciones:</strong> <span class="prop-valor">${habitaciones}</span></p>
-
-        <div class="precio-container">
-        ${destacada ? `<span class="badge-destacada"><i class="fas fa-star"></i> Destacada</span>` : ""}
-        <p class="prop-precio">COP $${formatearPrecio(precio) || "$0"}
-        </p>
-          <div class="card-actions">
-            <button class="btn-edit" onclick="editarPropiedad('${doc.id}')">
-              ✏️ Editar
-            </button>
-            <button class="btn-delete" onclick="eliminarPropiedad('${doc.id}')">
-              🗑️ Eliminar
-            </button>
-          </div>
-        </div>
-      `;
-
-      adminLista.appendChild(card);
+      prop.id = doc.id; // guardar el id para editar/eliminar
+      propiedades.push(prop);
     });
+
+    // estadísticas se encarga de todo: stats + render inicial
+    renderEstadisticas(propiedades);
+renderAdminListaFromArray(propiedades); // 👈 asegurar el primer render
+inicializarFiltroCodigo(propiedades);
 
   } catch (err) {
     console.error("Error cargando propiedades:", err);
   }
 }
+
 
 
   // ==========================
@@ -433,7 +354,7 @@ if (!imagen.startsWith("http")) {
       cargarAdminPropiedades();
     }
   };
-cargarAdminPropiedades();
+//cargarAdminPropiedades();
 //cargarPropiedadesMapa();
 
 
@@ -442,90 +363,112 @@ cargarAdminPropiedades();
 //  EDITAR PROPIEDAD
 // ==========================
 window.editarPropiedad = async function(id) {
-  const docRef = firebase.firestore().collection("propiedades").doc(id);
-  const docSnap = await docRef.get();
+  console.log("editarPropiedad llamado con id:", id);
+  try {
+    const docRef = firebase.firestore().collection("propiedades").doc(id);
+    const docSnap = await docRef.get();
 
-  if (docSnap.exists) {
+    if (!docSnap.exists) {
+      console.warn("Propiedad no encontrada:", id);
+      return;
+    }
+
     const prop = docSnap.data();
 
-    // ==========================
-    //  Cargar valores al formulario
-    // ==========================
-    document.getElementById("area").value            = prop.area || 0;
-    document.getElementById("estado").value          = prop.estado || "";
-    document.getElementById("propiedadNueva").checked= prop.propiedadNueva === true;
-    document.getElementById("titulo").value          = prop.titulo || "";
-    document.getElementById("descripcion").value     = prop.descripcion || "";
-    document.getElementById("ciudad").value          = prop.ciudad || "";
-    document.getElementById("direccion").value       = prop.direccion || "";
-    document.getElementById("garage").value          = prop.garage || 0;
-    document.getElementById("tipo").value            = prop.tipo || "";
-    document.getElementById("modalidad").value       = prop.modalidad || "";
-    document.getElementById("habitaciones").value    = prop.habitaciones || 0;
-    document.getElementById("banos").value           = prop.banos || 0;
-    document.getElementById("codigo").value       = prop.codigo || "";
-    document.getElementById("estrato").value      = prop.estrato || "";
-    document.getElementById("piso").value         = prop.piso || "";
-    document.getElementById("pais").value         = prop.pais || "";
-    document.getElementById("departamento").value = prop.departamento || "";
-    document.getElementById("precio").value = prop.precio != null ? prop.precio.toLocaleString("es-CO") : "";
+    // helper seguro
+    const safeSet = (elId, value) => {
+      const el = document.getElementById(elId);
+      if (!el) {
+        //console.warn("No existe elemento:", elId);
+        return;
+      }
+      if (el.type === "checkbox") el.checked = !!value;
+      else el.value = value;
+    };
 
+    safeSet("area", prop.area ?? 0);
+    safeSet("estado", prop.estado ?? "");
+    safeSet("propiedadNueva", prop.propiedadNueva === true);
+    safeSet("titulo", prop.titulo ?? "");
+    safeSet("descripcion", prop.descripcion ?? "");
+    safeSet("ciudad", prop.ciudad ?? "");
+    safeSet("direccion", prop.direccion ?? "");
+    safeSet("garage", prop.garage ?? 0);
+    safeSet("tipo", prop.tipo ?? "");
+    safeSet("modalidad", prop.modalidad ?? "");
+    safeSet("habitaciones", prop.habitaciones ?? 0);
+    safeSet("banos", prop.banos ?? 0);
+    safeSet("codigo", prop.codigo ?? "");
+    safeSet("estrato", prop.estrato ?? "");
+    safeSet("piso", prop.piso ?? "");
+    safeSet("pais", prop.pais ?? "");
+    safeSet("departamento", prop.departamento ?? "");
+
+    // precio seguro
+    const precioNum = Number(prop.precio);
+    safeSet("precio", !isNaN(precioNum) ? precioNum.toLocaleString("es-CO") : "");
+
+    // imagenes
     let imgs = [];
-    if (prop.imagenes) {
-      imgs = Array.isArray(prop.imagenes) ? prop.imagenes : [prop.imagenes];
-    }
-    document.getElementById("imagenes").value = imgs.join(", ");
+    if (prop.imagenes) imgs = Array.isArray(prop.imagenes) ? prop.imagenes : [prop.imagenes];
+    safeSet("imagenes", imgs.join(", "));
 
-    document.getElementById("lat").value = prop.lat || "";
-    document.getElementById("lng").value = prop.lng || "";
-    document.getElementById("activa").checked   = prop.activa === true;
-    document.getElementById("destacada").checked= prop.destacada === true;
+    safeSet("lat", prop.lat ?? "");
+    safeSet("lng", prop.lng ?? "");
+    safeSet("activa", prop.activa === true);
+    safeSet("destacada", prop.destacada === true);
 
-    // ==========================
-    //  Características internas y externas
-    // ==========================
+    // características — tolerante a strings/arrays
+    const internasArr = Array.isArray(prop.internas) ? prop.internas : (prop.internas ? [prop.internas] : []);
+    const externasArr = Array.isArray(prop.externas) ? prop.externas : (prop.externas ? [prop.externas] : []);
+
     const internasContainer = document.getElementById("caracteristicas-internas-container");
-    internasContainer.innerHTML = ""; // limpiar antes de insertar
-    if (prop.internas && prop.internas.length > 0) {
-      prop.internas.forEach(car => agregarCaracteristica("interna", car));
-    } else {
-      agregarCaracteristica("interna"); // siempre al menos un campo
+    if (internasContainer) {
+      internasContainer.innerHTML = "";
+      if (internasArr.length) internasArr.forEach(c => agregarCaracteristica("interna", c));
+      else agregarCaracteristica("interna");
     }
 
     const externasContainer = document.getElementById("caracteristicas-externas-container");
-    externasContainer.innerHTML = "";
-    if (prop.externas && prop.externas.length > 0) {
-      prop.externas.forEach(car => agregarCaracteristica("externa", car));
-    } else {
-      agregarCaracteristica("externa");
+    if (externasContainer) {
+      externasContainer.innerHTML = "";
+      if (externasArr.length) externasArr.forEach(c => agregarCaracteristica("externa", c));
+      else agregarCaracteristica("externa");
     }
 
-    // ==========================
-    //  Actualizar marcador en el mapa SOLO UNO
-    // ==========================
-    const iconEdicion = crearIcono("orangered", "fas fa-edit"); // 🔥 Ícono especial para edición
+    // Marker: usa setMarker si existe, si no usa L.marker como fallback
+    const lat = prop.lat ?? 4.6097;
+    const lng = prop.lng ?? -74.0817;
+    try {
+      if (typeof setMarker === "function") {
+        setMarker(lat, lng, (prop.tipo || "").toLowerCase(), prop, true);
+      } else {
+        // fallback simple
+        const iconEdicion = crearIcono("orangered", "fas fa-edit");
+        if (typeof marker !== "undefined" && marker) map.removeLayer(marker);
+        marker = L.marker([lat, lng], { icon: iconEdicion, draggable: true }).addTo(map);
+        marker.on("dragend", (e) => {
+          const pos = e.target.getLatLng();
+          const latEl = document.getElementById("lat");
+          const lngEl = document.getElementById("lng");
+          if (latEl) latEl.value = pos.lat;
+          if (lngEl) lngEl.value = pos.lng;
+        });
+        map.setView([lat, lng], 15);
+      }
+    } catch (err) {
+      console.warn("Error al colocar marker:", err);
+    }
 
-    setMarker(
-      prop.lat || 4.6097,
-      prop.lng || -74.0817,
-      prop.tipo?.toLowerCase(),
-      prop,          // datos de la propiedad (para popup)
-      true           // 👈 modo edición = ícono naranja
-    );
-
-    // ==========================
-    //  Activar modo edición
-    // ==========================
     modoEdicion = true;
     propiedadId = id;
 
-    // ==========================
-    //  Llevar scroll al formulario
-    // ==========================
-    document.getElementById("registroForm").scrollIntoView({
-      behavior: "smooth",
-      block: "start"
-    });
+    const formEl = document.getElementById("registroForm");
+    if (formEl) formEl.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  } catch (err) {
+    console.error("Error en editarPropiedad:", err);
+    alert("Error cargando la propiedad para edición (ver consola).");
   }
 };
 

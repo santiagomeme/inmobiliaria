@@ -135,18 +135,22 @@ function renderTarjetas(items = [], mostrarVacio = false) {
 
 
 
-  // 📍 Dibuja SOLO los destacados (deja intactos los marcadores normales de propiedades.js)
 function pintarDestacados(items) {
   if (!window.highlightLayer) return;
   window.highlightLayer.clearLayers();
 
   const arr = Array.isArray(items) ? items : [];
+  if (arr.length === 0) return;
+
   arr.forEach((data) => {
     if (data.lat == null || data.lng == null) return;
 
-    const color = getColorByTipo(data.tipo);
+    // 🔹 obtener estilo (color + icono original)
+    const estilo = getEstiloByTipo(data.tipo);
+    const iconoOriginal = estilo.icono;
 
-const marker = L.marker([data.lat, data.lng], { icon: customIcon }).bindPopup(`
+    // 🔹 Crear marcador con el icono original
+    const marker = L.marker([data.lat, data.lng], { icon: iconoOriginal }).bindPopup(`
       <div style="text-align:center; width:160px; font-family:sans-serif;">
         <img src="${
           (data.imagenes && data.imagenes.length > 0) 
@@ -165,7 +169,7 @@ const marker = L.marker([data.lat, data.lng], { icon: customIcon }).bindPopup(`
           padding:2px 6px;
           border-radius:6px;
           font-size:12px;
-          background:${color};
+          background:${estilo.color};
           color:#fff;
           font-weight:bold;
           white-space:nowrap;">
@@ -184,16 +188,29 @@ const marker = L.marker([data.lat, data.lng], { icon: customIcon }).bindPopup(`
           font-size:12px;
           font-weight:bold;
           transition: background 0.2s ease;
-          cursor:pointer;"onclick="verDetalle('${data.id}')">
+          cursor:pointer;" onclick="verDetalle('${data.id}')">
           Ver detalles
         </button>
       </div>
     `);
 
+    // 👉 agregar clase highlight cuando se renderiza
+    marker.on("add", () => {
+      const el = marker.getElement();
+      if (el) {
+        el.classList.add("highlight-marker");
+      }
+    });
+
     window.highlightLayer.addLayer(marker);
   });
-}
 
+  // 🔹 Centrar en el primero (opcional)
+  const first = arr[0];
+  if (first && first.lat != null && first.lng != null) {
+    map.setView([first.lat, first.lng], 14);
+  }
+}
 
 // 🔎 Aplica filtros
 function aplicarFiltros() {

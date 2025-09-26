@@ -499,3 +499,45 @@ color: #00172e;
   background: #dc3545; /* rojo */
   color: white;
 }
+.footer {
+  text-align: center;
+  padding: 20px;
+  background: #f1f1f1; /* color de fondo opcional */
+}
+
+.footer-links a {
+  font-size: 12px;        /* 🔹 muy pequeño */
+  color: #ffffff!important;            /* 🔹 gris discreto */
+  text-decoration: none;  /* 🔹 sin subrayado */
+  margin: 0 5px;          /* 🔹 espacio entre enlaces */
+}
+
+.footer-links a:hover {
+  text-decoration: underline; /* 🔹 al pasar el mouse */
+}
+
+
+.estadisticas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: 15px;
+  margin: 20px 0;
+}
+
+.estadistica-card {
+  background: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  padding: 15px;
+  text-align: center;
+  transition: transform 0.2s ease;
+}
+
+.estadistica-card:hover {
+  transform: scale(1.05);
+}
+
+.estadistica-card .icono {
+  font-size: 1.8rem;
+  margin-bottom: 8px;
+}

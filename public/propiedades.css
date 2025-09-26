@@ -17,20 +17,13 @@ html, body {
   -webkit-overflow-scrolling: touch; /* desplazamiento suave en móviles */
 }
 /* ============================
-   GRID DE TARJETAS
-=============================== */
+/* ============================
+   📌 GRID DE PROPIEDADES
+============================ */
 .propiedades-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* ✅ adaptable */
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); /* más grande que stats */
   gap: 20px;
-  padding: 20px;
-}
-
-/* Contenedor de las tarjetas */
-.propiedades-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); /* 👈 varias por fila */
-  gap: 20px; /* espacio entre cards */
   padding: 20px;
 }
 
@@ -43,6 +36,13 @@ html, body {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   display: flex;
   flex-direction: column;
+}
+
+/* ✅ Responsive: en móviles SOLO 1 por fila */
+@media (max-width: 768px) {
+  .propiedades-grid {
+    grid-template-columns: 1fr !important; /* fuerza 1 card */
+  }
 }
 
 .prop-card img {
@@ -626,4 +626,20 @@ color: #00172e;
 .badge-inactiva {
   background: #dc3545; /* rojo */
   color: white;
+}
+.footer {
+  text-align: center;
+  padding: 20px;
+  background: #f1f1f1; /* color de fondo opcional */
+}
+
+.footer-links a {
+  font-size: 12px;        /* 🔹 muy pequeño */
+  color: #ffffff!important;            /* 🔹 gris discreto */
+  text-decoration: none;  /* 🔹 sin subrayado */
+  margin: 0 5px;          /* 🔹 espacio entre enlaces */
+}
+
+.footer-links a:hover {
+  text-decoration: underline; /* 🔹 al pasar el mouse */
 }

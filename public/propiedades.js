@@ -226,6 +226,9 @@ if (data.lat && data.lng) {
 }
 
     });
+    // al final del try después del loop
+renderEstadisticasClientes(propiedades);
+
   } catch (error) {
     console.error("Error al cargar propiedades:", error);
   }

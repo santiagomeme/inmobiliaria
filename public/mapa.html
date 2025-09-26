@@ -10,6 +10,7 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
   <link rel="stylesheet" href="propiedades.css">
+    <link rel="stylesheet" href="mapaEstadistica.css">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-papb7EIB+J4EcUy...etc" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 
@@ -153,6 +154,9 @@ Destacadas
   <div id="mapOverlay" class="overlay"></div>
   <button id="toggleMap">🔓 Activar mapa</button>
 </div>
+
+<div id="estadisticas" class="estadisticas"></div>
+
 <!-- PROPIEDADES -->
 <section>
   <h2 style="text-align:center; padding: 20px;color:#00172e;"">Propiedades disponibles</h2>
@@ -172,7 +176,10 @@ Destacadas
     <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
     <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
   </div>
-
+  <div class="footer-links">
+    <a href="politicas.html">Políticas</a> | 
+    <a href="nuestra-empresa.html">Nuestra Empresa</a>
+  </div>
   <p>© 2025 Mi Inmobiliaria - Todos los derechos reservados</p>
 </footer>
 
@@ -190,6 +197,7 @@ Destacadas
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <!-- Tu configuración y lógica -->
 <script src="firebase-config.js"></script>
+<script src="mapa_estadistica.js"></script>
 <script src="mapa.js"></script>
 <script src="mapaFiltro.js"></script>
 

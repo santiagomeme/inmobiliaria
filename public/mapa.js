@@ -227,7 +227,11 @@ async function cargarPropiedades() {
           </div>
         `);
       }
-    });
+    });// ✅ Llamar a estadísticas ya con todas las propiedades cargadas
+renderEstadisticas(propiedades);
+
+
+
   } catch (error) {
     console.error("Error al cargar propiedades:", error);
   }

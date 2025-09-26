@@ -595,3 +595,22 @@ color: #00172e;
 .btn-enviar:hover {
   background: #0056b3;
 }
+
+
+
+.footer {
+  text-align: center;
+  padding: 20px;
+  background: #f1f1f1; /* color de fondo opcional */
+}
+
+.footer-links a {
+  font-size: 12px;        /* 🔹 muy pequeño */
+  color: #ffffff!important;            /* 🔹 gris discreto */
+  text-decoration: none;  /* 🔹 sin subrayado */
+  margin: 0 5px;          /* 🔹 espacio entre enlaces */
+}
+
+.footer-links a:hover {
+  text-decoration: underline; /* 🔹 al pasar el mouse */
+}

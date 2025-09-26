@@ -137,68 +137,44 @@ function renderTarjetas(items = [], mostrarVacio = false) {
 
 
 
-  // 📍 Dibuja SOLO los destacados (deja intactos los marcadores normales de propiedades.js)
+// 📍 Dibuja SOLO los destacados (deja intactos los marcadores normales de propiedades.js)
 function pintarDestacados(items) {
   if (!window.highlightLayer) return;
   window.highlightLayer.clearLayers();
 
   const arr = Array.isArray(items) ? items : [];
+  if (arr.length === 0) return;
+
   arr.forEach((data) => {
     if (data.lat == null || data.lng == null) return;
 
-    const color = getColorByTipo(data.tipo);
+    // 🔹 obtener estilo (color + icono original)
+    const estilo = getEstiloByTipo(data.tipo);
+    const iconoOriginal = estilo.icono;
 
-const marker = L.marker([data.lat, data.lng], { icon: customIcon }).bindPopup(`
-      <div style="text-align:center; width:160px; font-family:sans-serif;">
-        <img src="${
-          (data.imagenes && data.imagenes.length > 0) 
-            ? data.imagenes[0] 
-            : (data.imagen || "imagenes/default.png")
-        }" style="width:100%;border-radius:6px;margin-bottom:4px;">
-        <h4 style="margin:4px 0;font-size:14px;font-weight:600;color:#333;">
-          ${data.titulo || "Propiedad"}
-        </h4>
-        <p style="margin:2px 0;font-size:13px;color:#2E8B57;font-weight:bold;">
-          $${data.precio || ""}
-        </p>
-        <span style="
-          display:inline-block;
-          margin-top:3px;
-          padding:2px 6px;
-          border-radius:6px;
-          font-size:12px;
-          background:${color};
-          color:#fff;
-          font-weight:bold;
-          white-space:nowrap;">
-          ${data.tipo || ""}
-        </span>
-        <br>
+    // 🔹 Crear marcador con el icono original
+    const marker = L.marker([data.lat, data.lng], { icon: iconoOriginal });
 
-        <button style="
-          margin-top:6px;
-          padding:4px 8px;
-          border:none;
-          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
-          border-radius:6px;
-          background:#fff;
-          color:#000;
-          font-size:12px;
-          font-weight:bold;
-          transition: background 0.2s ease;
-          cursor:pointer;"onclick="verDetalle('${data.id}')">
-          Ver detalles
-        </button>
-      </div>
-    `);
+    // 👉 agregar clase highlight cuando se renderiza
+    marker.on("add", () => {
+      const el = marker.getElement();
+      if (el) {
+        el.classList.add("highlight-marker");
+      }
+    });
 
     window.highlightLayer.addLayer(marker);
   });
+
+  // 🔹 Centrar en el primero (opcional, sin popup)
+  const first = arr[0];
+  if (first && first.lat != null && first.lng != null) {
+    map.setView([first.lat, first.lng], 14);
+  }
 }
 
 
-  // 🔎 Aplica filtros
-// 🔎 Aplica filtros
+
 // 🔎 Aplica filtros
 function aplicarFiltros() {
   const soloNuevas  = document.getElementById("filtroNueva")?.checked || false;
@@ -223,7 +199,12 @@ function aplicarFiltros() {
   const filtradas = (window.propiedades || []).filter((prop) => {
     const pTipo      = (prop.tipo || "").toLowerCase();
     const pCiudad    = (prop.ciudad || "").toLowerCase();
-    const pPrecio    = Number(prop.precio) || 0;
+let pPrecio = 0;
+if (typeof prop.precio === "number") {
+  pPrecio = prop.precio;
+} else if (typeof prop.precio === "string") {
+  pPrecio = parseFloat(prop.precio.replace(/[^\d.]/g, "")) || 0;
+}
     const pModalidad = (prop.modalidad || "").toLowerCase();
     const pBanos     = Number(prop.banos) || 0;
     const pHabs      = Number(prop.habitaciones) || 0;
