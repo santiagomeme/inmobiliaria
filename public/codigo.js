@@ -1,6 +1,4 @@
-
-
-
+let markersMap = {}; // Guarda referencias a marcadores {idPropiedad: marker}
 
 
 async function generarCodigoAutomatico() {
@@ -122,10 +120,12 @@ const estilosPorTipo = {
   "duplex":        { icono: '<i class="fas fa-house-chimney"></i>', color: "saddlebrown" },
   "edificio":      { icono: '<i class="fas fa-building-circle-check"></i>', color: "black" },
   "local":         { icono: '<i class="fas fa-store"></i>', color: "red" },
-  "hotel":         { icono: '<i class="fas fa-hotel"></i>', color: "darkred" },
+  "hotel":         { icono: '<i class="fas fa-concierge-bell"></i>', color: "darkred" },
   "oficina":       { icono: '<i class="fas fa-briefcase"></i>', color: "purple" },
   "penthouse":     { icono: '<i class="fas fa-crown"></i>', color: "goldenrod" }
 };
+
+
 
 
 
@@ -149,6 +149,162 @@ function calcularConteos(propiedades) {
   });
 
   return conteos;
+}
+
+// ids resaltados actualmente (Set de strings)
+let idsFiltradosActivos = new Set();
+
+// extraer clase de icono (soportar '<i class="fas fa-home"></i>' o 'fas fa-home')
+function getIconClassFromEstilo(estilo) {
+  if (!estilo) return "fas fa-home";
+  // si es string simple
+  if (typeof estilo.icono === "string") {
+    // si contiene HTML <i class="...">
+    const m = estilo.icono.match(/class=["']([^"']+)["']/);
+    if (m) return m[1];
+    // si ya es "fas fa-home"
+    if (!estilo.icono.includes("<")) return estilo.icono;
+  }
+  // si es un L.divIcon con options.html
+  if (estilo.icono && estilo.icono.options && typeof estilo.icono.options.html === "string") {
+    const m = estilo.icono.options.html.match(/class=["']([^"']+)["']/);
+    if (m) return m[1];
+  }
+  return "fas fa-home";
+}
+
+// Crear markers desde un array de propiedades (limpia los anteriores)
+// Crear markers desde un array de propiedades (limpia los anteriores)
+function crearMarkersFromArray(propiedades = [], leafletMap) {
+  if (!(leafletMap instanceof L.Map)) {
+    console.error("❌ crearMarkersFromArray: leafletMap no es una instancia de L.Map");
+    return;
+  }
+
+  // Si tienes un layerGroup global (markersLayer) úsalo para mostrar/ocultar más fácil.
+  // Si no existe, caemos en fallback que añade/quita al mapa directamente.
+  const hasMarkersLayer = (typeof markersLayer !== "undefined" && markersLayer && typeof markersLayer.clearLayers === "function");
+
+  // limpiar markers previos del mapa o del markersLayer (sin destruir la referencia)
+  if (hasMarkersLayer) {
+    markersLayer.clearLayers();
+  } else {
+    for (const id in markersMap) {
+      try { leafletMap.removeLayer(markersMap[id]); } catch (e) { /* ignore */ }
+    }
+  }
+  markersMap = {};
+
+  propiedades.forEach(prop => {
+    const lat = parseFloat(prop.lat);
+    const lng = parseFloat(prop.lng);
+    const id = String(prop.id || prop.codigo || "");
+
+    if (!lat || !lng || !id) return; // saltar si no hay coords o id
+
+    const estilo = estilosPorTipo[(prop.tipo || "").toLowerCase()] || { color: "#555", icono: '<i class="fas fa-home"></i>' };
+    const iconClass = getIconClassFromEstilo ? getIconClassFromEstilo(estilo) : (estilo.icono || 'fas fa-home');
+    const icon = crearIcono(estilo.color || "#555", iconClass);
+
+    const marker = L.marker([lat, lng], { icon });
+
+    // Bind de popup opcional (si no quieres popup, quita bindPopup)
+    // marker.bindPopup(`<strong>${escapeHtml(prop.titulo || "")}</strong><br>${escapeHtml(prop.ciudad || "")}`);
+
+    // cuando el marker se agrega al mapa, aplicamos el highlight si corresponde
+    marker.on('add', () => {
+      const el = marker.getElement();
+      if (!el) return;
+      if (idsFiltradosActivos.has(String(id))) {
+        el.classList.add('highlight'); // coincide con tu CSS
+      } else {
+        el.classList.remove('highlight');
+      }
+    });
+
+    // Añadir al mapa o al markersLayer
+    if (hasMarkersLayer) {
+      markersLayer.addLayer(marker);
+    } else {
+      marker.addTo(leafletMap);
+    }
+
+    // guardar metadatos
+    marker._id = id;
+    marker._tipo = (prop.tipo || "").toLowerCase();
+
+    markersMap[id] = marker;
+  });
+
+  // Si usamos markersLayer y aún no está en el mapa, lo añadimos
+  if (hasMarkersLayer && !leafletMap.hasLayer(markersLayer)) {
+    markersLayer.addTo(leafletMap);
+  }
+
+  console.log("✅ Markers creados:", Object.keys(markersMap).length);
+}
+
+
+// Resalta (o restaura) marcadores según ids (array de ids). 
+// Si ids es [] restaura todos.
+function resaltarMarkersByIds(ids = []) {
+  const idsSet = new Set((ids || []).map(String));
+
+  for (const id in markersMap) {
+    const marker = markersMap[id];
+    if (!marker) continue;
+
+    // obtener el elemento DOM del marker (compatible con variantes de Leaflet)
+    const el = (typeof marker.getElement === "function") ? marker.getElement() : marker._icon;
+    if (!el) continue;
+
+    // si el div con clase custom-div-icon está dentro, lo tomamos; si no, usamos 'el' directamente
+    const target = el.classList && el.classList.contains("custom-div-icon") 
+                   ? el 
+                   : (el.querySelector && el.querySelector(".custom-div-icon")) || el;
+
+    // limpiar estado previo
+    target.classList.remove("highlight");
+    el.classList && el.classList.remove("highlight");
+    try { marker.setZIndexOffset && marker.setZIndexOffset(0); } catch(e) {}
+
+    if (idsSet.size === 0) {
+      // restaurar estado: no resaltado
+      try { marker.closePopup && marker.closePopup(); } catch(e) {}
+      continue;
+    }
+
+    if (idsSet.has(String(id))) {
+      // resaltado
+      target.classList.add("highlight");
+      el.classList && el.classList.add("highlight");
+      try { marker.setZIndexOffset && marker.setZIndexOffset(1000); } catch(e) {}
+      // opcional: abrir popup y centrar
+      try { marker.openPopup && marker.openPopup(); } catch(e) {}
+    } else {
+      // no resaltado -> dejamos normal (si quieres atenuar, aplica otra clase aquí)
+      try { marker.closePopup && marker.closePopup(); } catch(e) {}
+    }
+  }
+}
+
+
+function resaltarMarker(idPropiedad) {
+  // 1. Resetear todos los íconos a su estado normal
+  Object.values(markersMap).forEach(marker => {
+    const estilo = getEstiloByTipo(marker.options.tipo); 
+    marker.setIcon(crearIcono(estilo.color, estilo.icono));
+  });
+
+  // 2. Buscar el marker de la propiedad filtrada
+  const marker = markersMap[idPropiedad];
+  if (marker) {
+    // Cambiar ícono resaltado (más grande o color distinto)
+    marker.setIcon(crearIcono("red", "fas fa-star"));  
+
+    // Centrar mapa en el marker
+    map.setView(marker.getLatLng(), 15);
+  }
 }
 
 
@@ -215,43 +371,101 @@ function renderEstadisticas(propiedades) {
   }
 
   // Listeners: filtrar y re-renderizar adminLista
-  contenedor.querySelectorAll(".estadistica-chip").forEach(btn => {
-    btn.addEventListener("click", () => {
-      clearActiveChips();
-      btn.classList.add("active");
+// dentro de renderEstadisticas, en el punto donde manejas el click de los chips,
+// sustituye la parte de listener por esto (si ya usas lógica similar, sólo asegúrate
+// de llamar a resaltarMarkersByIds con los ids correctos):
 
-      const tipo = btn.dataset.tipo;
+contenedor.querySelectorAll(".estadistica-chip").forEach(btn => {
+  btn.addEventListener("click", () => {
+    clearActiveChips();
+    btn.classList.add("active");
 
-      if (tipo === "reset") {
-        // mostrar todas
-        renderAdminListaFromArray(propiedades);
-        return;
+    const tipo = btn.dataset.tipo;
+    let filtradas = [];
+
+    if (tipo === "reset") {
+      filtradas = propiedades;
+    } else if (tipo === "activas") {
+      filtradas = propiedades.filter(p => !!p.activa);
+    } else if (tipo === "inactivas") {
+      filtradas = propiedades.filter(p => !p.activa);
+    } else if (tipo === "destacadas") {
+      filtradas = propiedades.filter(p => !!p.destacada);
+    } else {
+      filtradas = propiedades.filter(p => (p.tipo || "").toLowerCase() === tipo.toLowerCase());
+    }
+
+    renderAdminListaFromArray(filtradas);
+
+    // Resaltamos marcadores filtrados (pasamos ids)
+    const idsFiltradas = filtradas.map(p => String(p.id || p.codigo)).filter(Boolean);
+    if (idsFiltradas.length > 0) {
+      console.log("🔎 idsFiltradas:", idsFiltradas);
+      console.log("🔎 keys markersMap:", Object.keys(markersMap));
+      resaltarMarkersByIds(idsFiltradas);
+      // centrar en la primera si quieres
+      const firstId = idsFiltradas[0];
+      if (markersMap[firstId]) {
+        try { map.setView(markersMap[firstId].getLatLng(), 13); } catch(e) {}
+        try { markersMap[firstId].openPopup(); } catch(e) {}
       }
-
-      if (tipo === "activas") {
-        renderAdminListaFromArray(propiedades.filter(p => !!p.activa));
-        return;
-      }
-
-      if (tipo === "inactivas") {
-        renderAdminListaFromArray(propiedades.filter(p => !p.activa));
-        return;
-      }
-
-      if (tipo === "destacadas") {
-        renderAdminListaFromArray(propiedades.filter(p => !!p.destacada));
-        return;
-      }
-
-      // filtro por tipo de propiedad
-      renderAdminListaFromArray(propiedades.filter(p => (p.tipo || "").toLowerCase() === tipo.toLowerCase()));
-    });
+    } else {
+      // restaurar todos
+  resaltarMarkersByIds(Object.keys(markersMap));
+    }
   });
+});
+
 
   // por defecto mostrar todo en adminLista (si está vacío)
   if ((adminLista && adminLista.innerHTML.trim() === "") || true) {
     // para asegurar que siempre se vea al menos la lista
     renderAdminListaFromArray(propiedades);
+  }
+}
+// acepta array de objetos {id: "..."} o array de ids (strings)
+function resaltadoDeFiltros(propiedadesFiltradasOrIds = []) {
+  // Normalizar a array de ids (strings)
+  let ids = [];
+  if (!Array.isArray(propiedadesFiltradasOrIds)) propiedadesFiltradasOrIds = [];
+  if (propiedadesFiltradasOrIds.length === 0) {
+    ids = [];
+  } else {
+    if (typeof propiedadesFiltradasOrIds[0] === 'string') {
+      ids = propiedadesFiltradasOrIds.map(String);
+    } else {
+      ids = propiedadesFiltradasOrIds.map(p => String(p.id || p._id || p.codigo || "")).filter(Boolean);
+    }
+  }
+
+  // Guardar estado global
+  idsFiltradosActivos = new Set(ids);
+
+  // Aplicar clase highlight sobre cada marker que tenga elemento en DOM
+  for (const id in markersMap) {
+    const marker = markersMap[id];
+    if (!marker) continue;
+    const el = marker.getElement();
+    if (!el) continue; // si aún no está en mapa no podemos manipular DOM (se aplicará en 'add')
+    if (idsFiltradosActivos.has(String(id))) {
+      el.classList.add('highlight');
+    } else {
+      el.classList.remove('highlight');
+    }
+  }
+}
+
+
+
+function aplicarResaltadoActivo() {
+  // reaplica el resaltado guardado en idsFiltradosActivos
+  for (const id in markersMap) {
+    const marker = markersMap[id];
+    if (!marker) continue;
+    const el = marker.getElement();
+    if (!el) continue;
+    if (idsFiltradosActivos.has(String(id))) el.classList.add('highlight');
+    else el.classList.remove('highlight');
   }
 }
 
@@ -355,7 +569,6 @@ function inicializarFiltroCodigo(propiedades) {
 
 
 
-
 function renderAdminListaFromArray(propiedades = []) {
   const adminListaEl = document.getElementById("adminLista");
   if (!adminListaEl) {
@@ -384,6 +597,9 @@ function renderAdminListaFromArray(propiedades = []) {
 
     const card = document.createElement("div");
     card.classList.add("prop-card");
+    card.dataset.id = id;
+    if (prop.lat) card.dataset.lat = prop.lat;
+    if (prop.lng) card.dataset.lng = prop.lng;
 
     card.innerHTML = `
       <div class="card-img-wrapper">
@@ -403,10 +619,11 @@ function renderAdminListaFromArray(propiedades = []) {
 
         <p><strong>Código:</strong> ${escapeHtml(codigo)}</p>
         <p><strong>Ciudad:</strong> ${escapeHtml(ciudad)}</p>
-        
+
         <p><i class="fas fa-car"></i> ${escapeHtml(garage)}</p>
-        <p><strong>Baños:</strong> ${escapeHtml(banos)}</p>
-        <p><strong>Habitaciones:</strong> ${escapeHtml(habitaciones)}</p>
+        <p><strong>Baños:</strong> <span class="prop-valor">${escapeHtml(banos)}</span></p>
+        <p><strong>Habitaciones:</strong> <span class="prop-valor">${escapeHtml(habitaciones)}</span></p>
+        <p><strong>Área:</strong> <span class="prop-valor">${escapeHtml(area)} m²</span></p>
 
         <p class="prop-precio">COP ${formatearPrecio(precio)}</p>
 
@@ -417,10 +634,30 @@ function renderAdminListaFromArray(propiedades = []) {
       </div>
     `;
 
+    // Click en la card (no sobre botones) centra y abre popup del marcador
+    card.addEventListener("click", (e) => {
+      if (e.target.closest(".btn-edit") || e.target.closest(".btn-delete")) return;
+      const idCard = card.dataset.id;
+      if (idCard && markersMap && markersMap[idCard]) {
+        const marker = markersMap[idCard];
+        try { map.setView(marker.getLatLng(), 15); } catch (err) {}
+        try { marker.openPopup(); } catch(e) {}
+        resaltarMarkersByIds([idCard]);
+      }
+    });
+
+    // Hover: resaltado temporal
+    card.addEventListener("mouseenter", () => {
+      if (card.dataset.id) resaltarMarkersByIds([card.dataset.id]);
+    });
+    card.addEventListener("mouseleave", () => {
+      // restaurar todo (o podrías mantener el filtro actual)
+      resaltarMarkersByIds([]);
+    });
+
     adminListaEl.appendChild(card);
   });
 }
-
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -451,4 +688,9 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
   });
+
+
 });
+
+
+

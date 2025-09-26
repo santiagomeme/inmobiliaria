@@ -154,3 +154,27 @@
   .estadistica-chip .chip-icon { width:18px; height:18px; font-size:12px; }
   .estadistica-chip .chip-count { font-size:11px; }
 }
+/* Resaltado visual — aplicado a la parte del divIcon */
+.custom-div-icon.highlight > div {
+  box-shadow: 0 0 12px 6px rgba(255, 60, 60, 0.9);
+  transform: scale(1.25);
+  transition: transform .12s ease, box-shadow .12s ease;
+  /* mantener por encima de otros elementos */
+  z-index: 99999;
+}
+
+/* Glow rojo + agrandado */
+.leaflet-marker-icon.highlight {
+  transform: scale(1.25);
+  box-shadow: 0 0 12px 6px rgba(255, 0, 0, 0.8),
+              0 0 20px 10px rgba(255, 0, 0, 0.6);
+  border-radius: 50%; /* opcional si quieres redondo */
+  transition: transform .12s ease, box-shadow .12s ease;
+  z-index: 9999 !important;
+}
+
+/* Extra: si tu marker es un divIcon con <i> */
+.marker-resaltado i {
+  text-shadow: 0 0 6px red, 0 0 10px red;
+}
+

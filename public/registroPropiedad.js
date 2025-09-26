@@ -9,7 +9,7 @@ const iconEdicion = crearIcono("orangered", "fas fa-edit");
 
 
   // Crear mapa centrado en Bogotá
-const map = L.map("map").setView([3.4516, -76.5320], 13);
+window.map = L.map("map").setView([3.4516, -76.5320], 13);
 L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
   maxZoom: 19,
 }).addTo(map);
@@ -322,6 +322,7 @@ form.addEventListener("submit", async (e) => {
 // ==========================
 async function cargarAdminPropiedades() {
   if (!adminLista) return;
+  adminLista.innerHTML = "";
 
   try {
     const snapshot = await firebase.firestore().collection("propiedades").get();
@@ -329,19 +330,26 @@ async function cargarAdminPropiedades() {
 
     snapshot.forEach(doc => {
       const prop = doc.data();
-      prop.id = doc.id; // guardar el id para editar/eliminar
+      prop.id = doc.id; // importante
       propiedades.push(prop);
     });
 
-    // estadísticas se encarga de todo: stats + render inicial
-    renderEstadisticas(propiedades);
-renderAdminListaFromArray(propiedades); // 👈 asegurar el primer render
-inicializarFiltroCodigo(propiedades);
+    // 1) crear/actualizar markers en el mapa
+    crearMarkersFromArray(propiedades,map);
 
+    // 2) render lista y estadísticas
+    renderAdminListaFromArray(propiedades);
+    renderEstadisticas(propiedades);
+
+    // 3) inicializar filtro por código (si no se ha inicializado antes)
+    try { inicializarFiltroCodigo(propiedades); } catch(e) {}
+
+    console.log("cargarAdminPropiedades: cargadas", propiedades.length);
   } catch (err) {
     console.error("Error cargando propiedades:", err);
   }
 }
+
 
 
 
@@ -697,22 +705,37 @@ async function cargarPropiedadesMapa() {
     console.error("Error cargando propiedades en mapa:", err);
   }
 }
-//boton para ver todas las propiedades n el mapa
-let mostrandoPropiedades = false; // Estado: cargadas o no
 
+
+//==============================================
+//boton para ver todas las propiedades n el mapa
+//==============================================
+let mostrandoPropiedades = true;
 document.getElementById("btnVerPropiedades").addEventListener("click", () => {
   if (mostrandoPropiedades) {
     // 👉 Ocultar
-    markersLayer.clearLayers(); // elimina todos los pines del mapa
-    document.getElementById("btnVerPropiedades").textContent = "📍 Ver propiedades en el mapa";
+    for (let id in markersMap) {
+      map.removeLayer(markersMap[id]);
+    }
     mostrandoPropiedades = false;
+    document.getElementById("btnVerPropiedades").textContent = "📍 Ver propiedades en el mapa";
   } else {
     // 👉 Mostrar
-    cargarPropiedadesMapa();
-    document.getElementById("btnVerPropiedades").textContent = "❌ Ocultar propiedades";
+    for (let id in markersMap) {
+      map.addLayer(markersMap[id]);
+    }
     mostrandoPropiedades = true;
+    document.getElementById("btnVerPropiedades").textContent = "❌ Ocultar propiedades";
+
+    // 👇 reaplica resaltado si hay filtros activos
+    if (idsFiltradosActivos.length > 0) {
+      resaltadoDeFiltros(idsFiltradosActivos.map(id => ({ id })));
+    }
   }
 });
+
+
+
 
 //===============================================
 //hacer q el mapa no se active solo tiene un oton

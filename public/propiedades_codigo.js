@@ -92,29 +92,36 @@ const estilosPorTipoEstadisticas = {
   "penthouse":     { icono: '<i class="fas fa-crown"></i>', color: "goldenrod" }
 };
 
+
 // ===============================
-// Render dinámico de estadísticas en clientes
+// Render dinámico de estadísticas en clientes (como chips)
 // ===============================
 function renderEstadisticasClientes(propiedades) {
   const conteos = calcularConteos(propiedades);
   const contenedor = document.getElementById("estadisticas-clientes");
   if (!contenedor) return;
 
-  // Totales y destacadas
-  let html = `
-    <div class="estadistica-card" style="border-top: 4px solid teal" data-filtro="reset">
-      <div class="icono">📊</div>
-      <h4>Total</h4>
-      <p>${conteos.total || 0}</p>
-    </div>
-    <div class="estadistica-card" style="border-top: 4px solid orange" data-filtro="destacada" data-valor="true">
-      <div class="icono">⭐</div>
-      <h4>Destacadas</h4>
-      <p>${conteos.destacadas || 0}</p>
-    </div>
+  let html = "";
+
+  // 🔹 Chip "Todas"
+  html += `
+    <button type="button" class="estadistica-chip" data-filtro="reset">
+      <span class="chip-icon">📊</span>
+      <span class="chip-label">Todas</span>
+      <span class="chip-count">${conteos.total || 0}</span>
+    </button>
   `;
 
-  // Tipos
+  // 🔹 Chip "Destacadas"
+  html += `
+    <button type="button" class="estadistica-chip" data-filtro="destacada" data-valor="true">
+      <span class="chip-icon">⭐</span>
+      <span class="chip-label">Destacadas</span>
+      <span class="chip-count">${conteos.destacadas || 0}</span>
+    </button>
+  `;
+
+  // 🔹 Chips por tipo (usando estilosPorTipoEstadisticas)
   for (let tipo in estilosPorTipoEstadisticas) {
     const estilo = estilosPorTipoEstadisticas[tipo];
     const keyPlural = tipo.toLowerCase() + "s";
@@ -122,27 +129,26 @@ function renderEstadisticasClientes(propiedades) {
 
     if (cantidad > 0) {
       html += `
-        <div class="estadistica-card"
-             style="border-top: 4px solid ${estilo.color}"
-             data-filtro="tipo"
-             data-valor="${tipo.toLowerCase()}">
-          <div class="icono" style="color:${estilo.color}">
+        <button type="button" class="estadistica-chip"
+                data-filtro="tipo"
+                data-valor="${tipo.toLowerCase()}">
+          <span class="chip-icon" style="color:${estilo.color}">
             ${estilo.icono}
-          </div>
-          <h4>${tipo.charAt(0).toUpperCase() + tipo.slice(1)}</h4>
-          <p>${cantidad}</p>
-        </div>
+          </span>
+          <span class="chip-label">${tipo.charAt(0).toUpperCase() + tipo.slice(1)}</span>
+          <span class="chip-count">${cantidad}</span>
+        </button>
       `;
     }
   }
 
   contenedor.innerHTML = html;
 
-  // 👉 Listeners para que actúen como filtros
-  contenedor.querySelectorAll(".estadistica-card").forEach(card => {
-    card.addEventListener("click", () => {
-      const filtro = card.dataset.filtro;
-      const valor = card.dataset.valor;
+  // 👉 Listeners para filtros
+  contenedor.querySelectorAll(".estadistica-chip").forEach(chip => {
+    chip.addEventListener("click", () => {
+      const filtro = chip.dataset.filtro;
+      const valor = chip.dataset.valor;
 
       if (filtro === "reset") {
         document.getElementById("tipo").value = "";
@@ -160,6 +166,7 @@ function renderEstadisticasClientes(propiedades) {
     });
   });
 }
+
 
 
 
