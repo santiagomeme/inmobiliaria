@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inicio - Inmobiliaria</title>
     <link rel="stylesheet" href="registro.css">
+    <link rel="stylesheet" href="menu.css">
 
 <!-- Firebase SDK -->
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
@@ -19,25 +20,28 @@
 
 <header class="site-header">
   <div class="header-container">
-    <!-- Logo + Nombre -->
     <div class="logo">
       <a href="index.html">
-        <img src="imagenes/logo3.png" alt="Logo del sitio">
+        <img src="imagenes/logoIco.ico" alt="Logo del sitio">
       </a>
-      <h1> Inmobiliaria</h1>
+      <h1>Inmobiliaria</h1>
     </div>
 
+    <!-- Botón hamburguesa -->
+    <button class="hamburger" id="hamburger-btn">☰</button>
   </div>
-</header>
-  <!-- Menú principal -->
-    <nav class="main-nav">
-      <ul>
-        <li><a href="propiedades.html">propiedades</a></li>
-        <li><a href="index.html">Inicio</a></li>
-        <li><a href="contacto.html">Contacto</a></li>
 
-      </ul>
-    </nav>
+  <!-- Menú principal -->
+  <nav class="main-nav" id="main-nav">
+    <ul>
+      <li><a href="propiedades.html">Propiedades</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="mapa.html">Mapa</a></li>
+      <li><a href="registro.html"><i class="fas fa-user"></i> Admin</a></li> <!-- Botón admin aquí -->
+    </ul>
+  </nav>
+</header>
   <h2 style="margin: 0 auto;">Agregar Usuario</h2>
 <form  id="addUserForm" style="display:none;">
   <input type="email" id="userEmail" placeholder="Correo del usuario" required>
@@ -78,5 +82,7 @@
   <!-- Tu configuración y lógica -->
 <script src="firebase-config.js"></script>
 <script src="registroUserNue.js"></script>
+<script src="menu.js"></script>
+
 </body>
 </html>

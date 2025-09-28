@@ -12,6 +12,7 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
 <link rel="icon" type="image/x-icon" href="imagenes/logoIco.ico">
   <link rel="stylesheet" href="estadisticas.css">
+  <link rel="stylesheet" href="menu.css">
 
   <link rel="stylesheet" href="propiedades.css">
   <!-- Leaflet para mapas -->
@@ -31,22 +32,32 @@
 
 <header class="site-header">
   <div class="header-container">
-    <!-- Logo + Nombre -->
     <div class="logo">
       <a href="index.html">
-        <img src="imagenes/logo3.png" alt="Logo del sitio">
+        <img src="imagenes/logoIco.ico" alt="Logo del sitio">
       </a>
-      <h1 style="color:#ffffff;">Inmobiliaria</h1>
+      <h1>Inmobiliaria</h1>
     </div>
+
+    <!-- Botón hamburguesa -->
+    <button class="hamburger" id="hamburger-btn">☰</button>
   </div>
-</header>
+
   <!-- Menú principal -->
-    <nav class="main-nav">
-      <ul>
-        <li><a href="index.html">Inicio</a></li>
-        <li><a href="contacto.html">Contacto</a></li>
-      </ul>
-    </nav>
+  <nav class="main-nav" id="main-nav">
+    <ul>
+      <li><a href="propiedades.html">Propiedades</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="mapa.html">Mapa</a></li>
+      <li><a href="registro.html"><i class="fas fa-user"></i> Admin</a></li> <!-- Botón admin aquí -->
+    </ul>
+  </nav>
+</header>
+
+
+
+
 <div class="filtros">
   <label>
   <input type="checkbox" id="filtroNueva" />  Nuevas en el catalogo</imput>
@@ -188,6 +199,7 @@ Destacadas
   <script src="propiedades.js"></script>
 
   <script src="filtro.js"></script>
+  <script src="menu.js"></script>
 
 </body>
 </html>

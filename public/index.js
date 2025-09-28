@@ -33,7 +33,7 @@
       const card = document.createElement("div");
       card.classList.add("tarjeta");
       card.innerHTML = `
-        <img src="${prop.imagen}" alt="${prop.titulo}">
+<img src="${prop.imagenes && prop.imagenes.length > 0 ? prop.imagenes[0] : 'imagenes/default.png'}" alt="${prop.titulo}">
         <h3>${prop.titulo}</h3>
         <p>${prop.ciudad} - ${prop.tipo} (${prop.modalidad})</p>
         <p>$${prop.precio.toLocaleString()}</p>

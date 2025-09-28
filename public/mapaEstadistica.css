@@ -144,6 +144,9 @@
   }
 }
 
+.estadistica-chip {
+  min-width: 160px; /* súbelo un poco para PC */
+}
 
 /* Glow rojo y un poco más grande */
 .leaflet-marker-icon.highlight-marker {

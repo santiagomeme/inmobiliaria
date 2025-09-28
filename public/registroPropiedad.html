@@ -16,7 +16,7 @@
 
   <link rel="stylesheet" href="registroPropi.css">
     <link rel="stylesheet" href="estadisticas.css">
-
+    <link rel="stylesheet" href="menu.css">
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
@@ -30,26 +30,28 @@
 
 <header class="site-header">
   <div class="header-container">
-    <!-- Logo + Nombre -->
     <div class="logo">
       <a href="index.html">
-        <img src="imagenes/Logo3.png" alt="Logo del sitio">
+        <img src="imagenes/logoIco.ico" alt="Logo del sitio">
       </a>
-      <h1> Inmobiliaria</h1>
+      <h1>Inmobiliaria</h1>
     </div>
+
+    <!-- Botón hamburguesa -->
+    <button class="hamburger" id="hamburger-btn">☰</button>
   </div>
+
+  <!-- Menú principal -->
+  <nav class="main-nav" id="main-nav">
+    <ul>
+      <li><a href="propiedades.html">Propiedades</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="mapa.html">Mapa</a></li>
+      <li><a href="registro.html"><i class="fas fa-user"></i> Admin</a></li> <!-- Botón admin aquí -->
+    </ul>
+  </nav>
 </header>
-
-
-<main class="wrap">
-      <nav class="main-nav">
-      <ul>
-        <li><a href="index.css">Inicio</a></li>
-        <li><a href="propiedades.html">propiedades</a></li>
-        <li><a href="mapa.html">Mapa</a></li>
-
-      </ul>
-    </nav>
   
   <section class="registro">
 
@@ -246,6 +248,7 @@
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <script src="codigo.js"></script>
   <script src="registroPropiedad.js"></script>
+  <script src="menu.js"></script>
 
 </body>
 </html>

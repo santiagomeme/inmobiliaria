@@ -1,0 +1,201 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Blog</title>
+<!-- Firebase SDK -->
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
+  <link rel="stylesheet" href="propiedades.css">
+    <link rel="stylesheet" href="menu.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-papb7EIB+J4EcUy...etc" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" type="image/x-icon" href="imagenes/logoIco.ico">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css"/>
+  <style>
+    #map { height: 100vh; }
+    #blog-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-width: 400px;
+  bottom: 20px;
+  margin: 0 auto!important;
+  align-items: center!important;
+  border-radius: 10px!important;
+}
+/* Fuente principal para todo el blog */
+#blog-posts, 
+#blog-form {
+  font-family: 'Poppins', sans-serif;
+  color: #333;
+}
+/* Estilo de cada post */
+.post {
+  background: #fff;
+  padding: 16px;
+  margin: 12px 0;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  transition: transform 0.2s ease-in-out;
+}
+button {
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+background: #00172e;
+color:#fff;
+border-radius: 5px!important;
+}
+.button:hover {
+  transform: translateY(-3px);
+  color:#00172e;
+  background: #005fa3;
+}
+
+.post small {
+  color: #777;
+  font-size: 0.85rem;
+}
+.mensaje-motivador {
+  background: linear-gradient(90deg, #e0f7fa, #f1f8e9);
+  border: 1px solid #c8e6c9;
+  padding: 16px;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+}
+
+.mensaje-motivador h2 {
+  margin: 0 0 8px;
+  color: #00796b;
+}
+.post h3 {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #2c3e50;
+}
+
+.post p {
+  line-height: 1.6;
+  margin-bottom: 8px;
+  margin: 0;
+  font-size: 15px;
+  color: #444;
+}
+.mensaje {
+  display: none;
+  margin-bottom: 15px;
+  padding: 10px 15px;
+  border-radius: 5px;
+  font-weight: bold;
+  text-align: center;
+}
+
+.mensaje.exito {
+  background: #4CAF50; /* verde */
+  color: white;
+}
+
+.mensaje.error {
+  background: #f44336; /* rojo */
+  color: white;
+}
+
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-container">
+    <div class="logo">
+      <a href="index.html">
+        <img src="imagenes/logoIco.ico" alt="Logo del sitio">
+      </a>
+      <h1>Inmobiliaria</h1>
+    </div>
+
+    <!-- Botón hamburguesa -->
+    <button class="hamburger" id="hamburger-btn">☰</button>
+  </div>
+
+  <!-- Menú principal -->
+  <nav class="main-nav" id="main-nav">
+    <ul>
+      <li><a href="propiedades.html">Propiedades</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="mapa.html">Mapa</a></li>
+      <li><a href="registro.html"><i class="fas fa-user"></i> Admin</a></li> <!-- Botón admin aquí -->
+    </ul>
+  </nav>
+</header>
+
+
+<div class="mensaje-motivador">
+  <h2>💬 ¡Comparte tus ideas!</h2>
+  <p>
+    Este es un espacio para expresar tus pensamientos, reflexiones o simplemente dejar un mensaje positivo.  
+    Recuerda que cada palabra puede inspirar a alguien más. 🌟
+  </p>
+</div>
+
+
+<div id="mensaje" class="mensaje"></div>
+
+
+<form id="blog-form">
+  <input type="text" id="nombre" placeholder="Tu nombre" required>
+  <input type="email" id="correo" placeholder="Tu correo" required>
+  <input type="text" id="titulo" placeholder="Título del post" required>
+  <textarea id="contenido" placeholder="Escribe tu post..." required></textarea>
+  <button type="submit">Publicar</button>
+</form>
+
+<div id="blog-posts"></div>
+
+
+
+
+
+
+
+<!-- FOOTER -->
+<footer>
+    <!-- Sección info empresa -->
+  <section class="info-empresa">
+    <h2>Información de la empresa</h2>
+    <p>Dirección: Calle Ficticia #123, Ciudad Ejemplo</p>
+    <p>Correo: contacto@miinmobiliaria.com</p>
+    <p>Teléfono: +57 300 123 4567</p>
+  </section>
+  <div class="social-icons">
+    <a href="https://facebook.com" target="_blank"><i class="fab fa-facebook-f"></i></a>
+    <a href="https://instagram.com" target="_blank"><i class="fab fa-instagram"></i></a>
+  </div>
+  <div class="footer-links">
+    <a href="politicas.html">Políticas</a> | 
+    <a href="nuestra-empresa.html">Nuestra Empresa</a>
+  </div>
+  <p>© 2025 Mi Inmobiliaria - Todos los derechos reservados</p>
+</footer>
+
+
+
+
+
+
+<!-- Tu configuración y lógica -->
+<script src="firebase-config.js"></script>
+<script src="blog.js"></script>
+<script src="menu.js"></script>
+
+
+</body>
+</html>

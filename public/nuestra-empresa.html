@@ -6,31 +6,36 @@
   <title>Nuestra Empresa</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <link rel="stylesheet" href="estilos.css">
+    <link rel="stylesheet" href="menu.css">
+
 <link rel="icon" type="image/x-icon" href="imagenes/logoIco.ico">
 
 </head>
 <body>
-
 <header class="site-header">
   <div class="header-container">
     <div class="logo">
       <a href="index.html">
-        <img src="imagenes/logo.png" alt="Logo del sitio">
+        <img src="imagenes/logoIco.ico" alt="Logo del sitio">
       </a>
       <h1>Inmobiliaria</h1>
     </div>
-  </div>
-</header>
 
-<nav class="main-nav">
-  <ul>
-    <li><a href="index.html">Propiedades</a></li>
-    <li><a href="propiedades.html">Menú</a></li>
-    <li><a href="contacto.html">Contacto</a></li>
-    <li><a href="nuestra-empresa.html">Nuestra Empresa</a></li>
-    <li><a href="politicas-privacidad.html">Privacidad</a></li>
-  </ul>
-</nav>
+    <!-- Botón hamburguesa -->
+    <button class="hamburger" id="hamburger-btn">☰</button>
+  </div>
+
+  <!-- Menú principal -->
+  <nav class="main-nav" id="main-nav">
+    <ul>
+      <li><a href="propiedades.html">Propiedades</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="mapa.html">Mapa</a></li>
+      <li><a href="registro.html"><i class="fas fa-user"></i> Admin</a></li> <!-- Botón admin aquí -->
+    </ul>
+  </nav>
+</header>
 
 <main class="page-container">
   <section  class="about destacada">
@@ -91,6 +96,7 @@
 <a href="https://wa.me/573001234567" class="whatsapp-btn" target="_blank">
   <i class="fab fa-whatsapp"></i>
 </a>
+<script src="menu.js"></script>
 
 </body>
 </html>

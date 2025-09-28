@@ -11,6 +11,7 @@
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
 <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-storage.js"></script>
     <link rel="stylesheet" href="detalle.css">
+    <link rel="stylesheet" href="menu.css">
 <link rel="icon" type="image/x-icon" href="imagenes/logoIco.ico">
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css" integrity="sha512-papb7EIB+J4EcUy...etc" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -25,25 +26,31 @@
 
 <body>
   
-<header class="site-header">
+ <header class="site-header">
   <div class="header-container">
-    <!-- Logo + Nombre -->
     <div class="logo">
       <a href="index.html">
-        <img src="imagenes/LogoG1.png" alt="Logo del sitio">
+        <img src="imagenes/logoIco.ico" alt="Logo del sitio">
       </a>
-      <h1> Inmobiliaria</h1>
+      <h1>Inmobiliaria</h1>
     </div>
- </div>
-</header>
+
+    <!-- Botón hamburguesa -->
+    <button class="hamburger" id="hamburger-btn">☰</button>
+  </div>
+
   <!-- Menú principal -->
-    <nav class="main-nav">
-      <ul>
-        <li><a href="index.html">Inicio</a></li>
-        <li><a href="propiedades.html">Propiedades</a></li>
-        <li><a href="contacto.html">Contacto</a></li>
-      </ul>
-    </nav>
+  <nav class="main-nav" id="main-nav">
+    <ul>
+      <li><a href="propiedades.html">Propiedades</a></li>
+      <li><a href="contacto.html">Contacto</a></li>
+      <li><a href="blog.html">Blog</a></li>
+      <li><a href="mapa.html">Mapa</a></li>
+      <li><a href="registro.html"><i class="fas fa-user"></i> Admin</a></li> <!-- Botón admin aquí -->
+    </ul>
+  </nav>
+</header>
+
 <main class="wrap">
   <section class="detalle-propiedad">
     <div id="detalleContainer" class="detalle-container"></div>
@@ -106,6 +113,7 @@
   <!-- Google Maps (si quieres usarlo) -->
   <script async defer src="https://maps.googleapis.com/maps/api/js?key=TU_API_KEY"></script>
   <script src="detalle.js"></script>
+  <script src="menu.js"></script>
 
 </body>
 </html>
