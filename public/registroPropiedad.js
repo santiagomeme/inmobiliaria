@@ -778,3 +778,23 @@ bloquearMapa();
 
 
 });
+document.addEventListener("DOMContentLoaded", () => {
+  const btn = document.getElementById("btnToggleLista");
+  const seccion = document.getElementById("seccionListado");
+
+  let mostrando = false;
+
+  const actualizarTexto = () => {
+    btn.textContent = mostrando 
+      ? "❌ Ocultar listado de propiedades"
+      : "📋 Ver listado de propiedades";
+  };
+
+  actualizarTexto();
+
+  btn.addEventListener("click", () => {
+    mostrando = !mostrando;
+    seccion.style.display = mostrando ? "block" : "none";
+    actualizarTexto();
+  });
+});

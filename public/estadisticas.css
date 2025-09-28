@@ -1,159 +1,159 @@
-/* ============================
-   📊 Estadísticas en MAPA
-============================ */
-.estadisticas {
+/* ===========================
+   Chips / Estadísticas (global)
+   =========================== */
+
+/* contenedor: ajusta columnas y rompe bonito */
+.chips-grid,
+#estadisticas-clientes,
+#estadisticas {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* stats pequeñas */
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 8px;
-  margin: 5px 0;
-  padding: 5px;
-  background: #f5f5f5;
-  border-radius: 12px;
-  font-family: "Segoe UI", sans-serif;
-}
-
-
-/* ✅ Card única */
-.estadistica-card {
-  display: inline-flex;
-  flex-direction: column;
   align-items: center;
-  justify-content: center;
-  padding: 12px;
-  margin: 6px;
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.estadistica-card:hover {
-  transform: scale(1.05);
-}
-
-/* Iconos */
-.estadistica-card .icono,
-.estadistica-card i {
-  display: block;
-  text-align: center;
-  width: 100%;
-  margin: 0 auto 6px;
-  font-size: 22px;
-  color: #333;
-}
-
-/* Títulos y números */
-.estadistica-card h4 {
-  margin: 4px 0;
-  font-size: 13px;
-  font-weight: 600;
-  color: #333;
-}
-
-.estadistica-card p {
-  margin: 0;
-  font-size: 16px;
-  font-weight: bold;
-  color: #222;
-}
-
-/* Responsive: en móviles */
-@media (max-width: 768px) {
-  .estadistica-card {
-    padding: 8px;
-    margin: 4px;
-    border-radius: 10px;
-  }
-
-  .estadistica-card .icono {
-    font-size: 18px;
-  }
-
-  .estadistica-card h4 {
-    font-size: 12px;
-  }
-
-  .estadistica-card p {
-    font-size: 11px;
-  }
-}
-
-
-/* Glow rojo y un poco más grande */
-.leaflet-marker-icon.highlight-marker {
-  box-shadow: 0 0 10px 4px rgba(255, 0, 0, 0.8),
-              0 0 20px 10px rgba(255, 0, 0, 0.6);
-  border-radius: 50%; /* opcional */
-  transform: scale(1.2); /* agranda el marcador */
-  z-index: 1000 !important;
-}
-
-.chips-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, auto));
-  gap: 8px;
   margin-top: 10px;
 }
 
-.chip-estadistica {
+/* chip base (flex para controlar icono / label / count) */
+.estadistica-chip {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 6px 10px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 500;
-  background: #fff;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-}
-
-.chip-estadistica .icono {
-  font-size: 18px;
-}
-
-.chip-estadistica .cantidad {
-  font-weight: bold;
-}
-/* chips / mini-botones (estadisticas clientes) */
-#estadisticas-clientes {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
   gap: 8px;
-  align-items: center;
-  margin: 8px 0;
+  padding: 6px 12px;
+  margin: 0;
+  border-radius: 999px;
+  border: 1px solid #e6e6e6;
+  background: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  box-sizing: border-box;
+  min-width: 120px;        /* evita que se haga demasiado pequeño */
+  max-width: 100%;
+  overflow: hidden;        /* evita que salga texto fuera */
+  white-space: nowrap;     /* evita saltos de línea */
+  transition: transform .12s ease, box-shadow .12s ease, background .12s;
 }
-.estadistica-chip {
+
+/* Icono izquierdo */
+.estadistica-chip .chip-icon,
+.estadistica-chip .icono {
+  flex: 0 0 26px;
+  height: 26px;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 8px;
-  border-radius: 999px;
-  border: 1px solid rgba(0,0,0,0.08);
-  background: #fff;
-  cursor: pointer;
-  font-size: 13px;
-  line-height: 1;
   justify-content: center;
-  transition: transform .12s ease, box-shadow .12s ease;
-}
-.estadistica-chip:focus { outline: none; box-shadow: 0 0 0 3px rgba(0,123,255,0.12); }
-.estadistica-chip .chip-icon { display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px; font-size:14px; }
-.estadistica-chip .chip-count { font-weight:700; margin-left:4px; font-size:12px; color:#111; }
-.estadistica-chip.active {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.12);
-  background: linear-gradient(90deg, #fff, #f0fbff);
-  border-color: rgba(0,123,255,0.18);
+  font-size: 16px;
+  line-height: 1;
 }
 
-/* tamaños móviles: chips más pequeños */
-@media (max-width: 480px) {
-  #estadisticas-clientes { grid-template-columns: repeat(auto-fit, minmax(70px, 1fr)); }
-  .estadistica-chip { padding:6px; gap:6px; font-size:12px; }
-  .estadistica-chip .chip-icon { width:18px; height:18px; font-size:12px; }
-  .estadistica-chip .chip-count { font-size:11px; }
+.estadistica-chip .chip-label,
+.estadistica-chip span:not(.chip-icon):not(.chip-count):not(.cantidad):not(.icono) {
+  flex-grow: 1;
+  font-size: 14px;
+  color: #333;
+  white-space: nowrap;   /* que no se divida en varias líneas */
+  overflow: visible;     /* 🔑 muestra todo */
+  text-overflow: unset;  /* 🔑 desactiva el “…” */
+
+
 }
+
+@media (min-width: 768px) {
+  .estadistica-chip .chip-label {
+    white-space: normal;   /* permite salto de línea */
+    overflow: visible;     /* no recorta */
+    text-overflow: unset;  /* sin puntos suspensivos */
+  }
+}
+
+/* Número/cantidad */
+.estadistica-chip .chip-count,
+.estadistica-chip .cantidad {
+  flex: 0 0 auto;
+  font-weight: bold;
+  color: #444;
+  font-size: 14px;
+  margin-left: 8px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: #f3f6ff;
+  min-width: 28px;
+  text-align: center;
+}
+
+
+
+
+/* estado activo/hover */
+.estadistica-chip:hover { transform: translateY(-2px); background: #fbfdff; box-shadow: 0 6px 18px rgba(2,33,71,0.06); }
+.estadistica-chip.active { background: linear-gradient(90deg,#fff,#f4fbff); border-color: rgba(0,123,255,0.14); }
+
+/* responsive: chips más compactos en móviles */
+@media (max-width: 560px) {
+  .chips-grid, #estadisticas-clientes, #estadisticas {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+  .estadistica-chip { padding: 6px 8px; font-size: 13px; gap: 6px; }
+  .estadistica-chip .chip-icon { flex: 0 0 20px; height:20px; font-size:14px; }
+  .estadistica-chip .chip-count { padding: 2px 6px; min-width: 30px; font-size:12px; }
+}
+
+@media (max-width: 480px) {
+  #estadisticas-clientes {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+  .estadistica-chip {
+    padding: 6px 10px;
+    gap: 6px;
+    font-size: 12px;
+  }
+  .estadistica-chip .chip-label {
+    font-size: 12px;
+  }
+  .estadistica-chip .chip-count {
+    font-size: 12px;
+  }
+}
+@media (max-width: 560px) {
+  .chips-grid,
+  #estadisticas-clientes,
+  #estadisticas {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+  .estadistica-chip {
+    padding: 6px 8px;
+    font-size: 12px;
+    gap: 6px;
+  }
+  .estadistica-chip .chip-icon,
+  .estadistica-chip .icono {
+    flex: 0 0 20px;
+    height: 20px;
+    font-size: 14px;
+  }
+  .estadistica-chip .chip-label {
+    font-size: 12px;
+  }
+  .estadistica-chip .chip-count,
+  .estadistica-chip .cantidad {
+    font-size: 12px;
+    min-width: 24px;
+  }
+}
+
+
+
+
+
+
+
+/* highlight para marker (mantener tus reglas previas) */
+.custom-div-icon.highlight > div,
+.leaflet-marker-icon.highlight {
+  transform: scale(1.25);
+  box-shadow: 0 0 12px 6px rgba(255, 0, 0, 0.85);
+  z-index: 9999 !important;
+}
+
 /* Resaltado visual — aplicado a la parte del divIcon */
 .custom-div-icon.highlight > div {
   box-shadow: 0 0 12px 6px rgba(255, 60, 60, 0.9);
@@ -178,3 +178,68 @@
   text-shadow: 0 0 6px red, 0 0 10px red;
 }
 
+/* 🔹 Buscar */
+#btnBuscarCodigo {
+ margin: 20px auto 5px;
+  padding: 10px 16px;
+  background: #00172e;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background 0.2s ease;
+
+}
+#btnBuscarCodigo:hover {
+  background: #42aaff;
+}
+
+/* 🔹 Limpiar */
+#btnLimpiarCodigo {
+  background: #ffffff;
+  border: 1px solid #00172e;
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  color: #00172e;
+  transition: all 0.25s ease;
+}
+#btnLimpiarCodigo:hover {
+  background: #42aaff;
+}
+
+/* 🔹 Ver listado */
+#btnToggleLista {
+ margin: 20px auto 5px;
+  padding: 10px 16px;
+  background: #00172e;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 600;
+  transition: background 0.2s ease;
+
+
+}
+#btnToggleLista:hover {
+  background: #42aaff;
+}
+
+.propiedad-filtrada {
+  box-shadow: 0 0 12px 3px rgba(255, 0, 0, 0.6)!important;
+  border: 2px solid red;
+}
+/* Glow rojo y un poco más grande */
+.leaflet-marker-icon.highlight-marker {
+  box-shadow: 0 0 10px 4px rgba(255, 0, 0, 0.8),
+              0 0 20px 10px rgba(255, 0, 0, 0.6);
+  border-radius: 50%; /* opcional */
+  transform: scale(1.2); /* agranda el marcador */
+  z-index: 1000 !important;
+}

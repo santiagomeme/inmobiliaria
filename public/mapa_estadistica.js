@@ -1,26 +1,5 @@
 
 
-async function generarCodigoAutomatico() {
-  const ref = firebase.firestore().collection("config").doc("contador");
-
-  return firebase.firestore().runTransaction(async (transaction) => {
-    const doc = await transaction.get(ref);
-
-    if (!doc.exists) {
-      throw "El documento contador no existe!";
-    }
-
-    let ultimo = doc.data().ultimoCodigo || 0;
-    let nuevo = ultimo + 1;
-
-    // actualizar el contador
-    transaction.update(ref, { ultimoCodigo: nuevo });
-
-    // retornar el nuevo código en formato P0001
-    return "P" + nuevo.toString().padStart(4, "0");
-  });
-}
-
 
 
 // -----------------------------
@@ -87,82 +66,84 @@ function renderEstadisticas(propiedades) {
   if (!contenedor) return;
 
   // 🟢 Estados generales
-  let htmlEstados = `
-    <div class="estadistica-card" style="border-top: 4px solid teal" data-filtro="reset">
-      <div class="icono">📊</div>
-      <h4>Total</h4>
-      <p>${conteos.total || 0}</p>
-    </div>
-    <div class="estadistica-card" style="border-top: 4px solid green" data-filtro="filtroActiva" data-valor="true">
-      <div class="icono">✅</div>
-      <h4>Activas</h4>
-      <p>${conteos.activas || 0}</p>
-    </div>
-    <div class="estadistica-card" style="border-top: 4px solid gray" data-filtro="filtroActiva" data-valor="false">
-      <div class="icono">❌</div>
-      <h4>Inactivas</h4>
-      <p>${conteos.inactivas || 0}</p>
-    </div>
-    <div class="estadistica-card" style="border-top: 4px solid orange" data-filtro="destacada" data-valor="true">
-      <div class="icono">⭐</div>
-      <h4>Destacadas</h4>
-      <p>${conteos.destacadas || 0}</p>
-    </div>
-  `;
+let htmlEstados = `
+  <button class="estadistica-chip" data-filtro="reset">
+    <span class="chip-icon">📊</span>
+    <span class="chip-label">Total</span>
+    <span class="chip-count">${conteos.total || 0}</span>
+  </button>
 
-  // 🟢 Tipos
-  let htmlTipos = "";
-  for (let tipo in estilosPorTipo) {
-    const estilo = estilosPorTipo[tipo];
-    const keyPlural = tipo.toLowerCase() + "s";
-    const cantidad = conteos[keyPlural] ?? conteos[tipo.toLowerCase()] ?? 0;
+  <button class="estadistica-chip" data-filtro="filtroActiva" data-valor="true">
+    <span class="chip-icon">✅</span>
+    <span class="chip-label">Activas</span>
+    <span class="chip-count">${conteos.activas || 0}</span>
+  </button>
 
-    if (cantidad > 0) {
-      htmlTipos += `
-        <div class="estadistica-card" 
-             style="border-top: 4px solid ${estilo.color}" 
-             data-filtro="tipo" 
-             data-valor="${tipo.toLowerCase()}">
-          <div class="icono">
-            <i class="${estilo.icono.options.html.match(/class="([^"]+)"/)[1]}" 
-               style="color:${estilo.color};font-size:22px;"></i>
-          </div>
-          <h4>${tipo.charAt(0).toUpperCase() + tipo.slice(1)}</h4>
-          <p>${cantidad}</p>
-        </div>
-      `;
-    }
+  <button class="estadistica-chip" data-filtro="filtroActiva" data-valor="false">
+    <span class="chip-icon">❌</span>
+    <span class="chip-label">Inactivas</span>
+    <span class="chip-count">${conteos.inactivas || 0}</span>
+  </button>
+
+  <button class="estadistica-chip" data-filtro="destacada" data-valor="true">
+    <span class="chip-icon">⭐</span>
+    <span class="chip-label">Destacadas</span>
+    <span class="chip-count">${conteos.destacadas || 0}</span>
+  </button>
+`;
+
+
+
+// Tipos
+let htmlTipos = "";
+for (let tipo in estilosPorTipo) {
+  const estilo = estilosPorTipo[tipo];
+  const keyPlural = tipo.toLowerCase() + "s";
+  const cantidad = conteos[keyPlural] ?? conteos[tipo.toLowerCase()] ?? 0;
+
+  if (cantidad > 0) {
+    htmlTipos += `
+      <button class="estadistica-chip" data-filtro="tipo" data-valor="${tipo.toLowerCase()}">
+        <span class="chip-icon" style="color:${estilo.color}">
+          <i class="${estilo.icono.options.html.match(/class="([^"]+)"/)[1]}"></i>
+        </span>
+        <span class="chip-label">${tipo.charAt(0).toUpperCase() + tipo.slice(1)}</span>
+        <span class="chip-count">${cantidad}</span>
+      </button>
+    `;
   }
+}
+
 
   contenedor.innerHTML = htmlEstados + htmlTipos;
 
   // 👉 Listeners
-  contenedor.querySelectorAll(".estadistica-card").forEach(card => {
-    card.addEventListener("click", () => {
-      const filtro = card.dataset.filtro;
-      const valor = card.dataset.valor;
+contenedor.querySelectorAll(".estadistica-chip").forEach(chip => {
+  chip.addEventListener("click", () => {
+    const filtro = chip.dataset.filtro;   // 👈 aquí debe ser chip
+    const valor = chip.dataset.valor;     // 👈 aquí también chip
 
-      if (filtro === "reset") {
-        // ✅ Quitar filtros
-        document.getElementById("tipo").value = "";
-        document.getElementById("estado").value = "todos";
-        document.getElementById("filtroActiva").value = "todas";
-        document.getElementById("destacada").checked = false;
-      } 
-      else if (filtro === "tipo") {
-        document.getElementById("tipo").value = valor;
-      } 
-      else if (filtro === "filtroActiva") {
-        document.getElementById("filtroActiva").value = valor;
-      } 
-      else if (filtro === "destacada") {
-        document.getElementById("destacada").checked = true;
-      }
+    if (filtro === "reset") {
+      document.getElementById("tipo").value = "";
+      document.getElementById("estado").value = "todos";
+      document.getElementById("filtroActiva").value = "todas";
+      document.getElementById("destacada").checked = false;
+    } 
+    else if (filtro === "tipo") {
+      document.getElementById("tipo").value = valor;
+    } 
+    else if (filtro === "filtroActiva") {
+      document.getElementById("filtroActiva").value = valor;
+    } 
+    else if (filtro === "destacada") {
+      document.getElementById("destacada").checked = true;
+    }
 
-      // 🔎 Simular click en el botón Buscar
-      document.getElementById("buscarBtn").click();
-    });
+    // 🔎 Simular click en el botón Buscar
+    document.getElementById("buscarBtn").click();
   });
+});
+
 }
 
 
@@ -190,3 +171,23 @@ function renderEstadisticasTexto(propiedades) {
   `;
 }
 
+
+
+// Normaliza nombres de clases en los chips para que el CSS funcione siempre
+document.querySelectorAll('.estadistica-chip').forEach(chip => {
+  // icono
+  if (!chip.querySelector('.chip-icon')) {
+    const icono = chip.querySelector('.icono') || chip.querySelector('.chip-icon');
+    if (icono) icono.classList.add('chip-icon');
+  }
+  // count
+  if (!chip.querySelector('.chip-count')) {
+    const count = chip.querySelector('.cantidad') || chip.querySelector('.chip-count');
+    if (count) count.classList.add('chip-count');
+  }
+  // label: el primer span que no sea icono ni count
+  if (!chip.querySelector('.chip-label')) {
+    const spans = Array.from(chip.children).filter(c => !c.classList.contains('chip-icon') && !c.classList.contains('chip-count'));
+    if (spans.length) spans[0].classList.add('chip-label');
+  }
+});

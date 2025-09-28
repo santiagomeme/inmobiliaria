@@ -166,68 +166,72 @@ async function cargarPropiedades() {
         <button onclick="verDetalle('${doc.id}')">Ver detalles</button>
       `;
 
+      // ✅ Aquí aplicamos el resaltado si coincide con el filtro activo
+      if (
+        (filtroActivo.tipo && data.tipo.toLowerCase() === filtroActivo.tipo) ||
+        (filtroActivo.destacada && data.destacada)
+      ) {
+        card.classList.add("propiedad-filtrada");
+      }
+
       lista.appendChild(card);
 
-      // Crear marcador en el mapa
-     // Crear marcador en el mapa con popup seguro
-if (data.lat && data.lng) {
-  // normalizar ruta de imagen
-  let imgSrcPopup = (data.imagenes && data.imagenes.length > 0) 
-    ? data.imagenes[0] 
-    : "imagenes/default.png";
+      // Crear marcador en el mapa con popup seguro
+      if (data.lat && data.lng) {
+        let imgSrcPopup = (data.imagenes && data.imagenes.length > 0) 
+          ? data.imagenes[0] 
+          : "imagenes/default.png";
 
-  // si no es URL absoluta, forzar desde raíz del hosting
-  if (!/^https?:\/\//i.test(imgSrcPopup)) {
-    if (!imgSrcPopup.startsWith("/")) imgSrcPopup = "/" + imgSrcPopup;
-  }
+        if (!/^https?:\/\//i.test(imgSrcPopup)) {
+          if (!imgSrcPopup.startsWith("/")) imgSrcPopup = "/" + imgSrcPopup;
+        }
 
-  // escapar textos para evitar romper HTML
-  const safeTitulo = String(data.titulo || "").replace(/"/g, "&quot;");
-  const safeTipo   = String(data.tipo || "");
-  const safePrecio = formatearPrecio(data.precio) || "$0";
+        const safeTitulo = String(data.titulo || "").replace(/"/g, "&quot;");
+        const safeTipo   = String(data.tipo || "");
+        const safePrecio = formatearPrecio(data.precio) || "$0";
 
-  const popupHtml = `
-    <div style="text-align:center; width:160px; font-family:sans-serif;">
-      <img src="${imgSrcPopup}" style="width:100%;border-radius:6px;margin-bottom:4px;" alt="${safeTitulo}">
-      <h4 style="margin:4px 0;font-size:14px;font-weight:600;color:#333;">${safeTitulo}</h4>
-      <p style="margin:2px 0;font-size:13px;color:#2E8B57;font-weight:bold;">
-        ${safePrecio}
-      </p>
-      <span style="
-        display:inline-block;
-        margin-top:3px;
-        padding:2px 6px;
-        border-radius:6px;
-        font-size:12px;
-        background:${color};
-        color:#fff;
-        font-weight:bold;
-        white-space:nowrap;">
-        ${safeTipo}
-      </span>
-      <br>
-      <button style="
-        margin-top:6px;
-        padding:4px 8px;
-        border:none;
-        border-radius:6px;
-        background:#fff;
-        color:#000000;
-        font-size:12px;
-        font-weight:bold;
-        cursor:pointer;" onclick="verDetalle('${doc.id}')">
-        Ver detalles
-      </button>
-    </div>
-  `;
+        const popupHtml = `
+          <div style="text-align:center; width:160px; font-family:sans-serif;">
+            <img src="${imgSrcPopup}" style="width:100%;border-radius:6px;margin-bottom:4px;" alt="${safeTitulo}">
+            <h4 style="margin:4px 0;font-size:14px;font-weight:600;color:#333;">${safeTitulo}</h4>
+            <p style="margin:2px 0;font-size:13px;color:#2E8B57;font-weight:bold;">
+              ${safePrecio}
+            </p>
+            <span style="
+              display:inline-block;
+              margin-top:3px;
+              padding:2px 6px;
+              border-radius:6px;
+              font-size:12px;
+              background:${color};
+              color:#fff;
+              font-weight:bold;
+              white-space:nowrap;">
+              ${safeTipo}
+            </span>
+            <br>
+            <button style="
+              margin-top:6px;
+              padding:4px 8px;
+              border:none;
+              border-radius:6px;
+              background:#fff;
+              color:#000000;
+              font-size:12px;
+              font-weight:bold;
+              cursor:pointer;" onclick="verDetalle('${doc.id}')">
+              Ver detalles
+            </button>
+          </div>
+        `;
 
-  const marker = L.marker([data.lat, data.lng], { icon: icono }).addTo(markersLayer);
-  marker.bindPopup(popupHtml);
-}
-
+        const marker = L.marker([data.lat, data.lng], { icon: icono }).addTo(markersLayer);
+        marker.bindPopup(popupHtml);
+      }
     });
+
     // al final del try después del loop
-renderEstadisticasClientes(propiedades);
+    renderEstadisticasClientes(propiedades);
 
   } catch (error) {
     console.error("Error al cargar propiedades:", error);

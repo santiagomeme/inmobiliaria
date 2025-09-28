@@ -1,81 +1,146 @@
-/* ============================
-   📊 Estadísticas en MAPA
-============================ */
-.estadisticas {
+
+/* contenedor: ajusta columnas y rompe bonito */
+.chips-grid,
+#estadisticas-clientes,
+#estadisticas {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* stats pequeñas */
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 8px;
-  margin: 5px 0;
-  padding: 5px;
-  background: #f5f5f5;
-  border-radius: 12px;
-  font-family: "Segoe UI", sans-serif;
+  align-items: center;
+  margin-top: 10px;
 }
 
+/* chip base (flex para controlar icono / label / count) */
+.estadistica-chip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  margin: 0;
+  border-radius: 999px;
+  border: 1px solid #e6e6e6;
+  background: #fff;
+  font-size: 14px;
+  cursor: pointer;
+  box-sizing: border-box;
+  min-width: 120px;        /* evita que se haga demasiado pequeño */
+  max-width: 100%;
+  overflow: hidden;        /* evita que salga texto fuera */
+  white-space: nowrap;     /* evita saltos de línea */
+  transition: transform .12s ease, box-shadow .12s ease, background .12s;
+}
 
-/* ✅ Card única */
-.estadistica-card {
+/* Icono izquierdo */
+.estadistica-chip .chip-icon,
+.estadistica-chip .icono {
+  flex: 0 0 26px;
+  height: 26px;
   display: inline-flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 12px;
-  margin: 6px;
-  border-radius: 12px;
-  background: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-  cursor: pointer;
-  transition: transform 0.2s ease;
-}
-
-.estadistica-card:hover {
-  transform: scale(1.05);
-}
-
-/* Iconos */
-.estadistica-card .icono,
-.estadistica-card i {
-  display: block;
-  text-align: center;
-  width: 100%;
-  margin: 0 auto 6px;
-  font-size: 22px;
-  color: #333;
-}
-
-/* Títulos y números */
-.estadistica-card h4 {
-  margin: 4px 0;
-  font-size: 13px;
-  font-weight: 600;
-  color: #333;
-}
-
-.estadistica-card p {
-  margin: 0;
   font-size: 16px;
-  font-weight: bold;
-  color: #222;
+  line-height: 1;
 }
 
-/* Responsive: en móviles */
-@media (max-width: 768px) {
-  .estadistica-card {
-    padding: 8px;
-    margin: 4px;
-    border-radius: 10px;
-  }
+/* Texto central (label) */
+.estadistica-chip span:not(.chip-icon):not(.chip-count):not(.cantidad):not(.icono) {
+  flex-grow: 1;
+  font-size: 14px;
+  color: #333;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* ✅ corta si es muy largo en móvil */
+}
+.chips-grid,
+#estadisticas-clientes,
+#estadisticas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); /* antes 140px */
+  gap: 8px;
+  align-items: center;
+  margin-top: 10px;
+}
 
-  .estadistica-card .icono {
-    font-size: 18px;
-  }
+/* Número/cantidad */
+.estadistica-chip .chip-count,
+.estadistica-chip .cantidad {
+  flex: 0 0 auto;
+  font-weight: bold;
+  color: #444;
+  font-size: 14px;
+  margin-left: 8px;
+  padding: 2px 6px;
+  border-radius: 6px;
+  background: #f3f6ff;
+  min-width: 28px;
+  text-align: center;
+}
 
-  .estadistica-card h4 {
+
+
+
+/* estado activo/hover */
+.estadistica-chip:hover { transform: translateY(-2px); background: #fbfdff; box-shadow: 0 6px 18px rgba(2,33,71,0.06); }
+.estadistica-chip.active { background: linear-gradient(90deg,#fff,#f4fbff); border-color: rgba(0,123,255,0.14); }
+
+/* responsive: chips más compactos en móviles */
+@media (max-width: 560px) {
+  .chips-grid, #estadisticas-clientes, #estadisticas {
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+  }
+  .estadistica-chip { padding: 6px 8px; font-size: 13px; gap: 6px; }
+  .estadistica-chip .chip-icon { flex: 0 0 20px; height:20px; font-size:14px; }
+  .estadistica-chip .chip-count { padding: 2px 6px; min-width: 30px; font-size:12px; }
+}
+
+@media (max-width: 480px) {
+  #estadisticas-clientes {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+  .estadistica-chip {
+    padding: 6px 10px;
+    gap: 6px;
     font-size: 12px;
   }
+  .estadistica-chip .chip-label {
+    font-size: 12px;
+  }
+  .estadistica-chip .chip-count {
+    font-size: 12px;
+  }
+}
+@media (max-width: 560px) {
+  .chips-grid,
+  #estadisticas-clientes,
+  #estadisticas {
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  }
+  .estadistica-chip {
+    padding: 6px 8px;
+    font-size: 12px;
+    gap: 6px;
+  }
+  .estadistica-chip .chip-icon,
+  .estadistica-chip .icono {
+    flex: 0 0 20px;
+    height: 20px;
+    font-size: 14px;
+  }
+  .estadistica-chip .chip-label {
+    font-size: 12px;
+  }
+  .estadistica-chip .chip-count,
+  .estadistica-chip .cantidad {
+    font-size: 12px;
+    min-width: 24px;
+  }
+}
 
-  .estadistica-card p {
-    font-size: 11px;
+@media (min-width: 768px) {
+  .estadistica-chip .chip-label {
+    white-space: normal;   /* permite salto de línea */
+    overflow: visible;     /* no recorta */
+    text-overflow: unset;  /* sin puntos suspensivos */
   }
 }
 

@@ -12,7 +12,7 @@
 
 <!-- FontAwesome CDN -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-<link rel="icon" type="image/x-icon" href="imagenes/LogoIco_G.ico">
+<link rel="icon" type="image/x-icon" href="imagenes/logoIco.ico">
 
   <link rel="stylesheet" href="registroPropi.css">
     <link rel="stylesheet" href="estadisticas.css">
@@ -203,10 +203,12 @@
   <button id="btnLimpiarCodigo">Limpiar</button>
 </div>
 
-<section class="admin-listado">
-    <h2>Listado de propiedades</h2>
-    <div id="adminLista" class="grid"></div>
-  </section>
+<button id="btnToggleLista">📋 Ver listado de propiedades</button>
+
+<section id="seccionListado" class="admin-listado" style="display:none;">
+  <h2>Listado de propiedades</h2>
+  <div id="adminLista" class="grid"></div>
+</section>
 
  <footer>
     <!-- Sección info empresa -->

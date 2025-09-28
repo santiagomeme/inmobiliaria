@@ -55,23 +55,25 @@ function crearIcono(color, iconoFA) {
 function calcularConteos(propiedades) {
   return {
     total: propiedades.length,
-    casas: propiedades.filter(p => p.tipo === "casa").length,
-    apartamentos: propiedades.filter(p => p.tipo === "apartamento").length,
-    lotes: propiedades.filter(p => p.tipo === "lote").length,
-    fincas: propiedades.filter(p => p.tipo === "finca").length,
-    apartaestudios: propiedades.filter(p => p.tipo === "apartaestudio").length,
-    bodegas: propiedades.filter(p => p.tipo === "bodega").length,
-    campestres: propiedades.filter(p => p.tipo === "campestre").length,
-    condominios: propiedades.filter(p => p.tipo === "condominio").length,
+    casa: propiedades.filter(p => p.tipo === "casa").length,
+    apartamento: propiedades.filter(p => p.tipo === "apartamento").length,
+    lote: propiedades.filter(p => p.tipo === "lote").length,
+    finca: propiedades.filter(p => p.tipo === "finca").length,
+    apartaestudio: propiedades.filter(p => p.tipo === "apartaestudio").length,
+    bodega: propiedades.filter(p => p.tipo === "bodega").length,
+    campestre: propiedades.filter(p => p.tipo === "campestre").length,
+    condominio: propiedades.filter(p => p.tipo === "condominio").length,
     duplex: propiedades.filter(p => p.tipo === "duplex").length,
-    edificios: propiedades.filter(p => p.tipo === "edificio").length,
-    locales: propiedades.filter(p => p.tipo === "local").length,
-    hoteles: propiedades.filter(p => p.tipo === "hotel").length,
-    oficinas: propiedades.filter(p => p.tipo === "oficina").length,
+    edificio: propiedades.filter(p => p.tipo === "edificio").length,
+    local: propiedades.filter(p => p.tipo === "local").length,
+    hotel: propiedades.filter(p => p.tipo === "hotel").length,
+    oficina: propiedades.filter(p => p.tipo === "oficina").length,
     penthouse: propiedades.filter(p => p.tipo === "penthouse").length,
-    destacadas: propiedades.filter(p => p.destacada).length,
+    destacada: propiedades.filter(p => p.destacada).length
   };
 }
+
+// ===============================
 // ===============================
 // Estilos SOLO para estadísticas (clientes)
 // ===============================
@@ -92,6 +94,8 @@ const estilosPorTipoEstadisticas = {
   "penthouse":     { icono: '<i class="fas fa-crown"></i>', color: "goldenrod" }
 };
 
+// 👉 variable global para saber qué filtro está activo
+let filtroActivo = { tipo: null, destacada: false };
 
 // ===============================
 // Render dinámico de estadísticas en clientes (como chips)
@@ -117,15 +121,14 @@ function renderEstadisticasClientes(propiedades) {
     <button type="button" class="estadistica-chip" data-filtro="destacada" data-valor="true">
       <span class="chip-icon">⭐</span>
       <span class="chip-label">Destacadas</span>
-      <span class="chip-count">${conteos.destacadas || 0}</span>
+      <span class="chip-count">${conteos.destacada || 0}</span>
     </button>
   `;
 
-  // 🔹 Chips por tipo (usando estilosPorTipoEstadisticas)
+  // 🔹 Chips por tipo
   for (let tipo in estilosPorTipoEstadisticas) {
     const estilo = estilosPorTipoEstadisticas[tipo];
-    const keyPlural = tipo.toLowerCase() + "s";
-    const cantidad = conteos[keyPlural] ?? conteos[tipo.toLowerCase()] ?? 0;
+    const cantidad = conteos[tipo.toLowerCase()] || 0;
 
     if (cantidad > 0) {
       html += `
@@ -153,15 +156,18 @@ function renderEstadisticasClientes(propiedades) {
       if (filtro === "reset") {
         document.getElementById("tipo").value = "";
         document.getElementById("destacada").checked = false;
+        filtroActivo = { tipo: null, destacada: false }; // 🔄 reset
       } 
       else if (filtro === "tipo") {
         document.getElementById("tipo").value = valor;
+        filtroActivo = { tipo: valor, destacada: false }; // 🔄 guarda tipo
       } 
       else if (filtro === "destacada") {
         document.getElementById("destacada").checked = true;
+        filtroActivo = { tipo: null, destacada: true }; // 🔄 guarda destacadas
       }
 
-      // Simular el click en Buscar
+      // Simular el click en Buscar (esto repinta las propiedades o mapa)
       document.getElementById("buscarBtn").click();
     });
   });
@@ -170,9 +176,29 @@ function renderEstadisticasClientes(propiedades) {
 
 
 
-
-
 function getEstiloByTipo(tipo) {
   const key = tipo.toLowerCase();
   return estilosPorTipo[key] || { icono: '<i class="fas fa-question"></i>', color: 'gray' };
 }
+
+
+
+
+// Normaliza nombres de clases en los chips para que el CSS funcione siempre
+document.querySelectorAll('.estadistica-chip').forEach(chip => {
+  // icono
+  if (!chip.querySelector('.chip-icon')) {
+    const icono = chip.querySelector('.icono') || chip.querySelector('.chip-icon');
+    if (icono) icono.classList.add('chip-icon');
+  }
+  // count
+  if (!chip.querySelector('.chip-count')) {
+    const count = chip.querySelector('.cantidad') || chip.querySelector('.chip-count');
+    if (count) count.classList.add('chip-count');
+  }
+  // label: el primer span que no sea icono ni count
+  if (!chip.querySelector('.chip-label')) {
+    const spans = Array.from(chip.children).filter(c => !c.classList.contains('chip-icon') && !c.classList.contains('chip-count'));
+    if (spans.length) spans[0].classList.add('chip-label');
+  }
+});
