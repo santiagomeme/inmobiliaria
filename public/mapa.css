@@ -63,6 +63,22 @@ html, body {
   text-align: center;
   margin-top: 15px;
 }
+/* Checkbox + texto alineados */
+.check-label {
+  display: inline-flex;
+  align-items: center; /* ✅ Alinea checkbox con texto */
+  gap: 6px;            /* espacio entre checkbox y texto */
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.check-label input[type="checkbox"] {
+  margin: 0;          /* quita espacios raros */
+  width: 16px;        /* tamaño uniforme */
+  height: 16px;
+  cursor: pointer;
+}
+
 
 /* ===== BOTONES ===== */
 .btn {

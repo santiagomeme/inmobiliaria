@@ -41,20 +41,26 @@
   <!-- Menú principal -->
   <nav class="main-nav" id="main-nav">
     <ul>
-      <li><a href="propiedades.html">Propiedades</a></li>
-      <li><a href="contacto.html">Contacto</a></li>
+      <li><a href="index.html">Inicio</a></li>
+      <li><a href="registroPropiedad.html">Crear</a></li>
       <li><a href="blog.html">Blog</a></li>
-      <li><a href="mapa.html">Mapa</a></li>
+      <li><a href="registroUserNue.js">Nuevo usuario</a></li>
       <li><a href="registro.html"><i class="fas fa-user"></i> Admin</a></li> <!-- Botón admin aquí -->
+
     </ul>
   </nav>
 </header>
 <!-- FILTROS -->
 <div class="filtros">
-  <label>
-  <input type="checkbox" id="filtroNueva" />  Nuevas en el catalogo</imput>
+ <!-- Nueva en el catálogo -->
+  <div class="check-item">
+    <label>
+      <input type="checkbox" id="filtroNueva">
+      Nuevas en el catálogo
+    </label>
+  </div>
 
-</label>
+
 
   <!-- Tipo de inmueble -->
   <select id="tipo">
@@ -123,11 +129,12 @@ Activa/Inactiva
 <input type="number" id="banos" placeholder="Mínimo baños">
 
   <input type="number" id="garaje" placeholder="Mínimo garajes">
-<!-- Destacada -->
-Destacadas
-<label >
-  <input type="checkbox" id="destacada">
-</label>
+  <div class="check-item">
+    <label>
+      <input type="checkbox" id="destacada">
+      Destacadas
+    </label>
+  </div>
 
 <!-- Botones -->
   <button id="buscarBtn">Buscar</button>

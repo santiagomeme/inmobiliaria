@@ -470,6 +470,33 @@ footer {
   align-items: center;
   justify-content: center;
 }
+/* Contenedor general */
+.filtros {
+  background: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+  max-width: 1000px;
+  margin: 20px auto;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 15px
+}
+
+/* Checkbox compacto */
+.check-item label {
+  display: inline-flex!important;
+  align-items: center!important;
+  gap: 6px!important;  /* espacio entre el cuadradito y el texto */
+  font-size: 0.95rem!important;
+  cursor: pointer!important;
+}
+
+.check-item input[type="checkbox"] {
+  margin: 0!important;
+}
+
+
 
 /* Estilo general inputs y select */
 .filtros select,

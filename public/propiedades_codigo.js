@@ -1,28 +1,5 @@
-
-
-async function generarCodigoAutomatico() {
-  const ref = firebase.firestore().collection("config").doc("contador");
-
-  return firebase.firestore().runTransaction(async (transaction) => {
-    const doc = await transaction.get(ref);
-
-    if (!doc.exists) {
-      throw "El documento contador no existe!";
-    }
-
-    let ultimo = doc.data().ultimoCodigo || 0;
-    let nuevo = ultimo + 1;
-
-    // actualizar el contador
-    transaction.update(ref, { ultimoCodigo: nuevo });
-
-    // retornar el nuevo código en formato P0001
-    return "P" + nuevo.toString().padStart(4, "0");
-  });
-}
-
-
-
+// -----------------------------
+// Crear ícono para los marcadores
 // -----------------------------
 function crearIcono(color, iconoFA) {
   return L.divIcon({
@@ -33,6 +10,7 @@ function crearIcono(color, iconoFA) {
         border-radius:50%;
         width:34px;
         height:34px;
+        margin:0 auto;
         display:flex;
         align-items:center;
         justify-content:center;
@@ -47,96 +25,82 @@ function crearIcono(color, iconoFA) {
   });
 }
 
-
-
 // ===============================
-// Función para calcular conteos (igual que en admin)
+// Función para calcular conteos
 // ===============================
 function calcularConteos(propiedades) {
   return {
     total: propiedades.length,
-    casa: propiedades.filter(p => p.tipo === "casa").length,
-    apartamento: propiedades.filter(p => p.tipo === "apartamento").length,
-    lote: propiedades.filter(p => p.tipo === "lote").length,
-    finca: propiedades.filter(p => p.tipo === "finca").length,
-    apartaestudio: propiedades.filter(p => p.tipo === "apartaestudio").length,
-    bodega: propiedades.filter(p => p.tipo === "bodega").length,
-    campestre: propiedades.filter(p => p.tipo === "campestre").length,
-    condominio: propiedades.filter(p => p.tipo === "condominio").length,
+    casas: propiedades.filter(p => p.tipo === "casa").length,
+    apartamentos: propiedades.filter(p => p.tipo === "apartamento").length,
+    lotes: propiedades.filter(p => p.tipo === "lote").length,
+    fincas: propiedades.filter(p => p.tipo === "finca").length,
+    apartaestudios: propiedades.filter(p => p.tipo === "apartaestudio").length,
+    bodegas: propiedades.filter(p => p.tipo === "bodega").length,
+    campestres: propiedades.filter(p => p.tipo === "campestre").length,
+    condominios: propiedades.filter(p => p.tipo === "condominio").length,
     duplex: propiedades.filter(p => p.tipo === "duplex").length,
-    edificio: propiedades.filter(p => p.tipo === "edificio").length,
-    local: propiedades.filter(p => p.tipo === "local").length,
-    hotel: propiedades.filter(p => p.tipo === "hotel").length,
-    oficina: propiedades.filter(p => p.tipo === "oficina").length,
+    edificios: propiedades.filter(p => p.tipo === "edificio").length,
+    locales: propiedades.filter(p => p.tipo === "local").length,
+    hoteles: propiedades.filter(p => p.tipo === "hotel").length,
+    oficinas: propiedades.filter(p => p.tipo === "oficina").length,
     penthouse: propiedades.filter(p => p.tipo === "penthouse").length,
-    destacada: propiedades.filter(p => p.destacada).length
+
+    activas: propiedades.filter(p => p.activa).length,
+    inactivas: propiedades.filter(p => !p.activa).length,
+    destacadas: propiedades.filter(p => p.destacada).length,
   };
 }
 
 // ===============================
+// Render dinámico en el DOM (con chips)
 // ===============================
-// Estilos SOLO para estadísticas (clientes)
-// ===============================
-const estilosPorTipoEstadisticas = {
-  "casa":          { icono: '<i class="fas fa-home"></i>', color: "#FFBF00" },
-  "apartamento":   { icono: '<i class="fas fa-building"></i>', color: "dodgerblue" },
-  "lote":          { icono: '<i class="fas fa-vector-square"></i>', color: "darkorange" },
-  "finca":         { icono: '<i class="fas fa-tractor"></i>', color: "#66FF00" },
-  "apartaestudio": { icono: '<i class="fas fa-door-open"></i>', color: "hotpink" },
-  "bodega":        { icono: '<i class="fas fa-warehouse"></i>', color: "#666633" },
-  "campestre":     { icono: '<i class="fas fa-tree"></i>', color: "darkgreen" },
-  "condominio":    { icono: '<i class="fas fa-city"></i>', color: "navy" },
-  "duplex":        { icono: '<i class="fas fa-house-chimney"></i>', color: "saddlebrown" },
-  "edificio":      { icono: '<i class="fas fa-building-circle-check"></i>', color: "black" },
-  "local":         { icono: '<i class="fas fa-store"></i>', color: "red" },
-  "hotel":         { icono: '<i class="fas fa-hotel"></i>', color: "darkred" },
-  "oficina":       { icono: '<i class="fas fa-briefcase"></i>', color: "purple" },
-  "penthouse":     { icono: '<i class="fas fa-crown"></i>', color: "goldenrod" }
-};
-
-// 👉 variable global para saber qué filtro está activo
-let filtroActivo = { tipo: null, destacada: false };
-
-// ===============================
-// Render dinámico de estadísticas en clientes (como chips)
-// ===============================
-function renderEstadisticasClientes(propiedades) {
+function renderEstadisticas(propiedades) {
   const conteos = calcularConteos(propiedades);
-  const contenedor = document.getElementById("estadisticas-clientes");
+  console.log("Conteos calculados:", conteos);
+
+  const contenedor = document.getElementById("estadisticas");
   if (!contenedor) return;
 
-  let html = "";
-
-  // 🔹 Chip "Todas"
-  html += `
-    <button type="button" class="estadistica-chip" data-filtro="reset">
+  // 🟢 Estados generales
+  let htmlEstados = `
+    <button class="estadistica-chip" data-filtro="reset">
       <span class="chip-icon">📊</span>
-      <span class="chip-label">Todas</span>
+      <span class="chip-label">Total</span>
       <span class="chip-count">${conteos.total || 0}</span>
     </button>
-  `;
 
-  // 🔹 Chip "Destacadas"
-  html += `
-    <button type="button" class="estadistica-chip" data-filtro="destacada" data-valor="true">
+    <button class="estadistica-chip" data-filtro="filtroActiva" data-valor="true">
+      <span class="chip-icon">✅</span>
+      <span class="chip-label">Activas</span>
+      <span class="chip-count">${conteos.activas || 0}</span>
+    </button>
+
+    <button class="estadistica-chip" data-filtro="filtroActiva" data-valor="false">
+      <span class="chip-icon">❌</span>
+      <span class="chip-label">Inactivas</span>
+      <span class="chip-count">${conteos.inactivas || 0}</span>
+    </button>
+
+    <button class="estadistica-chip" data-filtro="destacada" data-valor="true">
       <span class="chip-icon">⭐</span>
       <span class="chip-label">Destacadas</span>
-      <span class="chip-count">${conteos.destacada || 0}</span>
+      <span class="chip-count">${conteos.destacadas || 0}</span>
     </button>
   `;
 
-  // 🔹 Chips por tipo
-  for (let tipo in estilosPorTipoEstadisticas) {
-    const estilo = estilosPorTipoEstadisticas[tipo];
-    const cantidad = conteos[tipo.toLowerCase()] || 0;
+  // 🟢 Tipos dinámicos
+  let htmlTipos = "";
+  for (let tipo in estilosPorTipo) {
+    const estilo = estilosPorTipo[tipo];
+    const keyPlural = tipo.toLowerCase() + "s";
+    const cantidad = conteos[keyPlural] ?? conteos[tipo.toLowerCase()] ?? 0;
 
     if (cantidad > 0) {
-      html += `
-        <button type="button" class="estadistica-chip"
-                data-filtro="tipo"
-                data-valor="${tipo.toLowerCase()}">
+      htmlTipos += `
+        <button class="estadistica-chip" data-filtro="tipo" data-valor="${tipo.toLowerCase()}">
           <span class="chip-icon" style="color:${estilo.color}">
-            ${estilo.icono}
+            <i class="${estilo.icono.options.html.match(/class="([^"]+)"/)[1]}"></i>
           </span>
           <span class="chip-label">${tipo.charAt(0).toUpperCase() + tipo.slice(1)}</span>
           <span class="chip-count">${cantidad}</span>
@@ -145,9 +109,9 @@ function renderEstadisticasClientes(propiedades) {
     }
   }
 
-  contenedor.innerHTML = html;
+  contenedor.innerHTML = htmlEstados + htmlTipos;
 
-  // 👉 Listeners para filtros
+  // 👉 Listeners
   contenedor.querySelectorAll(".estadistica-chip").forEach(chip => {
     chip.addEventListener("click", () => {
       const filtro = chip.dataset.filtro;
@@ -155,50 +119,48 @@ function renderEstadisticasClientes(propiedades) {
 
       if (filtro === "reset") {
         document.getElementById("tipo").value = "";
+        document.getElementById("estado").value = "todos";
+        document.getElementById("filtroActiva").value = "todas";
         document.getElementById("destacada").checked = false;
-        filtroActivo = { tipo: null, destacada: false }; // 🔄 reset
       } 
       else if (filtro === "tipo") {
         document.getElementById("tipo").value = valor;
-        filtroActivo = { tipo: valor, destacada: false }; // 🔄 guarda tipo
+      } 
+      else if (filtro === "filtroActiva") {
+        document.getElementById("filtroActiva").value = valor;
       } 
       else if (filtro === "destacada") {
         document.getElementById("destacada").checked = true;
-        filtroActivo = { tipo: null, destacada: true }; // 🔄 guarda destacadas
       }
 
-      // Simular el click en Buscar (esto repinta las propiedades o mapa)
+      // 🔎 Simular click en el botón Buscar
       document.getElementById("buscarBtn").click();
     });
   });
 }
 
+// ===============================
+// Render alternativo en texto (para depuración o fallback)
+// ===============================
+function renderEstadisticasTexto(propiedades) {
+  const conteos = calcularConteos(propiedades);
+  const contenedor = document.getElementById("estadisticas");
 
+  if (!contenedor) {
+    console.warn("No se encontró el div de estadísticas");
+    return;
+  }
 
-
-function getEstiloByTipo(tipo) {
-  const key = tipo.toLowerCase();
-  return estilosPorTipo[key] || { icono: '<i class="fas fa-question"></i>', color: 'gray' };
+  contenedor.innerHTML = `
+    <div class="estadisticas-box">
+      <p>Total propiedades: <strong>${conteos.total}</strong></p>
+      <p>Casas: <strong>${conteos.casas}</strong></p>
+      <p>Apartamentos: <strong>${conteos.apartamentos}</strong></p>
+      <p>Lotes: <strong>${conteos.lotes}</strong></p>
+      <p>Fincas: <strong>${conteos.fincas}</strong></p>
+      <p>Activas: <strong>${conteos.activas}</strong></p>
+      <p>Inactivas: <strong>${conteos.inactivas}</strong></p>
+      <p>Destacadas: <strong>${conteos.destacadas}</strong></p>
+    </div>
+  `;
 }
-
-
-
-
-// Normaliza nombres de clases en los chips para que el CSS funcione siempre
-document.querySelectorAll('.estadistica-chip').forEach(chip => {
-  // icono
-  if (!chip.querySelector('.chip-icon')) {
-    const icono = chip.querySelector('.icono') || chip.querySelector('.chip-icon');
-    if (icono) icono.classList.add('chip-icon');
-  }
-  // count
-  if (!chip.querySelector('.chip-count')) {
-    const count = chip.querySelector('.cantidad') || chip.querySelector('.chip-count');
-    if (count) count.classList.add('chip-count');
-  }
-  // label: el primer span que no sea icono ni count
-  if (!chip.querySelector('.chip-label')) {
-    const spans = Array.from(chip.children).filter(c => !c.classList.contains('chip-icon') && !c.classList.contains('chip-count'));
-    if (spans.length) spans[0].classList.add('chip-label');
-  }
-});
