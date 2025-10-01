@@ -30,27 +30,26 @@ html, body {
 .admin-btn:hover {
   color: #19d8af;
 }
-
-/* === Slider base (PC grandes) === */
-/* === Slider (igual en todas las pantallas) === */
+/* === Slider base === */
 .slider {
   position: relative;
   width: 100%;
-  max-width: 1200px;    /* ancho máximo en PC */
+  max-width: 1200px;  /* ancho máximo en PC */
   margin: 0 auto;
-  aspect-ratio: 16 / 9; /* 🔹 proporción fija (como YouTube) */
+  aspect-ratio: 16 / 9; 
   overflow: hidden;
-  border-radius: 10px;
-  background: #000;     /* evita que se vea fondo blanco si carga lento */
+  border-radius: 0px;
+  background: #ffffff;
 }
 
+/* Imágenes dentro del slider */
 .slides img {
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* rellena el espacio */
+  object-fit: cover; 
   transition: opacity 1s ease-in-out;
   opacity: 0;
 }
@@ -58,6 +57,18 @@ html, body {
 .slides img:first-child {
   opacity: 1;
 }
+
+@media (min-width: 992px) {
+  .slider {
+    height: 450px;       /* 🔹 altura fija */
+    max-height: 500px;   /* 🔹 límite extra por seguridad */
+  }
+
+  .slides img {
+    object-fit: contain; /* 🔹 se ven completas aunque haya franjas */
+  }
+}
+
 
 
 /* Hero section */
@@ -361,6 +372,11 @@ footer {
   color: #00172e;
   margin-bottom: 10px;
 }
+ .h2{
+  font-size: 1.8rem;
+  color: #00172e;
+  margin-bottom: 10px;
+}
 
 .anuncio p {
   color: #444;
@@ -442,4 +458,71 @@ footer {
 
 .footer-links a:hover {
   text-decoration: underline; /* 🔹 al pasar el mouse */
+}
+
+
+
+.servicios {
+  padding: 40px;
+  background: #f9f9f9;
+  text-align: center;
+}
+
+.servicios h2 {
+  font-size: 28px;
+  margin-bottom: 20px;
+}
+
+.servicios-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.servicio-card {
+  background: white;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: transform 0.2s;
+}
+
+.servicio-card:hover {
+  transform: translateY(-5px);
+}
+
+.servicio-card i {
+  font-size: 40px;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+.cta-blog {
+  background: #f1f8ff;
+  border: 2px solid #007bff;
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+  margin: 30px auto;
+  max-width: 600px;
+  font-size: 18px;
+}
+
+.cta-blog p {
+  margin-bottom: 15px;
+  color: #333;
+}
+
+.btn-blog {
+  display: inline-block;
+  padding: 10px 20px;
+  background: #00172e;
+  color: white;
+  text-decoration: none;
+  font-weight: bold;
+  border-radius: 8px;
+  transition: background 0.3s;
+}
+
+.btn-blog:hover {
+  background: #0056b3;
 }

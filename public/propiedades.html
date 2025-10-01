@@ -140,25 +140,6 @@ Estado de la propiedad
 </div>
 
 
-<div id="map-legend">
-  <h4>📍 Tipos de Propiedad</h4>
-   <ul>
-    <li><i class="fas fa-home" style="color: #FFBF00;"></i> Casa</li>
-    <li><i class="fas fa-building" style="color: dodgerblue;"></i> Apartamento</li>
-    <li><i class="fas fa-border-all" style="color: darkorange;"></i> Lote</li>
-    <li><i class="fas fa-tractor" style="color: #66FF00;"></i> Finca</li>
-    <li><i class="fas fa-door-open" style="color: hotpink;"></i> Apartaestudio</li>
-    <li><i class="fas fa-warehouse" style="color: #666633;"></i> Bodega</li>
-    <li><i class="fas fa-tree" style="color: darkgreen;"></i> Campestre</li>
-    <li><i class="fas fa-city" style="color: lightseagreen;"></i> Condominio</li>
-    <li><i class="fas fa-house-user" style="color: saddlebrown;"></i> Dúplex</li>
-    <li><i class="fas fa-hotel" style="color: black;"></i> Edificio</li>
-    <li><i class="fas fa-store" style="color: crimson;"></i> Local</li>
-    <li><i class="fas fa-concierge-bell" style="color: darkred;"></i> Hotel</li>
-    <li><i class="fas fa-briefcase" style="color: violet;"></i> Oficina</li>
-    <li><i class="fas fa-crown" style="color: gold;"></i> Penthouse</li>
-  </ul>
-</div>
 
   <h1>Lista de Propiedades</h1>
 <div class="map-container">
@@ -166,8 +147,10 @@ Estado de la propiedad
   <div id="mapOverlay" class="overlay"></div>
   <button id="toggleMap">🔓 Activar mapa</button>
 </div>
+  <h4>📍 Tipos de Propiedad</h4>
 
-<div id="estadisticas-clientes" class="chips-grid"></div>
+<!-- Contenedor donde se renderizan las estadísticas -->
+<div id="estadisticas" class="estadisticas-container"></div>
 
   <h1 style="text-align:center; padding: 20px;">Propiedades disponibles</h1>
 <div id="propiedades" class="propiedades-grid lista-propiedades"></div>
@@ -200,8 +183,9 @@ Estado de la propiedad
 <!-- Tu configuración y lógica -->
 <script src="firebase-config.js"></script>
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="propiedades.js"></script>
+
   <script src="propiedades_codigo.js"></script>
-  <script src="propiedades.js"></script>
 
   <script src="filtro.js"></script>
   <script src="menu.js"></script>

@@ -1,6 +1,6 @@
-// ==========================
-//  LISTADO DE PROPIEDADES + MAPA
-// ==========================
+
+
+// 🔹 filtro activo (para no romper cuando aún no se ha seleccionado ninguno)
 
 // Contenedor HTML de las tarjetas
 const lista = document.getElementById("propiedades");
@@ -166,13 +166,18 @@ async function cargarPropiedades() {
         <button onclick="verDetalle('${doc.id}')">Ver detalles</button>
       `;
 
-      // ✅ Aquí aplicamos el resaltado si coincide con el filtro activo
-      if (
-        (filtroActivo.tipo && data.tipo.toLowerCase() === filtroActivo.tipo) ||
-        (filtroActivo.destacada && data.destacada)
-      ) {
-        card.classList.add("propiedad-filtrada");
-      }
+// ✅ Aquí aplicamos el resaltado si coincide con el filtro activo (versión segura)
+const filtro = window.filtroActivo || {};
+const tipoProp = (data.tipo || "").toLowerCase();
+
+if (
+  (filtro.tipo && tipoProp === String(filtro.tipo).toLowerCase()) ||
+  (filtro.destacada && !!data.destacada)
+) {
+  card.classList.add("propiedad-filtrada");
+}
+
+
 
       lista.appendChild(card);
 
@@ -230,12 +235,48 @@ async function cargarPropiedades() {
       }
     });
 
-    // al final del try después del loop
-    renderEstadisticasClientes(propiedades);
+// al final del try después del loop: intento seguro de renderizar estadísticas
+if (typeof renderEstadisticas === "function") {
+  try { renderEstadisticas(propiedades); } catch (e) { console.error("renderEstadisticas falló:", e); }
+} else if (typeof renderEstadisticasClientes === "function") {
+  try { renderEstadisticasClientes(propiedades); } catch (e) { console.error("renderEstadisticasClientes falló:", e); }
+} else {
+  // 1) disparamos un evento para que cualquier script que cargue después pueda escuchar
+  window.dispatchEvent(new CustomEvent("propiedades:loaded", { detail: propiedades }));
+
+  // 2) fallback: reintentos cortos (hasta 10) en caso de que la función se cargue unos ms después
+  (function tryRender(retriesLeft) {
+    if (typeof renderEstadisticas === "function") return renderEstadisticas(propiedades);
+    if (typeof renderEstadisticasClientes === "function") return renderEstadisticasClientes(propiedades);
+    if (retriesLeft <= 0) return console.warn("No se encontró función de estadísticas después de reintentos.");
+    setTimeout(() => tryRender(retriesLeft - 1), 200);
+  })(10);
+}
+
 
   } catch (error) {
     console.error("Error al cargar propiedades:", error);
   }
+}
+// ==========================
+//  FUNCIONES PARA FILTROS
+// ==========================
+// 🔹 filtro activo (objeto global único, evita redeclaraciones)
+window.filtroActivo = window.filtroActivo || {};
+
+function aplicarFiltroTipo(tipo) {
+  filtroActivo = { tipo: tipo.toLowerCase() };
+  cargarPropiedades();
+}
+
+function aplicarFiltroDestacadas() {
+  filtroActivo = { destacada: true };
+  cargarPropiedades();
+}
+
+function resetFiltros() {
+  filtroActivo = {};
+  cargarPropiedades();
 }
 
 

@@ -34,26 +34,27 @@ function crearIcono(color, iconoFA) {
 function calcularConteos(propiedades) {
   return {
     total: propiedades.length,
-    casas: propiedades.filter(p => p.tipo === "casa").length,
-    apartamentos: propiedades.filter(p => p.tipo === "apartamento").length,
-    lotes: propiedades.filter(p => p.tipo === "lote").length,
-    fincas: propiedades.filter(p => p.tipo === "finca").length,
-    apartaestudios: propiedades.filter(p => p.tipo === "apartaestudio").length,
-    bodegas: propiedades.filter(p => p.tipo === "bodega").length,
-    campestres: propiedades.filter(p => p.tipo === "campestre").length,
-    condominios: propiedades.filter(p => p.tipo === "condominio").length,
+    casa: propiedades.filter(p => p.tipo === "casa").length,
+    apartamento: propiedades.filter(p => p.tipo === "apartamento").length,
+    lote: propiedades.filter(p => p.tipo === "lote").length,
+    finca: propiedades.filter(p => p.tipo === "finca").length,
+    apartaestudio: propiedades.filter(p => p.tipo === "apartaestudio").length,
+    bodega: propiedades.filter(p => p.tipo === "bodega").length,
+    campestre: propiedades.filter(p => p.tipo === "campestre").length,
+    condominio: propiedades.filter(p => p.tipo === "condominio").length,
     duplex: propiedades.filter(p => p.tipo === "duplex").length,
-    edificios: propiedades.filter(p => p.tipo === "edificio").length,
-    locales: propiedades.filter(p => p.tipo === "local").length,
-    hoteles: propiedades.filter(p => p.tipo === "hotel").length,
-    oficinas: propiedades.filter(p => p.tipo === "oficina").length,
+    edificio: propiedades.filter(p => p.tipo === "edificio").length,
+    local: propiedades.filter(p => p.tipo === "local").length,
+    hotel: propiedades.filter(p => p.tipo === "hotel").length,
+    oficina: propiedades.filter(p => p.tipo === "oficina").length,
     penthouse: propiedades.filter(p => p.tipo === "penthouse").length,
 
-    activas: propiedades.filter(p => p.activa).length,
-    inactivas: propiedades.filter(p => !p.activa).length,
-    destacadas: propiedades.filter(p => p.destacada).length,
+    activa: propiedades.filter(p => p.activa).length,
+    inactiva: propiedades.filter(p => !p.activa).length,
+    destacada: propiedades.filter(p => p.destacada).length,
   };
 }
+
 
 // ===============================
 // Render dinámico en el DOM (con tarjetas)
@@ -98,14 +99,14 @@ let htmlEstados = `
 let htmlTipos = "";
 for (let tipo in estilosPorTipo) {
   const estilo = estilosPorTipo[tipo];
-  const keyPlural = tipo.toLowerCase() + "s";
-  const cantidad = conteos[keyPlural] ?? conteos[tipo.toLowerCase()] ?? 0;
+  const cantidad = conteos[tipo] ?? 0;  // 👈 directo, ya coinciden nombres
 
   if (cantidad > 0) {
+    const iconClass = estilo.icono.options.html.match(/class="([^"]+)"/)[1];
     htmlTipos += `
-      <button class="estadistica-chip" data-filtro="tipo" data-valor="${tipo.toLowerCase()}">
+      <button class="estadistica-chip" data-filtro="tipo" data-valor="${tipo}">
         <span class="chip-icon" style="color:${estilo.color}">
-          <i class="${estilo.icono.options.html.match(/class="([^"]+)"/)[1]}"></i>
+          <i class="${iconClass}"></i>
         </span>
         <span class="chip-label">${tipo.charAt(0).toUpperCase() + tipo.slice(1)}</span>
         <span class="chip-count">${cantidad}</span>
