@@ -82,23 +82,6 @@ const iconPenthouse     = crearIcono("gold", "fas fa-crown");
 // ==========================
 // ÍCONO + COLOR POR TIPO DE PROPIEDAD (MAPA CENTRALIZADO)
 // ==========================
-const estilosPorTipo = {
-  "casa":        { icono: iconCasa,        color: "goldenrod" },
-  "apartamento": { icono: iconApartamento, color: "dodgerblue" },
-  "lote":        { icono: iconLote,        color: "darkorange" },
-  "finca":       { icono: iconFinca,       color: "#66FF00" },
-  "apartaestudio": { icono: iconApartaestudio, color: "hotpink" },
-  "bodega":      { icono: iconBodega,      color: "grey" },
-  "campestre":   { icono: iconCampestre,   color: "darkgreen" },
-  "condominio":  { icono: iconCondominio,  color: "steelblue" },
-  "duplex":      { icono: iconDuplex,      color: "saddlebrown" }, // 🔥 sin tilde
-  "edificio":    { icono: iconEdificio,    color: "black" },
-  "local":       { icono: iconLocal,       color: "red" },
-  "hotel":       { icono: iconHotel,       color: "darkred" },
-  "oficina":     { icono: iconOficina,     color: "purple" },
-  "penthouse":   { icono: iconPenthouse,   color: "goldenrod" }
-};
-
 
 
 //funcion para no ser sendible a tildes en la casa
@@ -110,154 +93,161 @@ function getEstiloByTipo(tipo) {
     .trim();
   return estilosPorTipo[clave] || { icono: iconCasa, color: "#999" };
 }
+
+// -------------------------
+// Versión limpia sin "activa/inactiva"
+// -------------------------
+// ===============================
+// Cargar propiedades desde Firestore (solo activas)
+// ===============================
 // ==========================
-//  CARGAR PROPIEDADES DE FIRESTORE
+// CARGAR PROPIEDADES (función completa — reemplaza la anterior)
 // ==========================
 async function cargarPropiedades() {
   try {
     const snapshot = await db.collection("propiedades").get();
-    propiedades = []; // Reiniciar array antes de volver a llenarlo
 
-    lista.innerHTML = ""; // limpiar contenedor antes de llenarlo
-
-    snapshot.forEach((doc) => {
+    // 1) Construir array con todas las propiedades (normalizadas)
+    const todas = [];
+    snapshot.forEach(doc => {
       const data = { id: doc.id, ...doc.data() };
-      if (!data.activa) return; // solo activas
 
-      propiedades.push(data);
+      // Normalizaciones seguras
+      data.destacada = !!data.destacada;
+      // Considerar que si no viene 'activa' la consideramos activa por defecto
+      data.activa = (typeof data.activa === "undefined") ? true : !!data.activa;
 
-      const card = document.createElement("div");
-      card.classList.add("prop-card");
+      if (data.lat != null) data.lat = Number(data.lat);
+      if (data.lng != null) data.lng = Number(data.lng);
 
-      // obtenemos estilo (icono + color)
-      const { icono, color } = getEstiloByTipo(data.tipo);
-
-      // ✅ Usar la primera imagen del array `imagenes`, o fallback
-      const imgSrc = (data.imagenes && data.imagenes.length > 0) 
-        ? data.imagenes[0] 
-        : "imagenes/default.png";
-
-      card.innerHTML = `
-        <div class="card-img-wrapper">
-          <img src="${imgSrc}" alt="Imagen de la propiedad">
-
-          ${data.propiedadNueva ? `<span class="badge-nueva">NUEVA</span>` : ""}
-        </div>
-        <h3>${data.titulo}</h3>
-
-        <div class="prop-badges">
-          <span class="prop-tipo" style="background:${color};">
-            ${data.tipo || ""}
-          </span>
-          <span class="prop-badge">${data.modalidad || ""}</span>
-          <span class="prop-badge">${data.estado || ""}</span>
-        </div>
-
-        <p>${data.ciudad || ""}</p>
-        <p><i class="fas fa-car"></i> <span class="prop-valor">${data.garage || 0}</span></p>
-        <p><strong>Área:</strong> <span class="prop-valor">${data.area} m²</span></p>
-        <p><strong>Baños:</strong> <span class="prop-valor">${data.banos}</span></p>
-        <p><strong>Habitaciones:</strong> <span class="prop-valor">${data.habitaciones}</span></p>
-        <div class="precio-container">
-          ${data.destacada ? `<span class="badge-destacada"><i class="fas fa-star"></i> Destacada</span>` : ""}
-          <p class="prop-precio">COP $${formatearPrecio(data.precio) || "$0"}</p>
-        </div>
-
-        <button onclick="verDetalle('${doc.id}')">Ver detalles</button>
-      `;
-
-// ✅ Aquí aplicamos el resaltado si coincide con el filtro activo (versión segura)
-const filtro = window.filtroActivo || {};
-const tipoProp = (data.tipo || "").toLowerCase();
-
-if (
-  (filtro.tipo && tipoProp === String(filtro.tipo).toLowerCase()) ||
-  (filtro.destacada && !!data.destacada)
-) {
-  card.classList.add("propiedad-filtrada");
-}
-
-
-
-      lista.appendChild(card);
-
-      // Crear marcador en el mapa con popup seguro
-      if (data.lat && data.lng) {
-        let imgSrcPopup = (data.imagenes && data.imagenes.length > 0) 
-          ? data.imagenes[0] 
-          : "imagenes/default.png";
-
-        if (!/^https?:\/\//i.test(imgSrcPopup)) {
-          if (!imgSrcPopup.startsWith("/")) imgSrcPopup = "/" + imgSrcPopup;
-        }
-
-        const safeTitulo = String(data.titulo || "").replace(/"/g, "&quot;");
-        const safeTipo   = String(data.tipo || "");
-        const safePrecio = formatearPrecio(data.precio) || "$0";
-
-        const popupHtml = `
-          <div style="text-align:center; width:160px; font-family:sans-serif;">
-            <img src="${imgSrcPopup}" style="width:100%;border-radius:6px;margin-bottom:4px;" alt="${safeTitulo}">
-            <h4 style="margin:4px 0;font-size:14px;font-weight:600;color:#333;">${safeTitulo}</h4>
-            <p style="margin:2px 0;font-size:13px;color:#2E8B57;font-weight:bold;">
-              ${safePrecio}
-            </p>
-            <span style="
-              display:inline-block;
-              margin-top:3px;
-              padding:2px 6px;
-              border-radius:6px;
-              font-size:12px;
-              background:${color};
-              color:#fff;
-              font-weight:bold;
-              white-space:nowrap;">
-              ${safeTipo}
-            </span>
-            <br>
-            <button style="
-              margin-top:6px;
-              padding:4px 8px;
-              border:none;
-              border-radius:6px;
-              background:#fff;
-              color:#000000;
-              font-size:12px;
-              font-weight:bold;
-              cursor:pointer;" onclick="verDetalle('${doc.id}')">
-              Ver detalles
-            </button>
-          </div>
-        `;
-
-        const marker = L.marker([data.lat, data.lng], { icon: icono }).addTo(markersLayer);
-        marker.bindPopup(popupHtml);
-      }
+      todas.push(data);
     });
 
-// al final del try después del loop: intento seguro de renderizar estadísticas
-if (typeof renderEstadisticas === "function") {
-  try { renderEstadisticas(propiedades); } catch (e) { console.error("renderEstadisticas falló:", e); }
-} else if (typeof renderEstadisticasClientes === "function") {
-  try { renderEstadisticasClientes(propiedades); } catch (e) { console.error("renderEstadisticasClientes falló:", e); }
-} else {
-  // 1) disparamos un evento para que cualquier script que cargue después pueda escuchar
-  window.dispatchEvent(new CustomEvent("propiedades:loaded", { detail: propiedades }));
+    // 2) Guardar global (puede usarse desde otros módulos)
+    window.propiedades = todas;
 
-  // 2) fallback: reintentos cortos (hasta 10) en caso de que la función se cargue unos ms después
-  (function tryRender(retriesLeft) {
-    if (typeof renderEstadisticas === "function") return renderEstadisticas(propiedades);
-    if (typeof renderEstadisticasClientes === "function") return renderEstadisticasClientes(propiedades);
-    if (retriesLeft <= 0) return console.warn("No se encontró función de estadísticas después de reintentos.");
-    setTimeout(() => tryRender(retriesLeft - 1), 200);
-  })(10);
-}
+    // 3) Determinar sólo activas (para estadísticas/cards por defecto)
+    const activas = todas.filter(p => p.activa !== false);
 
+    // 4) Notificar / inicializar la parte de estadísticas (si existe)
+    if (typeof setPropiedades === "function") {
+      try { setPropiedades(activas); } catch (e) { console.warn("setPropiedades falló:", e); }
+    } else if (typeof renderEstadisticas === "function") {
+      try { renderEstadisticas(activas); } catch (e) { console.warn("renderEstadisticas falló:", e); }
+    }
+
+    // 4.5) Asegurar variables globales que usa tu módulo de estadísticas
+    // (evita redeclarar si ya existen en otro archivo)
+    window.propiedadesOriginales = activas;
+    window.propiedadesFiltradas = activas;
+
+    // 5) Renderizar cards iniciales (si existe la función de renderizado)
+    if (typeof renderCardsEstadisticas === "function") {
+      try { renderCardsEstadisticas(activas); } catch (e) { console.warn("renderCardsEstadisticas falló:", e); }
+    } else {
+      // fallback simple si no existe la función
+      const lista = document.getElementById("propiedades");
+      if (lista) {
+        lista.innerHTML = "";
+        activas.forEach(d => {
+          const imgSrc = (d.imagenes && d.imagenes.length) ? d.imagenes[0] : (d.imagen || "imagenes/default.png");
+          const card = document.createElement("div");
+          card.className = "prop-card";
+          card.innerHTML = `
+            <div class="card-img-wrapper"><img src="${imgSrc}" alt="${(d.titulo||'')}"></div>
+            <h3>${d.titulo || ""}</h3>
+            <p>${d.tipo || ""}</p>
+          `;
+          lista.appendChild(card);
+        });
+      }
+    }
+
+    // 6) Preparar layer de marcadores (persistente)
+    if (!window.markersLayer || typeof window.markersLayer.clearLayers !== "function") {
+      // crear si no existe
+      window.markersLayer = L.layerGroup().addTo(window.map || map);
+    } else {
+      // limpiar contenido previo
+      window.markersLayer.clearLayers();
+    }
+
+    // Mantener mapa de marcadores por id para poder resaltarlos/abrir popups
+    window.markersMap = window.markersMap || {};
+    window.markersMap = {}; // reiniciar
+
+    // 7) Añadir marcadores para TODAS las propiedades activas
+    activas.forEach(data => {
+      if (data.lat == null || data.lng == null) return;
+
+      const estilo = (typeof estilosPorTipo !== "undefined" && estilosPorTipo[(data.tipo || "").toLowerCase()]) 
+                      || { color: "#999", icono: "fa-solid fa-house" };
+
+      const iconoClass = estilo.icono || "fa-solid fa-house";
+      const icon = crearIcono(estilo.color || "#999", iconoClass);
+
+      const marker = L.marker([data.lat, data.lng], { icon: icon });
+
+      const imgPopup = (data.imagenes && data.imagenes.length) ? data.imagenes[0] : (data.imagen || "imagenes/default.png");
+      const safeTitulo = String(data.titulo || "").replace(/"/g, "&quot;");
+      const safeTipo = String(data.tipo || "");
+      const safePrecio = formatearPrecio(data.precio) || "0";
+
+      const popupHtml = `
+        <div style="text-align:center; width:180px;">
+          <img src="${imgPopup}" style="width:100%;border-radius:6px;margin-bottom:6px;">
+          <h4 style="margin:4px 0;font-size:14px;">${safeTitulo}</h4>
+          <p style="font-weight:bold;color:#2E8B57;">COP $${safePrecio}</p>
+          <span style="background:${estilo.color}; color:#fff; padding:4px 6px; border-radius:6px; font-size:12px;">${safeTipo}</span>
+          <br><button style="margin-top:6px;padding:6px 8px;border-radius:6px;" onclick="verDetalle('${data.id}')">Ver detalles</button>
+        </div>
+      `;
+
+      marker.bindPopup(popupHtml);
+
+      // guardar referencia para futuras operaciones de resaltado
+      marker._propId = data.id;
+      window.markersMap[data.id] = marker;
+
+      // añadir al layer (visible en el mapa)
+      window.markersLayer.addLayer(marker);
+    });
+
+    // 8) Centrar / ajustar mapa para mostrar resultados (si hay)
+    const coords = activas
+      .filter(p => p.lat != null && p.lng != null)
+      .map(p => [p.lat, p.lng]);
+
+    if (coords.length) {
+      try {
+        if (coords.length === 1) {
+          (window.map || map).setView(coords[0], 13);
+        } else {
+          (window.map || map).fitBounds(L.latLngBounds(coords), { padding: [40, 40] });
+        }
+      } catch (e) { /* ignorar si map no está listo */ }
+    }
+
+    // 9) Emitir evento para que otros scripts puedan reaccionar
+    window.dispatchEvent(new CustomEvent("propiedades:loaded", { detail: { todas, activas } }));
+
+    // pequeña corrección visual (si hace falta) para Leaflet
+    if (window.map && typeof window.map.invalidateSize === "function") {
+      setTimeout(() => window.map.invalidateSize(), 150);
+    }
 
   } catch (error) {
     console.error("Error al cargar propiedades:", error);
   }
 }
+
+// ==========================
+//  aca termina cargarPropiedades
+// ==========================
+
+
+
+
 // ==========================
 //  FUNCIONES PARA FILTROS
 // ==========================

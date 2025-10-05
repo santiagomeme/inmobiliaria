@@ -16,6 +16,8 @@
 
   <link rel="stylesheet" href="propiedades.css">
   <!-- Leaflet para mapas -->
+     <link rel="stylesheet" href="estadiPro.css">
+
   <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.extra-markers/1.2.1/css/leaflet.extra-markers.min.css">
@@ -150,7 +152,98 @@ Estado de la propiedad
   <h4>📍 Tipos de Propiedad</h4>
 
 <!-- Contenedor donde se renderizan las estadísticas -->
-<div id="estadisticas" class="estadisticas-container"></div>
+<!-- Contenedor de estadísticas (chips) -->
+<div id="estadisticas" class="chips-container">
+
+  <!-- === ESTADOS === -->
+  <button class="estadistica-chip" data-filtro="reset" data-valor="all">
+    <span class="chip-icon">📊</span>
+    <span class="chip-label">Total</span>
+    <span class="chip-count">0</span>
+  </button>
+
+ 
+
+  <button class="estadistica-chip" data-filtro="destacada" data-valor="true">
+    <span class="chip-icon"><i class="fas fa-star" style="color:gold;"></i></span>
+    <span class="chip-label">Destacadas</span>
+    <span class="chip-count">0</span>
+  </button>
+
+  <hr>
+
+  <!-- === TIPOS DE PROPIEDAD === -->
+  <button class="estadistica-chip" data-filtro="tipo" data-valor="casa">
+    <span class="chip-label">Casas</span>
+    <span class="chip-count">0</span>
+  </button>
+
+  <button class="estadistica-chip" data-filtro="tipo" data-valor="apartamento">
+    <span class="chip-label">Apartamentos</span>
+    <span class="chip-count">0</span>
+  </button>
+
+  <button class="estadistica-chip" data-filtro="tipo" data-valor="lote">
+    <span class="chip-label">Lotes</span>
+    <span class="chip-count">0</span>
+  </button>
+
+  <button class="estadistica-chip" data-filtro="tipo" data-valor="finca">
+    <span class="chip-label">Fincas</span>
+    <span class="chip-count">0</span>
+  </button>
+
+  <button class="estadistica-chip" data-filtro="tipo" data-valor="apartaestudio">
+    <span class="chip-label">Apartaestudios</span>
+    <span class="chip-count">0</span>
+  </button>
+
+  <button class="estadistica-chip" data-filtro="tipo" data-valor="bodega">
+    <span class="chip-label">Bodegas</span>
+    <span class="chip-count">0</span>
+  </button>
+
+  <button class="estadistica-chip" data-filtro="tipo" data-valor="campestre">
+    <span class="chip-label">Campestres</span>
+    <span class="chip-count">0</span>
+  </button>
+
+  <button class="estadistica-chip" data-filtro="tipo" data-valor="condominio">
+    <span class="chip-label">Condominios</span>
+    <span class="chip-count">0</span>
+  </button>
+
+  <button class="estadistica-chip" data-filtro="tipo" data-valor="duplex">
+    <span class="chip-label">Dúplex</span>
+    <span class="chip-count">0</span>
+  </button>
+
+  <button class="estadistica-chip" data-filtro="tipo" data-valor="edificio">
+    <span class="chip-label">Edificios</span>
+    <span class="chip-count">0</span>
+  </button>
+
+  <button class="estadistica-chip" data-filtro="tipo" data-valor="local">
+    <span class="chip-label">Locales</span>
+    <span class="chip-count">0</span>
+  </button>
+
+  <button class="estadistica-chip" data-filtro="tipo" data-valor="oficina">
+    <span class="chip-label">Oficinas</span>
+    <span class="chip-count">0</span>
+  </button>
+
+  <button class="estadistica-chip" data-filtro="tipo" data-valor="penthouse">
+    <span class="chip-label">Penthouse</span>
+    <span class="chip-count">0</span>
+  </button>
+
+  <button class="estadistica-chip" data-filtro="tipo" data-valor="hotel">
+    <span class="chip-label">Hoteles</span>
+    <span class="chip-count">0</span>
+  </button>
+
+</div>
 
   <h1 style="text-align:center; padding: 20px;">Propiedades disponibles</h1>
 <div id="propiedades" class="propiedades-grid lista-propiedades"></div>
