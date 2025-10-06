@@ -187,6 +187,7 @@ function renderEstadisticas(propiedades) {
     const valor = chip.dataset.valor;
     const countEl = chip.querySelector(".chip-count");
     const labelEl = chip.querySelector(".chip-label");
+    const iconEl = chip.querySelector(".chip-icon i"); // ✅ el ícono ya existente
 
     if (!countEl || !labelEl) return;
     let conteo = 0;
@@ -203,7 +204,16 @@ function renderEstadisticas(propiedades) {
     if (filtro === "tipo") {
       const estilo = estilosPorTipo[valor];
       if (estilo) {
-        labelEl.innerHTML = `<i class="${estilo.icono}" style="margin-right:6px;color:${estilo.color};"></i> ${valor}`;
+        // ✅ solo actualizamos el ícono ya existente
+        if (iconEl) {
+          iconEl.className = estilo.icono;
+          iconEl.style.color = estilo.color;
+        }
+
+        // ✅ solo actualizamos el texto del label (sin ícono duplicado)
+        labelEl.textContent = valor.charAt(0).toUpperCase() + valor.slice(1);
+
+        // estilos base opcionales
         chip.style.backgroundColor = "#fff";
         chip.style.color = "#000";
       }
@@ -222,7 +232,6 @@ function renderEstadisticas(propiedades) {
 
   renderCardsEstadisticas(propiedades);
 }
-
 // ===============================
 // Aplicar filtro desde chip
 // ===============================
