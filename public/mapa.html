@@ -152,7 +152,123 @@ Activa/Inactiva
 </div>
   <h4>📍 Tipos de Propiedad</h4>
 
-<div id="estadisticas" class="chips-grid"></div>
+<div id="estadisticas" class="estadisticas">
+
+  <!-- 🔹 ESTADOS GLOBALES -->
+  <div class="chips-estados">
+    <button class="estadistica-chip" data-filtro="reset">
+      <span class="chip-icon">📊</span>
+      <span class="chip-label">Total</span>
+      <span class="chip-count">0</span>
+    </button>
+
+    <button class="estadistica-chip" data-filtro="filtroActiva" data-valor="true">
+      <span class="chip-icon">✅</span>
+      <span class="chip-label">Activas</span>
+      <span class="chip-count">0</span>
+    </button>
+
+    <button class="estadistica-chip" data-filtro="filtroActiva" data-valor="false">
+      <span class="chip-icon">❌</span>
+      <span class="chip-label">Inactivas</span>
+      <span class="chip-count">0</span>
+    </button>
+
+    <button class="estadistica-chip" data-filtro="destacada" data-valor="true">
+      <span class="chip-icon">⭐</span>
+      <span class="chip-label">Destacadas</span>
+      <span class="chip-count">0</span>
+    </button>
+  </div>
+
+  <!-- 🔹 TIPOS DE PROPIEDAD -->
+  <div class="chips-tipos">
+    <button id="chip-casa" class="estadistica-chip" data-filtro="tipo" data-valor="casa">
+      <span class="chip-icon" style="color:#FFBF00;"><i class="fas fa-home"></i></span>
+      <span class="chip-label">Casa</span>
+      <span class="chip-count">0</span>
+    </button>
+
+    <button id="chip-apartamento" class="estadistica-chip" data-filtro="tipo" data-valor="apartamento">
+      <span class="chip-icon" style="color:dodgerblue;"><i class="fas fa-building"></i></span>
+      <span class="chip-label">Apartamento</span>
+      <span class="chip-count">0</span>
+    </button>
+
+    <button id="chip-apartaestudio" class="estadistica-chip" data-filtro="tipo" data-valor="apartaestudio">
+      <span class="chip-icon" style="color:hotpink;"><i class="fas fa-door-open"></i></span>
+      <span class="chip-label">Apartaestudio</span>
+      <span class="chip-count">0</span>
+    </button>
+
+    <button id="chip-duplex" class="estadistica-chip" data-filtro="tipo" data-valor="duplex">
+      <span class="chip-icon" style="color:saddlebrown;"><i class="fas fa-house-user"></i></span>
+      <span class="chip-label">Dúplex</span>
+      <span class="chip-count">0</span>
+    </button>
+
+    <button id="chip-penthouse" class="estadistica-chip" data-filtro="tipo" data-valor="penthouse">
+      <span class="chip-icon" style="color:gold;"><i class="fas fa-crown"></i></span>
+      <span class="chip-label">Penthouse</span>
+      <span class="chip-count">0</span>
+    </button>
+
+    <button id="chip-lote" class="estadistica-chip" data-filtro="tipo" data-valor="lote">
+      <span class="chip-icon" style="color:darkorange;"><i class="fas fa-border-all"></i></span>
+      <span class="chip-label">Lote</span>
+      <span class="chip-count">0</span>
+    </button>
+
+    <button id="chip-finca" class="estadistica-chip" data-filtro="tipo" data-valor="finca">
+      <span class="chip-icon" style="color:#66FF00;"><i class="fas fa-tractor"></i></span>
+      <span class="chip-label">Finca</span>
+      <span class="chip-count">0</span>
+    </button>
+
+    <button id="chip-campestre" class="estadistica-chip" data-filtro="tipo" data-valor="campestre">
+      <span class="chip-icon" style="color:darkgreen;"><i class="fas fa-tree"></i></span>
+      <span class="chip-label">Campestre</span>
+      <span class="chip-count">0</span>
+    </button>
+
+    <button id="chip-condominio" class="estadistica-chip" data-filtro="tipo" data-valor="condominio">
+      <span class="chip-icon" style="color:lightseagreen;"><i class="fas fa-city"></i></span>
+      <span class="chip-label">Condominio</span>
+      <span class="chip-count">0</span>
+    </button>
+
+    <button id="chip-edificio" class="estadistica-chip" data-filtro="tipo" data-valor="edificio">
+      <span class="chip-icon" style="color:black;"><i class="fas fa-hotel"></i></span>
+      <span class="chip-label">Edificio</span>
+      <span class="chip-count">0</span>
+    </button>
+
+    <button id="chip-local" class="estadistica-chip" data-filtro="tipo" data-valor="local">
+      <span class="chip-icon" style="color:crimson;"><i class="fas fa-store"></i></span>
+      <span class="chip-label">Local</span>
+      <span class="chip-count">0</span>
+    </button>
+
+    <button id="chip-bodega" class="estadistica-chip" data-filtro="tipo" data-valor="bodega">
+      <span class="chip-icon" style="color:#666633;"><i class="fas fa-warehouse"></i></span>
+      <span class="chip-label">Bodega</span>
+      <span class="chip-count">0</span>
+    </button>
+
+    <button id="chip-hotel" class="estadistica-chip" data-filtro="tipo" data-valor="hotel">
+      <span class="chip-icon" style="color:darkred;"><i class="fas fa-concierge-bell"></i></span>
+      <span class="chip-label">Hotel</span>
+      <span class="chip-count">0</span>
+    </button>
+
+    <button id="chip-oficina" class="estadistica-chip" data-filtro="tipo" data-valor="oficina">
+      <span class="chip-icon" style="color:violet;"><i class="fas fa-briefcase"></i></span>
+      <span class="chip-label">Oficina</span>
+      <span class="chip-count">0</span>
+    </button>
+  </div>
+</div>
+
 
 <!-- PROPIEDADES -->
 <section>
