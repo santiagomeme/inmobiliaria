@@ -147,11 +147,13 @@ function renderCardsEstadisticas(propiedades) {
         <p><strong>Código:</strong> ${escapeHtml(data.codigo || "")}</p>
         <p> ${ciudad}</p>
 
-        <p><i class="fas fa-car"></i> ${garage}</p>
-     <p><i class="fas fa-bed"></i> ${habitaciones}</p>
-<p><i class="fas fa-bath"></i> ${banos}</p> 
-<p><i class="fas fa-vector-square"></i> ${area} m²</p>
-
+      
+      <div class="prop-icons">
+        <span title="Garaje"class="prop-valor"><i class="fas fa-car"></i> ${garage}</span>
+        <span title="Baños"class="prop-valor"><i class="fas fa-bath"></i> ${banos}</span>
+        <span title="Habitaciones"class="prop-valor"><i class="fas fa-bed"></i> ${habitaciones}</span>
+        <span title="Área"class="prop-valor"><i class="fas fa-ruler-combined"></i> ${area} m²</span>
+      </div>
         <p class="prop-precio">COP ${formatearPrecio(precio)}</p>
 
       <div class="card-actions" style="text-align: center;">

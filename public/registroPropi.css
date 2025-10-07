@@ -123,7 +123,7 @@ h2{
 }
 
 .prop-card p {
-  margin: 6px 9px;
+  margin: 6px 9px!important;
   line-height: 1.5;   /* más legible */
   font-size: 0.95rem;
   font-weight: 400;   /* normal, fácil de leer */
@@ -171,13 +171,60 @@ h2{
     margin: 6px 13px!important;
 
 }
-
+.prop-icons i {
+  margin-right: 4px;
+  color: #00172e;
+}
 /* Valores numéricos (baños, habitaciones, garajes, área) */
 .prop-card .prop-valor {
   font-weight: 600;        /* semibold */
   color: #1a1a1a;          /* gris oscuro elegante */
   font-size: 1rem;
+  margin-left: 10px;
 }
+
+
+
+
+
+
+.prop-icons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 5px;
+  margin: 5px 0;
+}
+
+.prop-icons p {
+  display: inline-flex;            /* 🔹 Ícono + valor en fila */
+  align-items: center;
+  justify-content: center;
+  gap: 2px;                        /* 🔹 Espacio entre ícono y número */
+  padding: 5px 8px;               /* 🔹 Tamaño del recuadro */
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  transition: all 0.2s ease;
+  min-width: 50px;
+  text-align: center;
+}
+
+.prop-icons p:hover {
+  background-color: #e8f3ff;
+  border-color: #66b3ff;
+  transform: scale(1.05);
+}
+
+.prop-icons i {
+  color: #00172e;
+  font-size: 15px;
+}
+
 
 
 .precio-propiedad {

@@ -16,6 +16,7 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 
 let marker;
 
+ 
 
 let markersLayer = L.layerGroup().addTo(map);
 
@@ -776,7 +777,6 @@ bloquearMapa();
 
 
 
-
 });
 document.addEventListener("DOMContentLoaded", () => {
   const btn = document.getElementById("btnToggleLista");
@@ -798,3 +798,5 @@ document.addEventListener("DOMContentLoaded", () => {
     actualizarTexto();
   });
 });
+
+

@@ -80,17 +80,17 @@ firebase.firestore().collection("propiedades").doc(propiedadId).get()
        
             </div>
 
-   
+     <p><strong>Código:</strong> <span class="prop-valor">${propiedad.codigo || "N/A"}</span></p>
+
           <!-- Datos clave -->
-          <div class="detalle-datos">
-            <p><strong>Área:</strong> <span class="prop-valor">${propiedad.metros || "-"} m²</span></p>
-            <p><strong>Habitaciones:</strong> <span class="prop-valor">${propiedad.habitaciones || "-"}</span></p>
-            <p><strong>Baños:</strong> <span class="prop-valor">${propiedad.banos || "-"}</span></p>
-            <p><strong>Garajes:</strong> <span class="prop-valor">${propiedad.garajes || "-"}</span></p>
+<div class="prop-icons">
+            <p><i class="fas fa-ruler-combined"></i> <span class="prop-valor">${propiedad.metros || "-"} m²</span></p>
+            <p><i class="fas fa-bed"></i> <span class="prop-valor">${propiedad.habitaciones || "-"}</span></p>
+            <p><i class="fas fa-bath"></i> <span class="prop-valor">${propiedad.banos || "-"}</span></p>
+            <p><i class="fas fa-car"></i> <span class="prop-valor">${propiedad.garajes || "-"}</span></p>
           </div>
 
   <!-- 🔹 Nuevos campos -->
-  <p><strong>Código:</strong> <span class="prop-valor">${propiedad.codigo || "N/A"}</span></p>
   <p><strong>Piso:</strong> <span class="prop-valor">${propiedad.piso || "N/A"}</span></p>
   <p><strong>Estrato:</strong> <span class="prop-valor">${propiedad.estrato || "N/A"}</span></p>
   <p><strong>País:</strong> <span class="prop-valor">${propiedad.pais || "N/A"}</span></p>

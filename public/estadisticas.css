@@ -15,22 +15,21 @@
 
 /* chip base (flex para controlar icono / label / count) */
 .estadistica-chip {
+  background-color: #ffffff;
+  color: #000000;
+  border:none;
+  border-radius: 20px;
+  padding: 6px 12px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  padding: 6px 12px;
-  margin: 0;
-  border-radius: 999px;
-  border: 1px solid #e6e6e6;
-  background: #fff;
-  font-size: 14px;
+  gap: 6px;
   cursor: pointer;
-  box-sizing: border-box;
-  min-width: 120px;        /* evita que se haga demasiado pequeño */
-  max-width: 100%;
-  overflow: hidden;        /* evita que salga texto fuera */
-  white-space: nowrap;     /* evita saltos de línea */
-  transition: transform .12s ease, box-shadow .12s ease, background .12s;
+  font-size: 14px;
+  transition: all 0.2s ease-in-out;
+  box-shadow: 0 0 4px rgb(0, 6, 87);
+  justify-content: center;/* 🔹 Centra verticalmente */
+  text-align: center;     /* 🔹 Centra el texto */
+  flex: 1 1 120px;
 }
 
 /* Icono izquierdo */
@@ -43,13 +42,14 @@
   justify-content: center;
   font-size: 16px;
   line-height: 1;
+  
 }
 
 .estadistica-chip .chip-label,
 .estadistica-chip span:not(.chip-icon):not(.chip-count):not(.cantidad):not(.icono) {
   flex-grow: 1;
   font-size: 14px;
-  color: #333;
+  color: #000000;
   white-space: nowrap;   /* que no se divida en varias líneas */
   overflow: visible;     /* 🔑 muestra todo */
   text-overflow: unset;  /* 🔑 desactiva el “…” */
@@ -68,24 +68,33 @@
 /* Número/cantidad */
 .estadistica-chip .chip-count,
 .estadistica-chip .cantidad {
-  flex: 0 0 auto;
-  font-weight: bold;
-  color: #444;
-  font-size: 14px;
-  margin-left: 8px;
+  background-color: #001c46;
+  color: #ffffff;
+  border-radius: 12px;
   padding: 2px 6px;
-  border-radius: 6px;
-  background: #f3f6ff;
-  min-width: 28px;
-  text-align: center;
+  font-weight: bold;
+  font-size: 13px;
 }
 
 
 
 
 /* estado activo/hover */
-.estadistica-chip:hover { transform: translateY(-2px); background: #fbfdff; box-shadow: 0 6px 18px rgba(2,33,71,0.06); }
-.estadistica-chip.active { background: linear-gradient(90deg,#fff,#f4fbff); border-color: rgba(0,123,255,0.14); }
+.estadistica-chip:hover { 
+  transform: translateY(-2px); 
+  background: #fbfdff; 
+  box-shadow: 0 0 8px #00e0ff;
+}
+
+
+
+.estadistica-chip.active {
+   background-color: #00e0ff;
+  color: #111;
+  border-color: #00e0ff;
+  box-shadow: 0 0 10px #00e0ff;
+
+  }
 
 /* responsive: chips más compactos en móviles */
 @media (max-width: 560px) {
@@ -139,6 +148,20 @@
     min-width: 24px;
   }
 }
+.prop-card .prop-valor {
+  font-weight: 600;        /* semibold */
+  color: #1a1a1a;          /* gris oscuro elegante */
+  font-size: 1rem;
+  margin-left: 5px;
+}
+.prop-icons i {
+  margin-right: 4px;
+  color: #007bff;
+}
+
+
+
+
 
 
 

@@ -253,7 +253,7 @@ body {
 .detalle-propiedad p {
   font-weight: 600;
   font-size: 1.05rem;
-  color: #1a1a1a;   /* gris oscuro elegante */
+  color: #000000;   /* gris oscuro elegante */
   line-height: 1.5;
   margin: 6px 0;
 }
@@ -646,7 +646,7 @@ footer p {
   text-align: center;
   margin-bottom: 20px;
   font-size: 15px;
-  color: #333;
+  color: #070707;
   font-weight: 600; /* ✅ más grueso */
 }
 
@@ -681,7 +681,7 @@ footer p {
 #formContacto textarea {
   padding: 12px;
   border-radius: 6px;
-  border: 1px solid #ccc;
+  border: 1px solid #525252;
   font-size: 15px;
   width: 100%;
   font-weight: 500; /* ✅ más legible */
@@ -753,4 +753,40 @@ footer p {
 
 .footer-links a:hover {
   text-decoration: underline; /* 🔹 al pasar el mouse */
+}
+.prop-icons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px 0!important;
+}
+
+.prop-icons p {
+  display: inline-flex;            /* 🔹 Ícono + valor en fila */
+  align-items: center;
+  justify-content: center;
+  gap: 2px;                        /* 🔹 Espacio entre ícono y número */
+  padding: 2px 5px;               /* 🔹 Tamaño del recuadro */
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background-color: #f9f9f9;
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  transition: all 0.2s ease;
+  min-width: 50px;
+  text-align: center;
+}
+
+.prop-icons p:hover {
+  background-color: #e8f3ff;
+  border-color: #66b3ff;
+  transform: scale(1.05);
+}
+
+.prop-icons i {
+  color: #007bff;
+  font-size: 15px;
 }

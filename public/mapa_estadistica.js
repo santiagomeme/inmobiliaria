@@ -139,6 +139,7 @@ propiedades.forEach(data => {
       </div>
 
       <p><strong>Código:</strong> ${codigo}</p>
+      
       <p> ${ciudad}</p>
 
       <div class="prop-icons">
@@ -152,8 +153,9 @@ propiedades.forEach(data => {
 
       <div class="card-actions">
         <button class="btn-detalle" onclick="verDetalle('${id}')">Ver detalles</button>
-        <button class="btn-edit" data-id="${id}">✏️ Editar</button>
-        <button class="btn-delete" data-id="${id}">🗑️ Eliminar</button>
+   <button class="btn-copiar" onclick="copiarCodigo('${codigo}', this)">
+        Copiar código
+      </button>
       </div>
     </div>
   `;
@@ -275,3 +277,26 @@ function aplicarFiltroDesdeChip(filtro, valor) {
     if (chipActivo) chipActivo.classList.add("activo");
   }
 }
+function abrirEdicion(id) {
+  // Guarda el ID para usarlo en la página del formulario
+  localStorage.setItem("editarPropId", id);
+  // Redirige a la página donde está el formulario (el archivo registroPropiedad.js)
+  window.location.href = "registroPropiedad.html";
+}
+
+
+function copiarCodigo(codigo, boton) {
+  navigator.clipboard.writeText(codigo).then(() => {
+    boton.textContent = "Código copiado ✅";
+    boton.style.backgroundColor = "#4CAF50"; // color verde temporal
+    setTimeout(() => {
+      boton.textContent = "Copiar código";
+      boton.style.backgroundColor = ""; // vuelve al color original
+    }, 2000); // vuelve al texto original en 2 segundos
+  }).catch(err => {
+    console.error("Error al copiar el código:", err);
+  });
+}
+
+
+

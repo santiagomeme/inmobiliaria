@@ -618,12 +618,14 @@ function renderAdminListaFromArray(propiedades = []) {
         </div>
 
         <p><strong>Código:</strong> ${escapeHtml(codigo)}</p>
-        <p><strong>Ciudad:</strong> ${escapeHtml(ciudad)}</p>
-
-        <p><i class="fas fa-car"></i> ${escapeHtml(garage)}</p>
-        <p><strong>Baños:</strong> <span class="prop-valor">${escapeHtml(banos)}</span></p>
-        <p><strong>Habitaciones:</strong> <span class="prop-valor">${escapeHtml(habitaciones)}</span></p>
-        <p><strong>Área:</strong> <span class="prop-valor">${escapeHtml(area)} m²</span></p>
+        <p> ${escapeHtml(ciudad)}</p>
+    
+      <div class="prop-icons">
+        <p><i class="fas fa-car"></i><span class="prop-valor"> ${escapeHtml(garage)}</span></p>
+        <p><i class="fas fa-bath"></i><span class="prop-valor">${escapeHtml(banos)}</span></p>
+        <p><i class="fas fa-bed"></i> <span class="prop-valor">${escapeHtml(habitaciones)}</span></p>
+        <p><i class="fas fa-ruler-combined"></i>  <span class="prop-valor">${escapeHtml(area)} m²</span></p>
+      </div>
 
         <p class="prop-precio">COP ${formatearPrecio(precio)}</p>
 

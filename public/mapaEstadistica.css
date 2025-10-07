@@ -61,6 +61,8 @@
   padding: 2px 6px;
   font-weight: bold;
   font-size: 13px;
+  justify-content:end!important;
+
 }
 
 /* === CHIP ACTIVO === */
@@ -70,6 +72,27 @@
   border-color: #00e0ff;
   box-shadow: 0 0 10px #00e0ff;
 }
+/* --- Ancho uniforme para chips --- */
+.estadistica-chip {
+  flex: 1 1 120px;      /* 🔹 Todos tendrán mínimo 120px y se ajustarán igual */
+  text-align: center;   /* 🔹 Centra el texto */
+}
+
+/* --- Ajuste especial para pantallas pequeñas --- */
+@media (max-width: 600px) {
+  .chips-estados,
+  .chips-tipos {
+    justify-content: center;
+  }
+
+  .estadistica-chip {
+    flex: 1 1 45%;       /* 🔹 2 chips por fila aprox. en móvil */
+    max-width: 160px;
+  }
+}
+
+
+
 
 
 /* Glow rojo y un poco más grande */
@@ -114,11 +137,18 @@
   overflow: hidden;
   box-shadow: 0 3px 8px rgba(0,0,0,0.3);
   color: #000000;
-  max-width: 260px;
-  margin: 10px;
-  display: inline-block;
+  max-width: 300px;
+
   vertical-align: top;
 }
+@media (max-width: 600px) {
+  .prop-card {
+    max-width: 100%!important;
+    width: 100%!important;
+    margin: 10px auto!important;
+  }
+}
+
 
 .card-img-wrapper {
   position: relative;
@@ -224,21 +254,79 @@
 }
 
 
-/* --- Ancho uniforme para chips --- */
-.estadistica-chip {
-  flex: 1 1 120px;      /* 🔹 Todos tendrán mínimo 120px y se ajustarán igual */
-  text-align: center;   /* 🔹 Centra el texto */
+
+.prop-icons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 10px 0;
 }
 
-/* --- Ajuste especial para pantallas pequeñas --- */
+.prop-icons span {
+  display: inline-flex;           /* 🔹 Ícono y texto en fila */
+  align-items: center;            /* 🔹 Centra verticalmente */
+  justify-content: center;        /* 🔹 Centra horizontalmente */
+  gap: 6px;                       /* 🔹 Espacio entre ícono y valor */
+  padding: 2px 5px;              /* 🔹 Tamaño del cuadro */
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background-color: #f9f9f9;      /* 🔹 Fondo claro */
+  color: #333;
+  font-size: 14px;
+  font-weight: 500;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.08);
+  transition: all 0.2s ease;
+  min-width: 50px;
+  text-align: center;
+}
+
+.prop-icons span:hover {
+  background-color: #e8f3ff;
+  border-color: #66b3ff;
+  transform: scale(1.05);
+}
+
+.prop-icons i {
+  color: #007bff;
+  font-size: 15px;
+}
+/* ==== CONTENEDOR DE LAS CARDS ==== */
+.lista-propiedades,
+.estadisticas-cards,
+.propiedades-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 15px;
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 10px;
+  justify-content: center;
+}
+
+/* ==== AJUSTE DE CARDS ==== */
+.prop-card {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* ==== EN MÓVIL ==== */
 @media (max-width: 600px) {
-  .chips-estados,
-  .chips-tipos {
-    justify-content: center;
+  .lista-propiedades,
+  .estadisticas-cards,
+  .propiedades-grid {
+    grid-template-columns: 1fr;  /* Solo una por fila */
+    padding: 10px;
   }
 
-  .estadistica-chip {
-    flex: 1 1 45%;       /* 🔹 2 chips por fila aprox. en móvil */
-    max-width: 160px;
+  .prop-card {
+    max-width: 100%;
+    width: 100%;
   }
+}
+.btn-detalle,
+.btn-copiar:hover {
+  background: #0056b3;
 }
