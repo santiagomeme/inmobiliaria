@@ -254,42 +254,53 @@ function aplicarFiltroDesdeChip(filtro, valor) {
   // 2️⃣ Mostrar las tarjetas filtradas
   renderCardsEstadisticas(propiedadesFiltradas);
 
-  // 3️⃣ Quitar cualquier resaltado previo en los marcadores
-  if (window.markersLayer && typeof window.markersLayer.eachLayer === "function") {
-    window.markersLayer.eachLayer(m => {
-      const el = m.getElement?.() || m._icon;
-      if (el) {
-        el.style.filter = "none";
-        el.style.boxShadow = "none";
-        el.style.zIndex = "";
-      }
-    });
-  }
+ // 3️⃣ Quitar cualquier resaltado previo en los marcadores
+if (window.markersLayer && typeof window.markersLayer.eachLayer === "function") {
+  window.markersLayer.eachLayer(m => {
+    const el = m.getElement?.() || m._icon;
+    if (el) {
+      el.style.filter = "none";
+      el.style.boxShadow = "none";
+      el.style.border = "none";
+      el.style.borderRadius = "";
+      el.style.zIndex = "";
+    }
+  });
+}
 
   // 4️⃣ Resaltar los marcadores que coinciden con las propiedades filtradas
-  if (propiedadesFiltradas.length && window.markersLayer && typeof window.markersLayer.eachLayer === "function") {
-    window.markersLayer.eachLayer(m => {
-      const prop = propiedadesFiltradas.find(p =>
-        Number(p.lat).toFixed(6) === Number(m.getLatLng().lat).toFixed(6) &&
-        Number(p.lng).toFixed(6) === Number(m.getLatLng().lng).toFixed(6)
-      );
+// 4️⃣ Resaltar los marcadores que coinciden con las propiedades filtradas
+if (propiedadesFiltradas.length && window.markersLayer && typeof window.markersLayer.eachLayer === "function") {
+  window.markersLayer.eachLayer(m => {
+    const prop = propiedadesFiltradas.find(p =>
+      Number(p.lat).toFixed(6) === Number(m.getLatLng().lat).toFixed(6) &&
+      Number(p.lng).toFixed(6) === Number(m.getLatLng().lng).toFixed(6)
+    );
 
-      if (prop) {
-        const el = m.getElement?.() || m._icon;
-        if (el) {
-          el.style.transition = "filter 0.3s ease, box-shadow 0.3s ease";
-          el.style.filter = "drop-shadow(0 0 8px rgba(255,0,0,0.9))";
-          el.style.boxShadow = "0 0 15px 4px rgba(255,0,0,0.6)";
-          el.style.zIndex = "1000";
-        }
+    if (prop) {
+      const el = m.getElement?.() || m._icon;
+      if (el) {
+        // 🔹 Reset previo
+        el.style.filter = "none";
+        el.style.boxShadow = "none";
+
+        // ✨ Efecto circular limpio y visible
+        el.style.transition = "all 0.3s ease";
+        el.style.filter = "drop-shadow(0 0 10px rgba(255,0,0,0.9))";
+        el.style.border = "2px solid rgba(255,0,0,0.8)";
+        el.style.borderRadius = "50%";
+        el.style.boxShadow = "none"; // 👈 evita duplicado cuadrado
+        el.style.zIndex = "1000";
       }
-    });
-
-    // ✅ Forzar actualización visual del mapa (corrige bug del desplazamiento)
-    if (window.map && typeof window.map.invalidateSize === "function") {
-      setTimeout(() => window.map.invalidateSize(false), 100);
     }
+  });
+
+  // ✅ Forzar actualización visual del mapa
+  if (window.map && typeof window.map.invalidateSize === "function") {
+    setTimeout(() => window.map.invalidateSize(false), 100);
   }
+}
+
 
   // 5️⃣ Marcar el chip activo visualmente
   document.querySelectorAll(".estadistica-chip").forEach(c => c.classList.remove("activo"));
