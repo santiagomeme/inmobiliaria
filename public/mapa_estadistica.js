@@ -238,50 +238,39 @@ function renderEstadisticas(propiedades) {
 // Aplicar filtro desde chip
 // ===============================
 function aplicarFiltroDesdeChip(filtro, valor) {
-  if (filtro === "reset") propiedadesFiltradas = propiedadesOriginales;
-  else if (filtro === "tipo") propiedadesFiltradas = propiedadesOriginales.filter(p => p.tipo === valor);
-  else if (filtro === "destacada") propiedadesFiltradas = propiedadesOriginales.filter(p => p.destacada);
-  else if (filtro === "filtroActiva" && valor === "true") propiedadesFiltradas = propiedadesOriginales.filter(p => p.activa);
-  else if (filtro === "filtroActiva" && valor === "false") propiedadesFiltradas = propiedadesOriginales.filter(p => !p.activa);
+  // 📦 Filtrado de propiedades
+  if (filtro === "reset") {
+    propiedadesFiltradas = propiedadesOriginales;
+  } else if (filtro === "tipo") {
+    propiedadesFiltradas = propiedadesOriginales.filter(p => p.tipo === valor);
+  } else if (filtro === "destacada") {
+    propiedadesFiltradas = propiedadesOriginales.filter(p => p.destacada);
+  } else if (filtro === "filtroActiva" && valor === "true") {
+    propiedadesFiltradas = propiedadesOriginales.filter(p => p.activa);
+  } else if (filtro === "filtroActiva" && valor === "false") {
+    propiedadesFiltradas = propiedadesOriginales.filter(p => !p.activa);
+  }
 
+  // 🧩 Render de tarjetas
   renderCardsEstadisticas(propiedadesFiltradas);
 
-  // 🔹 resaltar marcadores del filtro
-  if (window.markersLayer && typeof window.markersLayer.eachLayer === "function") {
-    window.markersLayer.eachLayer(m => {
-      const el = m._icon;
-      if (el) {
-        el.style.filter = "none";
-        el.style.boxShadow = "none";
-      }
-    });
+  // 🗺️ Actualizar mapa (solo si existe la función y la capa)
+  if (window.highlightLayer && typeof window.highlightLayer.clearLayers === "function") {
+    window.highlightLayer.clearLayers();
   }
 
-  if (window.markersLayer && propiedadesFiltradas.length) {
-    window.markersLayer.eachLayer(m => {
-      const prop = propiedadesFiltradas.find(p =>
-        Number(p.lat).toFixed(6) === Number(m.getLatLng().lat).toFixed(6) &&
-        Number(p.lng).toFixed(6) === Number(m.getLatLng().lng).toFixed(6)
-      );
-      if (prop && m._icon) {
-        m._icon.style.filter = "drop-shadow(0 0 8px rgba(255,0,0,0.9))";
-        m._icon.style.boxShadow = "0 0 15px 4px rgba(255,0,0,0.6)";
-        m._icon.style.zIndex = "1000";
-      }
-    });
+  if (typeof window.pintarDestacados === "function") {
+    window.pintarDestacados(propiedadesFiltradas);
+  } else {
+    console.warn("⚠️ La función pintarDestacados no está definida o no es global.");
   }
 
+  // 💡 Actualizar visual de chips activos
   document.querySelectorAll(".estadistica-chip").forEach(c => c.classList.remove("activo"));
   if (filtro !== "reset") {
     const chipActivo = document.querySelector(`.estadistica-chip[data-filtro="${filtro}"][data-valor="${valor}"]`);
     if (chipActivo) chipActivo.classList.add("activo");
   }
-}
-function abrirEdicion(id) {
-  // Guarda el ID para usarlo en la página del formulario
-  localStorage.setItem("editarPropId", id);
-  // Redirige a la página donde está el formulario (el archivo registroPropiedad.js)
-  window.location.href = "registroPropiedad.html";
 }
 
 

@@ -33,6 +33,7 @@ function crearIcono(color, iconoFA) {
         width:34px;
         height:34px;
         display:flex;
+        border-radius: 50%!important; 
         align-items:center;
         justify-content:center;
         box-shadow:0 0 4px rgba(0,0,0,0.4);

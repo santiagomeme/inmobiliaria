@@ -257,12 +257,13 @@
 .propiedad-filtrada {
   box-shadow: 0 0 12px 3px rgba(255, 0, 0, 0.6)!important;
   border: 2px solid red;
+  border-radius: 50%!important; /* opcional */
 }
 /* Glow rojo y un poco más grande */
 .leaflet-marker-icon.highlight-marker {
   box-shadow: 0 0 10px 4px rgba(255, 0, 0, 0.8),
               0 0 20px 10px rgba(255, 0, 0, 0.6);
-  border-radius: 50%; /* opcional */
+  border-radius: 50%!important; /* opcional */
   transform: scale(1.2); /* agranda el marcador */
   z-index: 1000 !important;
 }

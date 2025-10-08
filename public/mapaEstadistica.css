@@ -99,9 +99,10 @@
 .leaflet-marker-icon.highlight-marker {
   box-shadow: 0 0 10px 4px rgba(255, 0, 0, 0.8),
               0 0 20px 10px rgba(255, 0, 0, 0.6);
-  border-radius: 50%; /* opcional */
+  border-radius:50%!important;
   transform: scale(1.2); /* agranda el marcador */
   z-index: 1000 !important;
+
 }
 
 
@@ -113,6 +114,7 @@
   box-shadow: 0 0 12px 4px red !important;
   transform: scale(1.15);
   transition: all 0.3s ease;
+  border-radius:50%!important;
 }
 
 /* 🔹 Animación suave para todos los íconos personalizados */

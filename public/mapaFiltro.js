@@ -1,302 +1,216 @@
-// ✅ filtro.js
+// ✅ mapaFiltro.js
 document.addEventListener("DOMContentLoaded", () => {
-  // Chequeos suaves (no rompen la app si aún no cargó todo)
+
+  // ⚙️ Seguridad básica
   if (!window.map) {
-    console.warn("filtro.js: 'map' aún no existe en window. Verifica el orden de los scripts.");
+    console.warn("mapaFiltro.js: el mapa aún no está disponible en window.map");
   }
   if (!Array.isArray(window.propiedades)) {
-    console.warn("filtro.js: 'propiedades' aún no existe o no es array. Se espera que propiedades.js lo inicialice.");
-    window.propiedades = window.propiedades || []; // evita crash
+    console.warn("mapaFiltro.js: propiedades no está definido o no es array");
+    window.propiedades = [];
   }
-function getColorByTipo(tipo) {
-  switch ((tipo || "").toLowerCase()) {
-    case "casa": return "goldenrod";
-    case "apartamento": 
-    case "departamento": return "dodgerblue";
-    case "lote": return "darkorange";
-    case "finca": return "green";
-    case "apartaestudio": return "hotpink";
-    case "bodega": return "grey";
-    case "campestre": return "darkgreen";
-    case "condominio": return "steelblue";
-    case "duplex": return "saddlebrown"; // 🔥 sin tilde
-    case "edificio": return "black";
-    case "local": return "red";
-    case "hotel": return "darkred";
-    case "oficina": return "purple";
-    case "penthouse": return "goldenrod";
-    default: return "#555"; // gris por defecto
+
+  // 🎨 Colores según tipo
+  function getColorByTipo(tipo) {
+    switch ((tipo || "").toLowerCase()) {
+      case "casa": return "goldenrod";
+      case "apartamento":
+      case "departamento": return "dodgerblue";
+      case "lote": return "darkorange";
+      case "finca": return "green";
+      case "apartaestudio": return "hotpink";
+      case "bodega": return "gray";
+      case "campestre": return "darkgreen";
+      case "condominio": return "steelblue";
+      case "duplex": return "saddlebrown";
+      case "edificio": return "black";
+      case "local": return "red";
+      case "hotel": return "darkred";
+      case "oficina": return "purple";
+      case "penthouse": return "goldenrod";
+      default: return "#555";
+    }
   }
-}
 
-
-  // 📌 Coordenadas iniciales (tu vista por defecto: Cali)
+  // 📍 Coordenadas iniciales
   const LAT_INICIAL = 3.4516;
   const LNG_INICIAL = -76.5320;
   const ZOOM_INICIAL = 13;
 
-// 🔴 Ejemplo con ícono cuadrado y texto "Búsqueda"
-const customIcon = L.divIcon({
-  className: "custom-marker",
-  html: `
-    <div style="
-      width:48px;
-      height:48px;
-      background: radial-gradient(circle at center, #ff4d6d, #b10024);
-      color:#fff;
-      border-radius:50%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      font-size:22px;
-      font-weight:bold;
-      box-shadow:0 0 12px rgba(255,0,70,0.8), 0 0 24px rgba(255,0,70,0.5);
-    ">
-      🔍
-    </div>
-  `,
-  iconSize: [48, 48],
-  iconAnchor: [24, 48],
-  popupAnchor: [0, -48]
-});
-
-
-
-  // 🧱 Capa exclusiva para marcadores destacados (NO toca los normales)
+  // ⭐ Capa para destacados
   if (!window.highlightLayer) {
     window.highlightLayer = L.layerGroup().addTo(map);
   } else {
     window.highlightLayer.clearLayers();
   }
 
-function renderTarjetas(items = [], mostrarVacio = false) {
-  const cont = document.getElementById("propiedades");
-  if (!cont) return;
-  cont.innerHTML = "";
+  // 💳 Render de tarjetas
+  function renderTarjetas(items = [], mostrarVacio = false) {
+    const cont = document.getElementById("propiedades");
+    if (!cont) return;
 
-  const arr = Array.isArray(items) ? items : [];
+    cont.innerHTML = "";
 
-  if (arr.length === 0) {
-    if (mostrarVacio) {
-      cont.innerHTML = "<p>No se encontraron propiedades con esos filtros.</p>";
+    if (!Array.isArray(items) || items.length === 0) {
+      if (mostrarVacio) cont.innerHTML = "<p>No se encontraron propiedades.</p>";
+      return;
     }
-    return;
+
+    items.forEach((data) => {
+      const card = document.createElement("div");
+      card.className = "prop-card";
+      const color = getColorByTipo(data.tipo);
+
+      card.innerHTML = `
+        <div class="card-img-wrapper">
+          <img src="${
+            data.imagenes?.[0] || data.imagen || "imagenes/default.png"
+          }" alt="Imagen de la propiedad">
+          ${data.propiedadNueva ? `<span class="badge-nueva">NUEVA</span>` : ""}
+        </div>
+
+        <h3>${data.titulo || "Sin título"}</h3>
+
+        <div class="prop-badges">
+          <span class="prop-tipo" style="background:${color};">${data.tipo || ""}</span>
+          ${data.modalidad ? `<span class="prop-badge">${data.modalidad}</span>` : ""}
+          ${data.estado ? `<span class="prop-badge">${data.estado}</span>` : ""}
+          <span class="prop-badge" style="background:${data.activa ? "#2E8B57" : "#B22222"};color:#fff;">
+            ${data.activa ? "Activa" : "Inactiva"}
+          </span>
+        </div>
+
+        <p>${data.ciudad || ""}</p>
+
+        <div class="prop-icons">
+          <span><i class="fas fa-car"></i> ${data.garage || 0}</span>
+          <span><i class="fas fa-bath"></i> ${data.banos || 0}</span>
+          <span><i class="fas fa-bed"></i> ${data.habitaciones || 0}</span>
+          <span><i class="fas fa-ruler-combined"></i> ${data.area || 0} m²</span>
+        </div>
+
+        <div class="precio-container">
+          ${data.destacada ? `<span class="badge-destacada"><i class="fas fa-star"></i> Destacada</span>` : ""}
+          <p class="prop-precio">COP $${formatearPrecio(data.precio) || "0"}</p>
+        </div>
+
+        <button onclick="verDetalle('${data.id}')">Ver detalles</button>
+      `;
+
+      cont.appendChild(card);
+    });
   }
 
-  arr.forEach((data) => {
-    const card = document.createElement("div");
-    card.className = "prop-card";
+  // 🗺️ Pintar marcadores destacados
+ window.pintarDestacados = function(items) {
+    if (!window.highlightLayer) return;
+    window.highlightLayer.clearLayers();
 
-    // color por tipo
-    const color = getColorByTipo(data.tipo);
+    if (!Array.isArray(items) || items.length === 0) return;
 
-  card.innerHTML = `
-  <div class="card-img-wrapper">
-    <img src="${
-      (data.imagenes && data.imagenes.length > 0) 
-        ? data.imagenes[0] 
-        : (data.imagen || 'imagenes/default.png')
-    }" alt="Imagen de la propiedad">
+    items.forEach((data) => {
+      if (data.lat == null || data.lng == null) return;
 
-    ${data.propiedadNueva ? `<span class="badge-nueva">NUEVA</span>` : ""}
-  </div>
+     const estilo = getEstiloByTipo(data.tipo);
 
-  <h3>${data.titulo}</h3>
+     // Si getEstiloByTipo devuelve el color y el icono, creamos el ícono real
+     const iconoFinal = crearIcono(estilo.color, estilo.icono);
 
-  <div class="prop-badges">
-    <span class="prop-tipo" style="background:${color};">
-      ${data.tipo || ""}
-    </span>
-    <span class="prop-badge">${data.modalidad || ""}</span>
-    <span class="prop-badge">${data.estado || ""}</span>
-    <span class="prop-badge" style="background:${data.activa ? '#2E8B57' : '#B22222'};color:#fff;">
-            ${data.activa ? 'Activa' : 'Inactiva'}
-          </span>
-  
-    </div>
+     // Creamos el marcador con el icono válido de Leaflet
+     const marker = L.marker([data.lat, data.lng], { icon: iconoFinal });
 
-  <p>${data.ciudad || ""}</p>
-  <p><i class="fas fa-car"></i> <span class="prop-valor">${data.garage || 0}</span></p>
-  <p><strong>Área:</strong> <span class="prop-valor">${data.area} m²</span></p>
-  <p><strong>Baños:</strong> <span class="prop-valor">${data.banos}</span></p>
-  <p><strong>Habitaciones:</strong> <span class="prop-valor">${data.habitaciones}</span></p>
+      marker.on("add", () => {
+        const el = marker.getElement();
+        if (el) el.classList.add("highlight-marker");
+      });
 
-  <div class="precio-container">
-    ${data.destacada ? `<span class="badge-destacada"><i class="fas fa-star"></i> Destacada</span>` : ""}
-    <p class="prop-precio">COP $${formatearPrecio(data.precio) || "0"}</p>
-  </div>
-
-  <button onclick="verDetalle('${data.id}')">Ver detalles</button>
-`;
-
-
-
-    cont.appendChild(card);
-  });
-}
-
-
-
-// 📍 Dibuja SOLO los destacados (deja intactos los marcadores normales de propiedades.js)
-function pintarDestacados(items) {
-  if (!window.highlightLayer) return;
-  window.highlightLayer.clearLayers();
-
-  const arr = Array.isArray(items) ? items : [];
-  if (arr.length === 0) return;
-
-  arr.forEach((data) => {
-    if (data.lat == null || data.lng == null) return;
-
-    // 🔹 obtener estilo (color + icono original)
-    const estilo = getEstiloByTipo(data.tipo);
-    const iconoOriginal = estilo.icono;
-
-    // 🔹 Crear marcador con el icono original
-    const marker = L.marker([data.lat, data.lng], { icon: iconoOriginal });
-
-    // 👉 agregar clase highlight cuando se renderiza
-    marker.on("add", () => {
-      const el = marker.getElement();
-      if (el) {
-        el.classList.add("highlight-marker");
-      }
+      window.highlightLayer.addLayer(marker);
     });
 
-    window.highlightLayer.addLayer(marker);
-  });
-
-  // 🔹 Centrar en el primero (opcional, sin popup)
-  const first = arr[0];
-  if (first && first.lat != null && first.lng != null) {
-    map.setView([first.lat, first.lng], 14);
+    const first = items[0];
+    if (first?.lat != null && first?.lng != null) {
+      map.setView([first.lat, first.lng], 14);
+    }
   }
-}
 
+  // 🔍 Filtros
+  function aplicarFiltros() {
+    const getVal = (id, parse = false) => {
+      const el = document.getElementById(id);
+      if (!el) return parse ? 0 : "";
+      return parse ? parseFloat(el.value) || 0 : el.value.trim().toLowerCase();
+    };
 
+    const soloNuevas = document.getElementById("filtroNueva")?.checked || false;
+    const destacada = document.getElementById("destacada")?.checked || false;
 
-// 🔎 Aplica filtros
-function aplicarFiltros() {
-  const soloNuevas  = document.getElementById("filtroNueva")?.checked || false;
-  const tipoVal     = (document.getElementById("tipo")?.value || "").toLowerCase().trim();
-  const precioMin   = parseFloat(document.getElementById("precioMin")?.value) || 0;
-  const precioMax   = parseFloat(document.getElementById("precioMax")?.value) || Infinity;
-  const ciudadVal   = (document.getElementById("ciudad")?.value || "").toLowerCase().trim();
-  const modalidadVal= (document.getElementById("filtroTipo")?.value || "").toLowerCase().trim();
-  const banosVal    = parseInt(document.getElementById("banos")?.value) || 0;
-  const habsVal     = parseInt(document.getElementById("habitaciones")?.value) || 0;
-  const garajeVal   = parseInt(document.getElementById("garaje")?.value) || 0;
-  const estadoVal   = (document.getElementById("estado")?.value || "").toLowerCase().trim();
-  const destacada   = document.getElementById("destacada")?.checked || false;
-  const activaVal   = (document.getElementById("filtroActiva")?.value || "todas").toLowerCase().trim();
-  // 🔹 Nuevos filtros
-  const estratoVal     = parseInt(document.getElementById("estrato")?.value) || 0;
-  const codigoVal      = (document.getElementById("codigo")?.value || "").toLowerCase().trim();
-  const pisoVal        = parseInt(document.getElementById("piso")?.value) || 0;
-  const paisVal        = (document.getElementById("pais")?.value || "").toLowerCase().trim();
-  const departamentoVal= (document.getElementById("departamento")?.value || "").toLowerCase().trim();
+    const tipoVal = getVal("tipo");
+    const modalidadVal = getVal("filtroTipo");
+    const estadoVal = getVal("estado");
+    const ciudadVal = getVal("ciudad");
+    const paisVal = getVal("pais");
+    const departamentoVal = getVal("departamento");
+    const codigoVal = getVal("codigo");
+    const activaVal = getVal("filtroActiva") || "todas";
 
-  const filtradas = (window.propiedades || []).filter((prop) => {
-    const pTipo      = (prop.tipo || "").toLowerCase();
-    const pCiudad    = (prop.ciudad || "").toLowerCase();
-let pPrecio = 0;
-if (typeof prop.precio === "number") {
-  pPrecio = prop.precio;
-} else if (typeof prop.precio === "string") {
-  pPrecio = parseFloat(prop.precio.replace(/[^\d.]/g, "")) || 0;
-}
-    const pModalidad = (prop.modalidad || "").toLowerCase();
-    const pBanos     = Number(prop.banos) || 0;
-    const pHabs      = Number(prop.habitaciones) || 0;
-    const pGarajes   = Number(prop.garaje) || 0;
-    const pEstado    = (prop.estado || "").toLowerCase();
-    const pDestacada = !!prop.destacada;
-    const pNueva     = !!prop.propiedadNueva; // ✅ normalizamos a booleano
-    const pActiva = String(prop.activa).toLowerCase() === "true";
-  // 🔹 Nuevos valores de propiedades
-    const pEstrato     = Number(prop.estrato) || 0;
-    const pCodigo      = (prop.codigo || "").toLowerCase();
-    const pPiso        = Number(prop.piso) || 0;
-    const pPais        = (prop.pais || "").toLowerCase();
-    const pDepartamento= (prop.departamento || "").toLowerCase();
+    const precioMin = getVal("precioMin", true);
+    const precioMax = getVal("precioMax", true) || Infinity;
+    const banosVal = getVal("banos", true);
+    const habsVal = getVal("habitaciones", true);
+    const garajeVal = getVal("garaje", true);
+    const estratoVal = getVal("estrato", true);
+    const pisoVal = getVal("piso", true);
 
-    const okTipo = tipoVal ? pTipo.includes(tipoVal) : true;
-    const okPrecio    = pPrecio >= precioMin && pPrecio <= precioMax;
-    const okCiudad    = ciudadVal ? pCiudad.includes(ciudadVal) : true;
-    const okModalidad = modalidadVal && modalidadVal !== "todos" ? pModalidad.includes(modalidadVal) : true;
-    const okBanos     = banosVal ? pBanos >= banosVal : true;
-    const okHabs      = habsVal ? pHabs >= habsVal : true;
-    const okEstado = estadoVal && estadoVal !== "todos" ? pEstado.includes(estadoVal) : true;
-    const okGaraje    = garajeVal ? pGarajes >= garajeVal : true;
-    const okDestacada = destacada ? pDestacada === true : true;
-    const okNueva     = soloNuevas ? pNueva === true : true; // ✅ Nuevo filtro
-    // 🔹 Nuevos filtros
-    const okEstrato     = estratoVal ? pEstrato === estratoVal : true;
-    const okCodigo      = codigoVal ? pCodigo.includes(codigoVal) : true;
-    const okPiso        = pisoVal ? pPiso === pisoVal : true;
-    const okPais        = paisVal ? pPais.includes(paisVal) : true;
-    const okDepartamento= departamentoVal ? pDepartamento.includes(departamentoVal) : true;
+    const filtradas = window.propiedades.filter((prop) => {
+      const precioNum = parseFloat(String(prop.precio).replace(/[^\d.]/g, "")) || 0;
 
-    // 🔎 Filtro nueva condición: activa/inactiva
-    const okActiva = activaVal !== "todas"
-      ? (activaVal === "true" ? pActiva === true : pActiva === false)
-      : true;
+      const checks = [
+        tipoVal ? prop.tipo?.toLowerCase().includes(tipoVal) : true,
+        ciudadVal ? prop.ciudad?.toLowerCase().includes(ciudadVal) : true,
+        paisVal ? prop.pais?.toLowerCase().includes(paisVal) : true,
+        departamentoVal ? prop.departamento?.toLowerCase().includes(departamentoVal) : true,
+        codigoVal ? prop.codigo?.toLowerCase().includes(codigoVal) : true,
+        modalidadVal && modalidadVal !== "todos" ? prop.modalidad?.toLowerCase().includes(modalidadVal) : true,
+        estadoVal && estadoVal !== "todos" ? prop.estado?.toLowerCase().includes(estadoVal) : true,
+        prop.precio >= precioMin && prop.precio <= precioMax,
+        !banosVal || (prop.banos >= banosVal),
+        !habsVal || (prop.habitaciones >= habsVal),
+        !garajeVal || (prop.garaje >= garajeVal),
+        !estratoVal || (prop.estrato === estratoVal),
+        !pisoVal || (prop.piso === pisoVal),
+        !soloNuevas || !!prop.propiedadNueva,
+        !destacada || !!prop.destacada,
+        activaVal === "todas" ? true :
+          (activaVal === "true" ? prop.activa === true : prop.activa === false)
+      ];
 
-    return (
-      okTipo &&
-      okPrecio &&
-      okCiudad &&
-      okModalidad &&
-      okBanos &&
-      okHabs &&
-      okEstado &&
-      okGaraje &&
-      okDestacada &&
-      okNueva &&// 👉 se agrega aquí
-      okActiva &&// 👉 se agrega aquí
-      okEstrato &&        // 👈 agregado
-      okCodigo &&         // 👈 agregado
-      okPiso &&           // 👈 agregado
-      okPais &&           // 👈 agregado
-      okDepartamento      // 👈 agregado
-  
-    );
-  });
+      return checks.every(Boolean);
+    });
 
-  // 1) Marcar en mapa
-  pintarDestacados(filtradas);
+    pintarDestacados(filtradas);
+    renderTarjetas(filtradas, true);
 
-  // 2) Mostrar tarjetas filtradas
-  renderTarjetas(filtradas, true);
-
-  // 3) Centrar mapa si hay resultados
-  if (filtradas.length && filtradas[0].lat != null && filtradas[0].lng != null) {
-    map.setView([filtradas[0].lat, filtradas[0].lng], 14);
+    if (filtradas.length && filtradas[0].lat && filtradas[0].lng) {
+      map.setView([filtradas[0].lat, filtradas[0].lng], 14);
+    }
   }
-}
 
-
-  // ♻️ Quitar filtros: borra chulos, muestra todas, y recentra
+  // ♻️ Reset
   function quitarFiltros() {
+    document.querySelectorAll(".filtros input, .filtros select").forEach((el) => {
+      if (el.type === "checkbox") el.checked = false;
+      else el.value = "";
+    });
+
     window.highlightLayer?.clearLayers();
     renderTarjetas(window.propiedades, false);
-
-    const ids = ["tipo", "precioMin", "precioMax", "ciudad"];
-    ids.forEach((id) => {
-      const el = document.getElementById(id);
-      if (el) el.value = "";
-    });
-
-    // Recentrar a la vista inicial
-    if (window.map) {
-      map.setView([LAT_INICIAL, LNG_INICIAL], ZOOM_INICIAL);
-    }
+    map.setView([LAT_INICIAL, LNG_INICIAL], ZOOM_INICIAL);
   }
 
   // 🔘 Eventos
   document.getElementById("buscarBtn")?.addEventListener("click", aplicarFiltros);
   document.getElementById("resetBtn")?.addEventListener("click", quitarFiltros);
 
-  // Carga inicial: mostrar todas SIN mensaje de vacío
+  // 🔹 Carga inicial
   renderTarjetas(window.propiedades, false);
 });
