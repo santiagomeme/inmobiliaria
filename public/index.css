@@ -526,3 +526,18 @@ footer {
 .btn-blog:hover {
   background: #0056b3;
 }
+
+
+
+.decoracion-familia {
+  text-align: center;
+  background: #fafafa;
+  padding: 40px 0;
+}
+
+.decoracion-familia img {
+  width: 80%;
+  max-width: 1000px;
+  border-radius: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}

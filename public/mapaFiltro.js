@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <p>${data.ciudad || ""}</p>
 
         <div class="prop-icons">
-          <span><i class="fas fa-car"></i> ${data.garage || 0}</span>
+          <span><i class="fas fa-car"></i> ${data.garaje || 0}</span>
           <span><i class="fas fa-bath"></i> ${data.banos || 0}</span>
           <span><i class="fas fa-bed"></i> ${data.habitaciones || 0}</span>
           <span><i class="fas fa-ruler-combined"></i> ${data.area || 0} m²</span>
@@ -170,12 +170,20 @@ document.addEventListener("DOMContentLoaded", () => {
         paisVal ? prop.pais?.toLowerCase().includes(paisVal) : true,
         departamentoVal ? prop.departamento?.toLowerCase().includes(departamentoVal) : true,
         codigoVal ? prop.codigo?.toLowerCase().includes(codigoVal) : true,
-        modalidadVal && modalidadVal !== "todos" ? prop.modalidad?.toLowerCase().includes(modalidadVal) : true,
+// ✅ Normalizar modalidad para manejar "arriendo", "alquiler", "arriendo-alquiler", etc.
+(() => {
+  if (!modalidadVal || modalidadVal === "todos") return true;
+  const modProp = (prop.modalidad || "").toLowerCase();
+  if (modalidadVal === "arriendo") {
+    return modProp.includes("arriendo") || modProp.includes("alquiler");
+  }
+  return modProp.includes(modalidadVal);
+})(),
         estadoVal && estadoVal !== "todos" ? prop.estado?.toLowerCase().includes(estadoVal) : true,
         prop.precio >= precioMin && prop.precio <= precioMax,
         !banosVal || (prop.banos >= banosVal),
         !habsVal || (prop.habitaciones >= habsVal),
-        !garajeVal || (prop.garaje >= garajeVal),
+        !garajeVal || ((prop.garaje ?? prop.garage ?? 0) >= garajeVal),
         !estratoVal || (prop.estrato === estratoVal),
         !pisoVal || (prop.piso === pisoVal),
         !soloNuevas || !!prop.propiedadNueva,

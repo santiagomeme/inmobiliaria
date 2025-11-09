@@ -158,9 +158,7 @@ mapsBtn.addEventListener("click", () => {
   );
 });
 
-// ==========================
-// FUNCION: agregarCaracteristica
-// ==========================
+
 // ==========================
 // FUNCION: agregarCaracteristica
 // ==========================
@@ -203,15 +201,16 @@ form.addEventListener("submit", async (e) => {
   const direccion    = document.getElementById("direccion").value.trim();
   let tipo           = document.getElementById("tipo").value.trim().toLowerCase();
   tipo = tipo.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); 
-  const modalidad    = document.getElementById("modalidad").value.trim();
+let modalidad = document.getElementById("modalidad").value.trim().toLowerCase();
+modalidad = modalidad.normalize("NFD").replace(/[\u0300-\u036f]/g, ""); // quita tildes
+if (modalidad.includes("alquiler")) modalidad = "arriendo"; // ✅ unifica modalidad
   const habitaciones = parseInt(document.getElementById("habitaciones").value) || 0;
   const banos        = parseInt(document.getElementById("banos").value) || 0;
 
   // limpiar puntos y comas del precio
   const precioRaw = document.getElementById("precio").value.replace(/\./g, "").replace(/,/g, "");
   const precio = parseFloat(precioRaw) || 0;
-
-  const garage = parseInt(document.getElementById("garage").value) || 0;
+  const garaje = parseInt(document.getElementById("garaje").value) || 0;
   const area = parseFloat(document.getElementById("area").value) || 0;
   const estado = document.getElementById("estado").value.trim();
   const propiedadNueva = document.getElementById("propiedadNueva").checked;
@@ -253,7 +252,7 @@ form.addEventListener("submit", async (e) => {
       const datos = {
         titulo, descripcion, ciudad, direccion, tipo, modalidad,
         habitaciones, banos, area, estado, propiedadNueva,
-        garage, precio, imagenes, lat, lng, activa, destacada,
+        garaje, precio, imagenes, lat, lng, activa, destacada,
         piso, estrato, pais, departamento,
         internas, externas,
         fecha: firebase.firestore.FieldValue.serverTimestamp()
@@ -290,7 +289,7 @@ form.addEventListener("submit", async (e) => {
       const datos = {
         titulo, descripcion, ciudad, direccion, tipo, modalidad,
         habitaciones, banos, area, estado, propiedadNueva,
-        garage, precio, imagenes, lat, lng, activa, destacada,
+        garaje, precio, imagenes, lat, lng, activa, destacada,
         piso, estrato, pais, departamento,
         internas, externas,
         codigo: codigoGenerado, // 👈 asignamos el código único
@@ -402,7 +401,7 @@ window.editarPropiedad = async function(id) {
     safeSet("descripcion", prop.descripcion ?? "");
     safeSet("ciudad", prop.ciudad ?? "");
     safeSet("direccion", prop.direccion ?? "");
-    safeSet("garage", prop.garage ?? 0);
+    safeSet("garaje", prop.garaje ?? 0);
     safeSet("tipo", prop.tipo ?? "");
     safeSet("modalidad", prop.modalidad ?? "");
     safeSet("habitaciones", prop.habitaciones ?? 0);
