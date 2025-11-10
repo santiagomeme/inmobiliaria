@@ -11,6 +11,9 @@
   gap: 8px;
   align-items: center;
   margin-top: 10px;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 /* chip base (flex para controlar icono / label / count) */
@@ -201,58 +204,70 @@
   text-shadow: 0 0 6px red, 0 0 10px red;
 }
 
-/* 🔹 Buscar */
-#btnBuscarCodigo {
- margin: 20px auto 5px;
-  padding: 10px 16px;
-  background: #00172e;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-size: 1rem;
-  font-weight: 600;
-  transition: background 0.2s ease;
 
-}
-#btnBuscarCodigo:hover {
-  background: #42aaff;
-}
 
-/* 🔹 Limpiar */
-#btnLimpiarCodigo {
-  background: #ffffff;
-  border: 1px solid #00172e;
-  padding: 8px 14px;
-  border-radius: 8px;
-  font-size: 14px;
-  font-weight: 500;
-  cursor: pointer;
-  color: #00172e;
-  transition: all 0.25s ease;
-}
-#btnLimpiarCodigo:hover {
-  background: #42aaff;
-}
 
-/* 🔹 Ver listado */
+/* Centra todos los botones grandes */
+#btnVerPropiedades,
 #btnToggleLista {
- margin: 20px auto 5px;
-  padding: 10px 16px;
+  display: block;
+  margin: 20px auto; /* 🔹 centrado horizontal */
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
   background: #00172e;
   color: #fff;
-  border: none;
-  border-radius: 8px;
+  font-size: 14px;
+  font-weight: bold;
   cursor: pointer;
-  font-size: 1rem;
-  font-weight: 600;
-  transition: background 0.2s ease;
-
-
+  transition: background 0.3s ease;
+  text-align: center;
 }
+
+#btnVerPropiedades:hover,
 #btnToggleLista:hover {
-  background: #42aaff;
+  background: #003366;
 }
+
+/* Centra el input y los botones de filtro */
+.filtro-codigo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin: 20px auto;
+  text-align: center;
+  width: 100%;
+}
+
+.filtro-codigo input {
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  min-width: 220px;
+  text-align: center;
+}
+
+.filtro-codigo button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  background: #00172e;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.filtro-codigo button:hover {
+  background: #003366;
+}
+
+
+
+
 
 .propiedad-filtrada {
   box-shadow: 0 0 12px 3px rgba(255, 0, 0, 0.6)!important;

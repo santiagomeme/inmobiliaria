@@ -55,12 +55,13 @@
     </div>
 </header>
   
+
+
   <section class="registro">
 
-
-    <h2>Registrar Propiedad</h2>
-
     <form id="registroForm">
+    <h1 style="margin: 0 auto;">Registrar Propiedad</h1>
+
     <label>
        <input type="checkbox" id="destacada"> Propiedad destacada
   </label>
@@ -70,7 +71,7 @@
   <label for="modalidad">Modalidad:</label>
    
  <select id="modalidad" required>
-     <option value="">Seleccione</option>
+     <option value="">Modalidad</option>
      <option value="venta">Venta</option>
      <option value="alquiler">Alquiler</option>
      <option value="permuta">Permuta</option>
@@ -179,17 +180,7 @@
       <button type="submit"  type="button"class="btn">Guardar Propiedad</button>
     </form>
   </section>
-<button id="btnVerPropiedades" style="
-  margin: 10px;
-  padding: 6px 12px;
-  border: none;
-  border-radius: 6px;
-  background: #00172e;
-  color: #fff;
-  font-size: 14px;
-  font-weight: bold;
-  cursor: pointer;
-">
+<button id="btnVerPropiedades" >
   📍 Ver propiedades en el mapa
 </button>
   
@@ -208,7 +199,7 @@
   <button id="btnLimpiarCodigo">Limpiar</button>
 </div>
 
-<button id="btnToggleLista">📋 Ver listado de propiedades</button>
+<button  style="margin: 0 auto;"id="btnToggleLista">📋 Ver listado de propiedades</button>
 
 <section id="seccionListado" class="admin-listado" style="display:none;">
   <h2>Listado de propiedades</h2>
